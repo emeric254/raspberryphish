@@ -1,5 +1,14 @@
-# raspberrypish
+# raspberryphish
 
+
+
+## TODO
+  - install script for the server
+  - config script for the server
+  - make some html pages
+  - more infos in this _README_
+  - documentation
+  - tests & reports
 
 
 ## dependencies
