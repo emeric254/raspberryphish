@@ -37,6 +37,8 @@ if __name__ == "__main__":
         [
             (r'/rsc/(.*)$', RscHandler),
             (r"/", MainHandler),
+            (r"/*", MainHandler),
+            (r"/.*", MainHandler),
         ],
         autoreload=True, debug=True
     )
