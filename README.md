@@ -17,7 +17,7 @@
   - python-tornado
 
 ```bash
-aptitude -y install hostapd dnsmasq python-tornado
+aptitude -y install hostapd dnsmasq python3-tornado
 ```
 
 

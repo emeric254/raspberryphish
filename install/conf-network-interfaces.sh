@@ -8,7 +8,7 @@ iface lo inet loopback
 iface eth0 inet dhcp
 EOF
 
-echo "iface $INTERFACE inet static" /etc/network/interfaces
+echo "iface $INTERFACE inet static" >>  /etc/network/interfaces
 
 cat <<EOF >>  /etc/network/interfaces
 address 10.0.0.1
