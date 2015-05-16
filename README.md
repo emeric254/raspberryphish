@@ -37,6 +37,7 @@ Name  | explanation | default
  CHANNEL | wifi channel to use | 1
  SSID | SSID to use | test
  PAGE | html pages the server have to use | test
+ SERVERPATH | where the server will be installed | /media/USB
 
 
 
