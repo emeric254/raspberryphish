@@ -4,7 +4,7 @@
 echo  '#!/bin/sh'  >  "$SERVERPATH/launcher-raspberryphish-server.sh"
 echo  '# launcher for raspberryphish server'  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
 echo  "cd $SERVERPATH"  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
-echo  "python3 main.py >> ./logs/log-$(date +%Y%m%d)"  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
+echo  "python3 main.py > ./logs/log-$(date +%Y-%m-%d_%H-%M)"  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
 
 # make it launchable
 chmod 755 "$SERVERPATH/launcher-raspberryphish-server.sh"
