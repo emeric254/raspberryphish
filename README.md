@@ -3,10 +3,9 @@
 
 
 ## TODO
-  - install script for the server
   - config script for the server
   - make some html pages
-  - more infos in this _README_
+  - more infos in this _README_ file
   - documentation
   - tests & reports
 
@@ -14,7 +13,7 @@
 ## dependencies
   - hostapd
   - dnsmasq
-  - python-tornado
+  - python3-tornado (or _python-tornado_ depending your OS)
 
 ```bash
 aptitude -y install hostapd dnsmasq python3-tornado
@@ -43,7 +42,7 @@ Name  | explanation | default
 
 ## install raspberryphish on your system
 
-execute the _INSTALL.sh_ file
+execute the _INSTALL.sh_ file (with permissions)
 
 ```bash
 bash INSTALL.sh
