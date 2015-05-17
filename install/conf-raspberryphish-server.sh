@@ -16,9 +16,10 @@ cp -r  ./server/*  "$SERVERPATH/"
 
 # make a log folder
 mkdir  "$SERVERPATH/logs"
+mkdir  "$SERVERPATH/logs/dump"
 
 # configure cron-file
-echo  "@reboot sh $SERVERPATH/launcher-raspberryphish-server.sh 1> $SERVERPATH/logs/cronlog 2>&1"  >  ./install/cron-file
+echo  "@reboot sh $SERVERPATH/launcher-raspberryphish-server.sh 1> $SERVERPATH/logs/cronlog 2> $SERVERPATH/logs/cronlog-error"  >  ./install/cron-file
 
 # load it
 crontab ./install/cron-file
