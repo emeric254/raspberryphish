@@ -13,6 +13,7 @@ chmod 755 "$SERVERPATH/launcher-raspberryphish-server.sh"
 
 # copy server in the given directory
 cp -r  ./server/*  "$SERVERPATH/"
+sed -i "/pagePath = \"test\/\"/c pagePath = \"$PAGE\/\"" $SERVERPATH/main.py
 
 # make a log folder
 mkdir  "$SERVERPATH/logs"
