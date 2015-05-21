@@ -46,11 +46,16 @@ if __name__ == "__main__":
             (r"/*", MainHandler),
             (r"/.*", MainHandler),
         ],
-        autoreload=True, debug=True
+        autoreload=True, debug=True,
+        ssl_options={
+            "certfile": "cert/" + pagePath + "defaut.crt",
+            "keyfile": "cert/" + pagePath + "defaut.key",
+        }
     )
 
     # bind a port
     application.listen(80)
+    #application.listen(443)
 
     # loop forever for satisfy user's requests
     tornado.ioloop.IOLoop.instance().start()
