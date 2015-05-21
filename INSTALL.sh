@@ -7,6 +7,7 @@ export CHANNEL=1
 export SSID="test"
 export PAGE="test"
 export SERVERPATH="/media/USB"
+export SSHPORT=22
 
 # instal scripts
 bash ./install/conf-hostapd.sh
