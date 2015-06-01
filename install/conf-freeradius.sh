@@ -3,7 +3,7 @@
 
 mkdir $RADIUSLOGPATH
 chmod 777 $RADIUSLOGPATH
-chown freerad $RADIUSLOGPATH
+chown freerad:freerad $RADIUSLOGPATH
 
 sed -i "/logdir = /c\logdir = $RADIUSLOGPATH" /etc/freeradius/radiusd.conf
 
