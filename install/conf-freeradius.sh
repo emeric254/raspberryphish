@@ -1,6 +1,8 @@
 
 # configure /etc/freeradius/radiusd.conf
 
+mkdir $RADIUSLOGPATH
+
 sed -i "/logdir = /c\logdir = $RADIUSLOGPATH" /etc/freeradius/radiusd.conf
 
 sed -i '/hostname_lookups = /c\hostname_lookups = no' /etc/freeradius/radiusd.conf
