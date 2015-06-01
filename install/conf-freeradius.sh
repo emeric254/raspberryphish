@@ -2,6 +2,7 @@
 # configure /etc/freeradius/radiusd.conf
 
 mkdir $RADIUSLOGPATH
+chmod 777 $RADIUSLOGPATH
 
 sed -i "/logdir = /c\logdir = $RADIUSLOGPATH" /etc/freeradius/radiusd.conf
 
