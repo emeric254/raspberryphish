@@ -5,7 +5,7 @@ echo "channel=$CHANNEL" >> /etc/hostapd/hostapd.conf
 echo "ssid=$SSID" >> /etc/hostapd/hostapd.conf
 
 # radius
-if [$ACTIVATERADIUS -eq 1]
+if [[ $ACTIVATERADIUS ]]
 then
     echo 'ieee8021x=1' >> /etc/hostapd/hostapd.conf
 #    echo "nas_identifier=$NASID" >> /etc/hostapd/hostapd.conf
