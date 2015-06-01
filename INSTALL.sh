@@ -10,7 +10,7 @@ export SERVERPATH="/media/USB"
 export SSHPORT=22
 # radius
 export ACTIVATERADIUS=1
-export RADIUSLOGPATH="/media/USB/radius-log"
+export RADIUSLOGPATH="$SERVERPATH/radius-log"
 export RADIUSSECRET="testing"
 #export NASID="NASID"
 export AUTHSERVER=127.0.0.1
@@ -22,6 +22,7 @@ export ACCTPORT=0
 # instal scripts
 bash ./install/conf-hostapd.sh
 bash ./install/conf-dnsmasq.sh
+bash ./install/conf-freeradius.sh
 bash ./install/conf-iptables.sh
 bash ./install/conf-network-interfaces.sh
 bash ./install/conf-raspberryphish-server.sh
