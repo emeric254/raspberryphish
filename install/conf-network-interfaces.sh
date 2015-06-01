@@ -1,6 +1,4 @@
 
-echo '' > /etc/network/interfaces
-
 cat <<EOF >  /etc/network/interfaces
 auto lo
 

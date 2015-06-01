@@ -19,8 +19,9 @@ sed -i "/pagePath = \"test\/\"/c pagePath = \"$PAGE\/\"" $SERVERPATH/main.py
 
 
 # make a cert folder
-#mkdir  "$SERVERPATH/cert"
-#mkdir  "$SERVERPATH/cert/$PAGE"
+# @ TODO
+mkdir  "$SERVERPATH/cert"
+mkdir  "$SERVERPATH/cert/$PAGE"
 
 
 # make a log folder
