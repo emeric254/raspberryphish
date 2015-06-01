@@ -13,20 +13,22 @@ then
 ## WPA ##
 
 cat <<EOF >> /etc/hostapd/hostapd.conf
-wpa=2
+wpa=3
 wpa_key_mgmt=WPA-EAP
-channel=1
 wpa_pairwise=TKIP CCMP
-wpa_ptk_rekey=600
+wpa_ptk_rekey=300
 
+nas_identifier=localhost
 auth_server_addr=$AUTHSERVER
 auth_server_port=$AUTHPORT
 auth_server_shared_secret=$RADIUSSECRET
 auth_algs=3
+acct_server_addr=$AUTHPORT
+acct_server_port=$ACCTPORT
+acct_server_shared_secret=$RADIUSSECRET
 own_ip_addr=127.0.0.1
 EOF
     #~
-#~ #    echo "nas_identifier=$NASID" >> /etc/hostapd/hostapd.conf
     #~ echo "auth_server_addr=$AUTHSERVER" >> /etc/hostapd/hostapd.conf
     #~ echo "auth_server_port=$AUTHPORT" >> /etc/hostapd/hostapd.conf
     #~ echo "acct_server_addr=$ACCTSERVER" >> /etc/hostapd/hostapd.conf
