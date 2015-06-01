@@ -14,6 +14,7 @@
   - hostapd
   - dnsmasq
   - python3-tornado (or _python-tornado_ depending your OS)
+  - freeradius (for fake securised APs)
 
 ```bash
 aptitude -y install hostapd dnsmasq python3-tornado
