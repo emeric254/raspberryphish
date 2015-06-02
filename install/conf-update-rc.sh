@@ -2,7 +2,7 @@
 update-rc.d hostapd defaults
 update-rc.d dnsmasq defaults
 
-if [[ $ACTIVATERADIUS ]]
+if [ $ACTIVATERADIUS -eq 1 ]
 then
 
 # configure launcher script

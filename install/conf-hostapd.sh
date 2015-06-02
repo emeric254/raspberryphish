@@ -5,7 +5,7 @@ echo "channel=$CHANNEL" >> /etc/hostapd/hostapd.conf
 echo "ssid=$SSID" >> /etc/hostapd/hostapd.conf
 
 # radius
-if [[ $ACTIVATERADIUS ]]
+if [ $ACTIVATERADIUS -eq 1 ]
 then
 cat <<EOF >> /etc/hostapd/hostapd.conf
 wpa=3
