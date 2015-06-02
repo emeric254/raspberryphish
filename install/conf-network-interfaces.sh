@@ -4,8 +4,9 @@ auto lo
 
 iface lo inet loopback
 iface eth0 inet dhcp
-allow-hotplug eth0
+
 EOF
+
 
 cat <<EOF >>  /etc/network/interfaces
 iface $INTERFACE inet static

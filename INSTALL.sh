@@ -22,9 +22,11 @@ export ACCTPORT=1813
 bash ./install/conf-hostapd.sh
 bash ./install/conf-dhcp.sh
 bash ./install/conf-dnsmasq.sh
+
 if [ $ACTIVATERADIUS -eq 1 ]
 then
-bash ./install/conf-freeradius.sh
+bash ./install/conf-freeradius.s
+h
 fi
 bash ./install/conf-iptables.sh
 bash ./install/conf-network-interfaces.sh

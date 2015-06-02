@@ -7,10 +7,12 @@ if [ $ACTIVATERADIUS -eq 1 ]
 then
 
 # configure launcher script
-echo  '#!/bin/sh'  >  "$SERVERPATH/launcher-radius-server.sh"
-echo  '# launcher for radius server'  >>  "$SERVERPATH/launcher-radius-server.sh"
-echo  "cd $SERVERPATH"  >>  "$SERVERPATH/launcher-radius-server.sh"
-echo  "freeradius -x &"  >>  "$SERVERPATH/launcher-radius-server.sh"
+cat <<EOF > "$SERVERPATH/launcher-radius-server.sh"
+#!/bin/sh
+# launcher for radius server
+cd $SERVERPATH
+freeradius -x &
+EOF
 
 # make it launchable
 chmod 755 "$SERVERPATH/launcher-radius-server.sh"
