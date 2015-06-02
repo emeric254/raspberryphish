@@ -24,9 +24,9 @@ auth_server_addr=$AUTHSERVER
 auth_server_port=$AUTHPORT
 auth_server_shared_secret=$RADIUSSECRET
 auth_algs=3
-#acct_server_addr=$ACCTSERVER
-#acct_server_port=$ACCTPORT
-#acct_server_shared_secret=$RADIUSSECRET
+acct_server_addr=$ACCTSERVER
+acct_server_port=$ACCTPORT
+acct_server_shared_secret=$RADIUSSECRET
 EOF
 
 fi

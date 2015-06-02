@@ -25,7 +25,9 @@ sed -i '/reject_delay = /c\reject_delay = 3' /etc/freeradius/radiusd.conf
 sed -i '/status_server = /c\status_server = yes' /etc/freeradius/radiusd.conf
 
 
+
 sed -i '/use_tunneled_reply = /c\use_tunneled_reply = no' /etc/freeradius/eap.conf
+
 sed -i '/copy_request_to_tunnel = /c\copy_request_to_tunnel = yes' /etc/freeradius/eap.conf
 
 
