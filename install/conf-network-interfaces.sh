@@ -4,18 +4,16 @@ auto lo
 
 iface lo inet loopback
 iface eth0 inet dhcp
-#iface default inet dhcp
+allow-hotplug eth0
 EOF
 
-echo "iface $INTERFACE inet static" >>  /etc/network/interfaces
-
 cat <<EOF >>  /etc/network/interfaces
+iface $INTERFACE inet static
+allow-hotplug $INTERFACE
 address 10.0.0.1
+network 10.0.0.0
 netmask 255.255.255.0
-broadcast 255.0.0.0
+broadcast 10.0.0.255
+dns-nameservers 127.0.0.1
 pre-up iptables-restore < /etc/iptables.rules
-
-#allow-hotplug wlan0
-#iface wlan0 inet manual
-#wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
 EOF

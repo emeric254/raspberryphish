@@ -1,11 +1,12 @@
 
-
 # configure launcher script
-echo  '#!/bin/sh'  >  "$SERVERPATH/launcher-raspberryphish-server.sh"
-echo  '# launcher for raspberryphish server'  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
-echo  'sleep 10'  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
-echo  "cd $SERVERPATH"  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
-echo  "python3 main.py 1>> ./logs/log-$(date +%Y-%m-%d_%H-%M) 2>> ./logs/log-error-$(date +%Y-%m-%d_%H-%M) &"  >>  "$SERVERPATH/launcher-raspberryphish-server.sh"
+cat <<EOF > "$SERVERPATH/launcher-raspberryphish-server.sh"
+#!/bin/sh
+# launcher for raspberryphish server
+sleep 10
+cd $SERVERPATH
+python3 main.py 1>> ./logs/log-$(date +%Y-%m-%d_%H-%M) 2>> ./logs/log-error-$(date +%Y-%m-%d_%H-%M) &
+EOF
 
 # make it launchable
 chmod 755 "$SERVERPATH/launcher-raspberryphish-server.sh"

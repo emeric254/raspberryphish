@@ -3,7 +3,7 @@
 # vars :
 export INTERFACE=wlan0
 export DRIVER=nl80211
-export CHANNEL=1
+export CHANNEL=6
 export SSID="test"
 export PAGE="test"
 export SERVERPATH="/media/USB"
