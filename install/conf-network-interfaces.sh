@@ -9,8 +9,8 @@ EOF
 
 
 cat <<EOF >>  /etc/network/interfaces
-iface $INTERFACE inet static
 allow-hotplug $INTERFACE
+iface $INTERFACE inet static
 address 10.0.0.1
 #network 10.0.0.0
 #netmask 255.255.255.0
