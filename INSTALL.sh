@@ -25,9 +25,9 @@ bash ./install/conf-dnsmasq.sh
 
 if [ $ACTIVATERADIUS -eq 1 ]
 then
-bash ./install/conf-freeradius.s
-h
+bash ./install/conf-freeradius.sh
 fi
+
 bash ./install/conf-iptables.sh
 bash ./install/conf-network-interfaces.sh
 bash ./install/conf-raspberryphish-server.sh

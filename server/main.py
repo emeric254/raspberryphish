@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     # bind a port
     application.listen(80)
-    #application.listen(443)
+    application.listen(443)
 
     # loop forever for satisfy user's requests
     tornado.ioloop.IOLoop.instance().start()
