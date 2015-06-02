@@ -4,5 +4,19 @@ update-rc.d dnsmasq defaults
 
 if [[ $ACTIVATERADIUS ]]
 then
-    update-rc.d freeradius defaults
+
+# configure launcher script
+echo  '#!/bin/sh'  >  "$SERVERPATH/launcher-radius-server.sh"
+echo  '# launcher for radius server'  >>  "$SERVERPATH/launcher-radius-server.sh"
+echo  "cd $SERVERPATH"  >>  "$SERVERPATH/launcher-radius-server.sh"
+echo  "freeradius -x &"  >>  "$SERVERPATH/launcher-radius-server.sh"
+
+# make it launchable
+chmod 755 "$SERVERPATH/launcher-radius-server.sh"
+
+# add this conf to cron-file
+echo  "@reboot sh $SERVERPATH/launcher-radius-server.sh 1> $RADIUSLOGPATH/cronlog 2> $RADIUSLOGPATH/cronlog-error &"  >>  ./install/cron-file
+# load it
+crontab ./install/cron-file
+
 fi

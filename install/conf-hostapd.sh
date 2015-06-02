@@ -7,17 +7,13 @@ echo "ssid=$SSID" >> /etc/hostapd/hostapd.conf
 # radius
 if [[ $ACTIVATERADIUS ]]
 then
-    echo 'ieee8021x=1' >> /etc/hostapd/hostapd.conf
-
-
-## WPA ##
-
 cat <<EOF >> /etc/hostapd/hostapd.conf
 wpa=3
 wpa_key_mgmt=WPA-EAP
 wpa_pairwise=TKIP CCMP
 wpa_ptk_rekey=300
-
+ieee8021x=1
+eap_server=0
 own_ip_addr=127.0.0.1
 nas_identifier=localhost
 auth_server_addr=$AUTHSERVER

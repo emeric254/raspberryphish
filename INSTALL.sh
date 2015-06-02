@@ -3,7 +3,7 @@
 # vars :
 export INTERFACE=wlan0
 export DRIVER=nl80211
-export CHANNEL=1
+export CHANNEL=0
 export SSID="test"
 export PAGE="test"
 export SERVERPATH="/media/USB"
@@ -14,9 +14,9 @@ export RADIUSLOGPATH="$SERVERPATH/radius-log"
 export RADIUSSECRET="testing"
 #export NASID="NASID"
 export AUTHSERVER=127.0.0.1
-export AUTHPORT=0
+export AUTHPORT=1812
 export ACCTSERVER=127.0.0.1
-export ACCTPORT=0
+export ACCTPORT=1813
 
 
 # instal scripts
