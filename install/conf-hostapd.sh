@@ -29,7 +29,7 @@ wpa_pairwise=TKIP CCMP
 wpa_ptk_rekey=300
 ieee8021x=1
 eap_server=0
-own_ip_addr=127.0.0.1
+own_ip_addr=10.0.0.254
 nas_identifier=localhost
 EOF
 echo "auth_server_addr=$AUTHSERVER" >> /etc/hostapd/hostapd.conf
