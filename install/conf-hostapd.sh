@@ -5,10 +5,10 @@ echo "channel=$CHANNEL" >> /etc/hostapd/hostapd.conf
 echo "ssid=$SSID" >> /etc/hostapd/hostapd.conf
 
 cat <<EOF >> /etc/hostapd/hostapd.conf
-ignore_broadcast_ssid=0
-auth_algs=1
-hw_mode=g
-macaddr_acl=0
+#ignore_broadcast_ssid=0
+#auth_algs=1
+#hw_mode=g
+#macaddr_acl=0
 
 #dtim_period=2
 #max_num_sta=255
