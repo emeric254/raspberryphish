@@ -14,6 +14,7 @@ iface $INTERFACE inet static
     address 10.0.0.1
     netmask 255.255.255.0
     broadcast 10.0.0.255
+    network 10.0.0.0
 pre-up iptables-restore < /etc/iptables.rules
 
 #allow-hotplug wlan0
