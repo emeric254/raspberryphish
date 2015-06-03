@@ -3,10 +3,12 @@ cat <<EOF >  /etc/network/interfaces
 auto lo
 iface lo inet loopback
 iface eth0 inet dhcp
+allow-hotplug eth0
 EOF
 
 
 cat <<EOF >>  /etc/network/interfaces
+allow-hotplug $INTERFACE
 auto $INTERFACE
 iface $INTERFACE inet static
     address 10.0.0.1
