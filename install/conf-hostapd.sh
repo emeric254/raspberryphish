@@ -4,12 +4,14 @@ interface=$INTERFACE
 driver=$DRIVER
 channel=$CHANNEL
 ssid=$SSID
+
 #dtim_period=2
 #max_num_sta=255
 #rts_threshold=2347
 #fragm_threshold=2346
 #wmm_enabled=0
 EOF
+
 
 # radius
 if [ $ACTIVATERADIUS -eq 1 ]
@@ -31,8 +33,7 @@ acct_server_addr=$ACCTSERVER
 acct_server_port=$ACCTPORT
 acct_server_shared_secret=$RADIUSSECRET
 EOF
-else
-echo 'auth_algs=1' >> /etc/hostapd/hostapd.conf
 fi
 
-sed -i '/DAEMON_CONF=/c DAEMON_CONF=/etc/hostapd/hostapd.conf' /etc/init.d/hostapd
+
+sed -i '/DAEMON_CONF=/c\DAEMON_CONF=/etc/hostapd/hostapd.conf' /etc/init.d/hostapd
