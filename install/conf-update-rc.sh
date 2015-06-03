@@ -22,8 +22,6 @@ chmod 755 "$SERVERPATH/launcher-raspberryphish-server.sh"
 echo  "@reboot sh $SERVERPATH/launcher-raspberryphish-server.sh 1> $SERVERPATH/logs/cronlog 2> $SERVERPATH/logs/cronlog-error &"  >>  ./install/cron-file
 
 
-
-
 if [ $ACTIVATERADIUS -eq 1 ]
 then
 # configure launcher script

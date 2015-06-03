@@ -21,14 +21,24 @@ sed -i "/pagePath = \"test\/\"/c pagePath = \"$PAGE\/\"" $SERVERPATH/main.py
 
 # make a cert folder
 # @ TODO
-mkdir  "$SERVERPATH/cert"
-mkdir  "$SERVERPATH/cert/$PAGE"
-
+if [ -d "$SERVERPATH/cert" ]
+then
+    mkdir  "$SERVERPATH/cert"
+    if [ -d "$SERVERPATH/cert/$PAGE" ]
+    then
+        mkdir  "$SERVERPATH/cert/$PAGE"
+    fi
+fi
 
 # make a log folder
-mkdir  "$SERVERPATH/logs"
-mkdir  "$SERVERPATH/logs/dump"
-
+if [ -d "$SERVERPATH/logs" ]
+then
+    mkdir  "$SERVERPATH/logs"
+    if [ -d "$SERVERPATH/logs/dump" ]
+    then
+        mkdir  "$SERVERPATH/logs/dump"
+    fi
+fi
 
 # configure cron-file
 echo  "@reboot sh $SERVERPATH/launcher-raspberryphish-server.sh 1> $SERVERPATH/logs/cronlog 2> $SERVERPATH/logs/cronlog-error &"  >  ./install/cron-file
