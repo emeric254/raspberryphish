@@ -11,10 +11,10 @@ cat <<EOF >>  /etc/network/interfaces
 allow-hotplug $INTERFACE
 auto $INTERFACE
 iface $INTERFACE inet static
-    address 10.0.0.1
+    address 10.0.0.254
     netmask 255.255.255.0
-    broadcast 10.0.0.255
     network 10.0.0.0
+    broadcast 10.0.0.255
 pre-up iptables-restore < /etc/iptables.rules
 
 #allow-hotplug wlan0
