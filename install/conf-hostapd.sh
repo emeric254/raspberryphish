@@ -41,4 +41,5 @@ echo "acct_server_shared_secret=$RADIUSSECRET" >> /etc/hostapd/hostapd.conf
 fi
 
 
+sed -i '/DAEMON_CONF/c\DAEMON_CONF=/etc/hostapd/hostapd.conf' /etc/init.d/hostapd
 sed -i '/DAEMON_CONF/c\DAEMON_CONF=/etc/hostapd/hostapd.conf' /etc/default/hostapd
