@@ -5,6 +5,11 @@ driver=$DRIVER
 channel=$CHANNEL
 ssid=$SSID
 
+ignore_broadcast_ssid=0
+auth_algs=1
+hw_mode=g
+macaddr_acl=0
+
 #dtim_period=2
 #max_num_sta=255
 #rts_threshold=2347
