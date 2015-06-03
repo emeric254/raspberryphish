@@ -12,6 +12,7 @@ EOF
 
 
 cat <<EOF >>  /etc/network/interfaces
+auto wlan0
 allow-hotplug $INTERFACE
 iface $INTERFACE inet static
     address 10.0.0.1

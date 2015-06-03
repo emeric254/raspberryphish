@@ -20,7 +20,6 @@ export ACCTPORT=1813
 
 # instal scripts
 bash ./install/conf-hostapd.sh
-bash ./install/conf-dhcp.sh
 bash ./install/conf-dnsmasq.sh
 
 if [ $ACTIVATERADIUS -eq 1 ]
