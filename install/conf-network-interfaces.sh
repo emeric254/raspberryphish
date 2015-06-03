@@ -6,11 +6,10 @@ iface eth0 inet dhcp
 allow-hotplug eth0
 EOF
 
-
+echo "allow-hotplug $INTERFACE" >>  /etc/network/interfaces
+echo "auto $INTERFACE" >>  /etc/network/interfaces
+echo "iface $INTERFACE inet static" >>  /etc/network/interfaces
 cat <<EOF >>  /etc/network/interfaces
-allow-hotplug $INTERFACE
-auto $INTERFACE
-iface $INTERFACE inet static
     address 10.0.0.254
     netmask 255.255.255.0
     network 10.0.0.0
