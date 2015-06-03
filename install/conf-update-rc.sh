@@ -7,10 +7,13 @@
 cat <<EOF > "$SERVERPATH/launcher-raspberryphish-server.sh"
 #!/bin/sh
 # launcher for raspberryphish server
+# launche the ap, dhcp and dns server
 ifup $INTERFACE
 /etc/init.d/dnsmasq start
 /etc/init.d/hostapd start
+
 sleep 5
+# launch the webserver
 cd $SERVERPATH
 python3 main.py 1>> ./logs/log-$(date +%Y-%m-%d_%H-%M) 2>> ./logs/log-error-$(date +%Y-%m-%d_%H-%M) &
 EOF
@@ -19,7 +22,7 @@ EOF
 chmod 755 "$SERVERPATH/launcher-raspberryphish-server.sh"
 
 # configure cron-file
-echo  "@reboot sh $SERVERPATH/launcher-raspberryphish-server.sh 1> $SERVERPATH/logs/cronlog 2> $SERVERPATH/logs/cronlog-error &"  >>  ./install/cron-file
+echo  "@reboot sh $SERVERPATH/launcher-raspberryphish-server.sh 1> $SERVERPATH/logs/cronlog 2> $SERVERPATH/logs/cronlog-error &"  >  ./install/cron-file
 
 
 if [ $ACTIVATERADIUS -eq 1 ]
