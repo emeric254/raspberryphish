@@ -2,9 +2,11 @@
 echo "1" > /proc/sys/net/ipv4/ip_forward
 sed -i "/net.ipv4.ip_forward/c\net.ipv4.ip_forward=1" /etc/sysctl.conf
 
-iptables -F
 
-sleep 1
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
 
 iptables -i wlan0 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 

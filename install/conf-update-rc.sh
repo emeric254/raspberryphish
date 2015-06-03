@@ -1,6 +1,5 @@
 
 update-rc.d hostapd defaults
-update-rc.d udhcpd defaults
 update-rc.d dnsmasq defaults
 
 if [ $ACTIVATERADIUS -eq 1 ]
