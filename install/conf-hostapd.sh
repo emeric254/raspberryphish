@@ -4,10 +4,11 @@ interface=$INTERFACE
 driver=$DRIVER
 channel=$CHANNEL
 ssid=$SSID
-dtim_period=2
-max_num_sta=255
-rts_threshold=2347
-fragm_threshold=2346
+#dtim_period=2
+#max_num_sta=255
+#rts_threshold=2347
+#fragm_threshold=2346
+#wmm_enabled=0
 EOF
 
 # radius
