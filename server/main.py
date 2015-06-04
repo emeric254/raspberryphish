@@ -9,6 +9,7 @@ pagePath = "test/"
 import tornado.ioloop
 import tornado.web
 import os.path
+import ssl
 import time
 
 
@@ -38,7 +39,6 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 if __name__ == "__main__":
-    # create an instance
     application = tornado.web.Application(
         [
             (r'/rsc/(.*)$', RscHandler),
@@ -46,16 +46,18 @@ if __name__ == "__main__":
             (r"/*", MainHandler),
             (r"/.*", MainHandler),
         ],
-        autoreload=True, debug=True,
-        ssl_options={
-            "certfile": "cert/" + pagePath + "defaut.crt",
-            "keyfile": "cert/" + pagePath + "defaut.key",
-        }
-    )
+        autoreload=True, debug=True
+    )   # create an instance
 
-    # bind a port
-    application.listen(80)
-    application.listen(443)
+    if(os.path.isfile("cert/" + pagePath + "default.key") and
+           os.path.isfile("cert/" + pagePath + "default.cert")):
+        ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ssl_ctx.load_cert_chain("cert/" + pagePath + "default.cert",
+                                "cert/" + pagePath + "default.key",)
+        ssl_ctx.load_verify_locations("cert/" + pagePath + "default.pem")
+        ssl_ctx.verify_mode = ssl.CERT_OPTIONAL     # clients don't always provide a cert file (web browsers)
+        application.listen(443, ssl_options=ssl_ctx)   # bind https port
 
-    # loop forever for satisfy user's requests
-    tornado.ioloop.IOLoop.instance().start()
+    application.listen(80)    # bind http port
+
+    tornado.ioloop.IOLoop.instance().start()    # loop forever for satisfy user's requests
