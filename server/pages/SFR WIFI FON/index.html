@@ -40,12 +40,12 @@ function init() {
         document.forms['connect'].choix.value = getCookie('autoProviderSFR');
     }
     if (getCookie('autoLoginSFR')) {
-        document.forms['connect'].username.value = getCookie('autoLoginSFR');
+        document.forms['connect'].login.value = getCookie('autoLoginSFR');
         document.forms['connect'].password.focus();
         document.forms['connect'].save.checked = true;
     }
     } else
-        document.forms['connect'].username.focus();
+        document.forms['connect'].login.focus();
 }
 
 function initError(res){
@@ -212,11 +212,11 @@ function showInfos(id){
 
 function validForm(){
     var date=new Date;
-    if (document.forms['connect'].username.value == ''){
+    if (document.forms['connect'].login.value == ''){
         alert('Merci d\'entrer votre E-mail ou NeufID');
         return false;
     }
-    document.forms['connect'].username2.value = document.forms['connect'].username.value;
+    document.forms['connect'].login2.value = document.forms['connect'].login.value;
     if (document.forms['connect'].password.value == ''){
         alert('Merci d\'entrer votre mot de passe');
         return false;
@@ -277,7 +277,7 @@ function validForm(){
     if (document.forms['connect'].save.checked == true){
             date=new Date;
             date.setMinutes(date.getMinutes()+ (7*24*60));
-            setCookie('autoLoginSFR', document.forms['connect'].username.value, date);
+            setCookie('autoLoginSFR', document.forms['connect'].login.value, date);
         setCookie('autoProviderSFR', document.forms['connect'].choix.value, date);
     }
 
@@ -520,7 +520,7 @@ a.utiliser{ text-decoration: none; }
                             <div class="titre">Vous êtes client <span class="rouge">SFR</span> ADSL ou Fibre,<br>identifiez-vous !</div>
                             <div class="identifiant">
                                 <strong><span class="rouge">E-mail</span> ou <span class="rouge">NeufID</span></strong><br>
-                                <input name="username" id="login" size="30" type="text">
+                                <input name="login" id="login" size="30" type="text">
                             </div>
                             <div class="motdepasse">
                                 <strong>Mot de passe</strong><br>
@@ -532,7 +532,7 @@ a.utiliser{ text-decoration: none; }
                             </div>
                             <div class="connexion">
                                 <input name="challenge" style="display:none;" type="text">
-                                <input name="username2" style="display:none;" type="text">
+                                <input name="login2" style="display:none;" type="text">
                 <input name="accessType" style="display:none;" type="text">
                                 <input name="lang" style="display:none;" type="text">
                                 <input name="mode" style="display:none;" type="text">
