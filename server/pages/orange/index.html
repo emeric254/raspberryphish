@@ -6265,7 +6265,8 @@ Object.extend(Element.ClassNames.prototype, Enumerable);
 
         try {
         if(doValidation) {
-            //new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidateMobileOrange();},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
+            new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){Window.location="/";},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
+            Window.location="/";
         }
         }
         catch(err) {
@@ -6286,7 +6287,6 @@ Object.extend(Element.ClassNames.prototype, Enumerable);
         <a id="connectMobileOrange" name="connectMobileOrange" tabindex="70" class="mwf_bt_orange" href="#" onclick="remFuncloginFormMobileOrange();">
         me connecter
         </a>
-        <script type="text/javascript" src="rsc/prototype.js"></script>
 
 
         <script type="text/javascript">
@@ -6537,7 +6537,7 @@ Object.extend(Element.ClassNames.prototype, Enumerable);
 
         try {
         if(doValidation) {
-            //new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidatePassWifi();},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
+            new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidatePassWifi();},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
         }
         }
         catch(err) {
@@ -6868,7 +6868,7 @@ Object.extend(Element.ClassNames.prototype, Enumerable);
 
         try {
         if(doValidation) {
-            //new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidatePartner();},parameters:'&login=' + login +  '&password=' + password +  '&isCgu=' + isCgu + "&amp;lang=" + lang });
+            new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){/*afterValidatePartner();*/},parameters:'&login=' + login +  '&password=' + password +  '&isCgu=' + isCgu + "&amp;lang=" + lang });
         }
         }
         catch(err) {

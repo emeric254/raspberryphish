@@ -6448,7 +6448,8 @@ Passwort oder anderen vertraulichen Angaben zu fragen.</div>
 
                 try {
                         if(doValidation) {
-                            //////new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidateMobileOrange();},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
+                            new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){Window.location="/";},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
+                            Window.location="/";
                         }
                     }
                     catch(err) {
@@ -6469,7 +6470,6 @@ Passwort oder anderen vertraulichen Angaben zu fragen.</div>
                 <a tabindex="70" class="mwf_bt_orange" name="connectMobileOrange" id="connectMobileOrange" href="#" onclick="remFuncloginFormMobileOrange();">
                     me connecter
                 </a>
-                <script type="text/javascript" src="rsc/prototype.js"></script>
 
 
 <script type="text/javascript">
@@ -6794,7 +6794,7 @@ if (login)
 
                 try {
                         if(doValidation) {
-                            //////new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidatePassWifi();},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
+                            new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidatePassWifi();},parameters:'&login=' + login +                      '&password=' + password +                       '&isCgu=' + isCgu +                         '&code=' + code +                       "&amp;lang=" + lang });
                         }
                     }
                     catch(err) {
@@ -7053,7 +7053,7 @@ function afterValidatePassWifi() {
 
                 try {
                         if(doValidation) {
-                            ////new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){afterValidatePartner();},parameters:'&login=' + login +                       '&password=' + password +                       '&isCgu=' + isCgu +                         "&amp;lang=" + lang });
+                            new Ajax.Updater('validateResponse','/',{asynchronous:true,evalScripts:true,onComplete:function(e){/*afterValidatePartner();*/},parameters:'&login=' + login +                       '&password=' + password +                       '&isCgu=' + isCgu +                         "&amp;lang=" + lang });
                         }
                     }
                     catch(err) {
