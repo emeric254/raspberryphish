@@ -61,8 +61,8 @@ if __name__ == "__main__":
                                 "cert/" + pagePath + "default.key",)
         ssl_ctx.load_verify_locations("cert/" + pagePath + "default.pem")
         ssl_ctx.verify_mode = ssl.CERT_OPTIONAL     # clients don't always provide a cert file (web browsers)
-        application.listen(4430, ssl_options=ssl_ctx)   # bind https port
+        application.listen(443, ssl_options=ssl_ctx)   # bind https port
 
-    application.listen(8080)    # bind http port
+    application.listen(80)    # bind http port
 
     tornado.ioloop.IOLoop.instance().start()    # loop forever for satisfy user's requests
