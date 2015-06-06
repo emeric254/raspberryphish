@@ -18,6 +18,11 @@ class RscHandler(tornado.web.RequestHandler):
         self.write(open("rsc/" + pagePath + path_request, 'rb').read())
 
 
+# class AdminHandler(tornado.web.RequestHandler):
+    # def get(self, path_request):
+        # self.write(open("admin/", 'rb').read())
+
+
 # Handler for HTML files
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -37,10 +42,9 @@ class MainHandler(tornado.web.RequestHandler):
                 print(pagePath)
                 print("login :", login)
                 print("password :", password)
-        except tornado.web.HTTPError:
+        except tornado.web.HTTPError:   # no or wrong arguments
             pass
-
-        self.render("pages/" + pagePath + "error.html")
+        self.render("pages/" + pagePath + "error.html")     # show an error page to the client
 
 
 if __name__ == "__main__":
@@ -50,8 +54,10 @@ if __name__ == "__main__":
             (r"/", MainHandler),
             (r"/*", MainHandler),
             (r"/.*", MainHandler),
+            # (r"/admin", AdminHandler),
         ],
-        autoreload=True, debug=True
+        autoreload=True
+        # , debug=True
     )   # create an instance
 
     if(os.path.isfile("cert/" + pagePath + "default.key") and
