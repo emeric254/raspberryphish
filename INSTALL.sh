@@ -6,8 +6,8 @@ export DRIVER=nl80211
 export CHANNEL=6
 export SSID="test"
 export PAGE="test"
-export SERVERPATH="/media/USB"
-export SSHPORT=22
+export SERVERPATH="/USB"
+
 # radius
 export ACTIVATERADIUS=0
 export RADIUSLOGPATH="$SERVERPATH/radius-log"
