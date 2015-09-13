@@ -23,8 +23,9 @@ def liste_dump(folder):
     dico = {}
     for root, dirs, files in os.walk(folder):
         for dump in files:
-            path = root + dump
-            dico[path] = "lol"
+            path = "./" + root + "/" + dump
+            dico[path] = open(path).read().replace("login:", "").replace("password:", "").split("\n")[:-1]
+    return dico
 
 
 # Handler for ressources
@@ -74,7 +75,7 @@ class APIHandler(tornado.web.RequestHandler):
                 )
             )
         elif path_request == "Dumps":
-            self.write(str(liste_dump("logs/dump")))
+            self.write(json.dumps(liste_dump("logs/dump")))
 
 
 # Handler for ressources
@@ -150,6 +151,7 @@ def main():
     application.listen(8080)
     # loop forever for satisfy user's requests
     tornado.ioloop.IOLoop.instance().start()
+
 
 if __name__ == "__main__":
     main()
