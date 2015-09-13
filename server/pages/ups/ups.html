@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- Denis, version du 19/11/2014 --->
+<html><head>
+
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Portail d'authentification Wi-fi - Université Toulouse III Paul Sabatier</title>
+    <style type="text/css">
+        body { font-family: Tahoma;font-size: 12px; }
+        td { font-family: Tahoma;font-size: 12px; }
+    </style>
+</head><body style="background-repeat: no-repeat; background-color: rgb(255, 255, 255);">
+    <center><div id="portalcontainer" style="position: relative; width: 950px; height: 800px; background-repeat: no-repeat; background-image: url(rsc/ups/captiveportal-bandeau_1.jpg);">
+    <!-- Logon Type Div -->
+    <!-- DO NOT MODIFY INSIDE THIS DIV UNLESS YOU EXACTLY KNOW WHAT YOU ARE DOING -->
+    <div id="logon" style="left: 268px; top: 209px; position: absolute; width: 440px; height: 200px;" align="center">
+        <table>
+            <tbody><tr>
+                <td>
+                    <noscript>
+Le JavaScript est désactivé dans votre navigateur. Son activation est
+nécéssaire pour vous authentifier. Une fois activé, rafraîchissez la
+page </noscript>
+                </td>
+            </tr>
+        </tbody></table>
+        <table id="info">
+            <tbody><tr>
+                <td>
+                    <br><br><br>
+                </td>
+            </tr>
+        </tbody></table>
+
+        <!-- Denis, 23/02/2010, adaptation pfsense -->
+        <!-- Denis, 31/10/2014, Tjs OK avec PFSense 2.1.5 -->
+        <form name="logon" method="post" action=".">
+        <table id="logonStep">
+            <tbody><tr>
+                <td align="right" nowrap="nowrap">
+                    <span id="login_span"> Identifiant (<i>Login</i>)</span>&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <input name="login" autocomplete="on" style="width: 100px;" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="nowrap">
+                    <span id="password">Mot de passe (<i>Password</i>)</span>&nbsp;:&nbsp;
+                </td>
+                <td>
+                    <input name="password" autocomplete="on" style="width: 100px;" type="password">
+                    <input name="redirurl" value="http://www.google.com/search?q=ups" type="hidden">
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="2">
+                    <img id="connect_button_wait" src="rsc/ups/captiveportal-loader.gif" style="visibility: hidden; vertical-align: middle;" alt="loader" border="0" height="17">
+                    &nbsp;&nbsp;<input name="accept" value="Connexion (Authentication)" type="submit">
+                    <img src="rsc/ups/captiveportal-loader.gif" style="visibility: hidden; vertical-align: middle;" alt="loader" border="0" height="17">
+                </td>
+            </tr>
+
+        </tbody></table>
+        </form>
+        <!-- /Denis, 23/02/2010, adaptation pfsense -->
+    </div>
+
+
+    <!-- Display Lang Div -->
+    <div id="displaylang" style="left: 861px; top: 150px; position: absolute;" align="center">
+        <table>
+            <tbody><tr>
+                <td>
+                    <img id="display_lang_wait" src="rsc/ups/captiveportal-loader.gif" style="visibility: hidden;" alt="loader" border="0" height="17">&nbsp;&nbsp;<span id="display_lang_span">&nbsp;<a href="#fr"><img src="rsc/ups/captiveportal-fr.gif" alt="fr" title="fr" border="0" height="12" width="18"></a>&nbsp;&nbsp;<a href="#en"><img src="rsc/ups/captiveportal-en.gif" alt="en" title="en" border="0" height="12" width="18"></a>&nbsp;</span>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+    <!-- Text Type Div -->
+    <div id="banner" style="left: 234px; top: 150px; position: absolute;">
+        <span id="banner_span"><div align="center"><font color="#64696c" size="5"><b>Université Toulouse III Paul Sabatier<br>Portail d'authentification Wi-fi</b></font><br><br><font color="#81878a" size="3"><i><b>Toulouse III Paul Sabatier University - Wi-fi Authentication Portal</b></i></font></div></span>
+                <!-- Denis : message d'information usagers -->
+                <!-- <span id="info_span" style="color: red;">Information : Arrêt du service wi-fi UPS du 14 juin en soirée au 15 juin 8h00 (matin) &nbsp;</span> -->
+                <!-- /Denis : message d'information usagers -->
+
+    </div>
+    <!-- Img Type Div -->
+    <div id="logo_ups" style="left: 0px; top: 0px; position: absolute;">
+        <img src="rsc/ups/captiveportal-logo-ups.png" alt="captiveportal-logo-ups.png" height="82" width="280">
+    </div>
+    <!-- Img Type Div -->
+    <div id="logo_page" style="left: 686px; top: 304px; position: absolute;">
+        <img src="rsc/ups/captiveportal-page.png" alt="captiveportal-page.png" height="244" width="264">
+    </div>
+
+
+    <!-- Text Type Div -->
+    <div id="Corps" style="left: 0px; top: 360px; position: absolute;">
+
+    <p>L'utilisation de ce service est soumise au respect de la <a href="https://wifi-gw-ups.univ-tlse3.fr:8001/captiveportal-charte.pdf">charte informatique de l'établissement</a>.<br>
+        <i>Use of this service is subject to respect with <a href="https://wifi-gw-ups.univ-tlse3.fr:8001/captiveportal-charte.pdf">University IT usage chart</a>.</i></p>
+
+        <span id="Corps_span"><hr><br><div align="left">
+            <a name="fr">
+            </a><ul><a name="fr">
+              <li>Etudiants &amp; personnels  : </li><br>
+                </a><ul><a name="fr">
+                  </a><li><a name="fr"></a><a href="https://appli-gestion.univ-tlse3.fr/moncompteUPS">Créer Mon CompteUPS </a></li>
+                  <li><a href="https://appli-gestion.univ-tlse3.fr/moncompteUPS">Identifiants ou mot de passe oublié?</a></li>
+                  <li>Nous vous conseillons d'utiliser le réseau wifi crypté <b>eduroam</b> pour des raisons de sécurité. Voir <a href="http://wifi.univ-tlse3.fr/portail/wifi_ssidEduroam.html">le mode opératoire</a></li>
+                  <li><a href="http://wifi.univ-tlse3.fr/">Documentation wifi</a></li>
+                  <br><br>
+                    </ul>
+
+              <li>Visiteurs extérieurs à l'UPS :</li>
+                <ul>
+                <li><p><b>Eduroam</b> : Si vous êtes membre d'un établissement membre de la communauté <b>eduroam</b> (voir <a href="http://www.eduroam.fr/">la liste des membres nationaux</a>), veuillez vous connecter au réseau wifi de ssid <b>eduroam</b> avec l'identifiant/mot de passe de votre établissement d'origine (<a href="http://wifi.univ-tlse3.fr/portail/wifi_ssidEduroam.html">documentation en ligne sur l'utilisation du wifi <b>eduroam</b></a>)</p>
+                </li>
+                <li><p><b>MiP-Wifi</b> : A défaut, vous pouvez vous authentifier ici avec l'<b>identifiant/mot de passe</b> de votre <b>établissement d'origine</b> : UT1, UT2, INPT, INSA, ISAE, CROUS... partenaire du service de mobilité régional <b>MiP-Wifi</b> (<a href="http://mipwifi.univ-tlse3.fr/">voir liste complète des établissements partenaires)</a>.</p>
+                </li>
+                <li><p><b>Compte invité wifi</b> : Si vous n'êtes pas dans l'un des cas de figure précédents, demandez la <b><a href="https://visiteurs-wifi.univ-tlse3.fr/">création d'un compte invité wifi temporaire auprès d'un personnel de l'université (authentification préalable)</a></b></p>
+                </li>
+                </ul>
+
+              <p>En cas de problème, le contact est <a href="http://www.univ-tlse3.fr/36074484/0/fiche___pagelibre/&amp;RH=1237303363338&amp;RF=1237303363338">le Guichet Unique du Numérique UPS</a></p>
+
+
+              <p>Au niveau de votre navigateur, autorisez les popup du site <b>wifi-gw-ups.univ-tlse3.fr</b> pour afficher la fenêtre de déconnexion.</p>
+
+
+            </ul>
+
+
+  <!-- ########################################################################## -->
+  <!--              English version                   -->
+  <!-- ########################################################################## -->
+
+
+<hr>
+
+            <a name="en">
+            <i><b>English Version</b>
+
+            </i></a><i><ul><a name="en">
+              <li>Students &amp; staff :</li><br>
+
+              </a><ul><a name="en">
+                </a><li><a name="en"></a><a href="https://appli-gestion.univ-tlse3.fr/moncompteUPS">Create your login /password</a></li>
+                <li><a href="https://appli-gestion.univ-tlse3.fr/moncompteUPS">Did you forget your login /password?</a></li>
+                <li>We advise you to use <b>eduroam</b> encrypted wi-fi network for security concerns, See <a href="http://wifi.univ-tlse3.fr/portail/wifi_ssidEduroam.html">operating mode</a></li>
+                <li><a href="http://wifi.univ-tlse3.fr/">Wi-fi documentation</a></li>
+              </ul><br>
+
+              <li>Visitors :</li>
+
+              <ul>
+                <li><p><b>Eduroam</b> : You can authenticate yourself with your login/password from your <b>home University</b> on wi-fi network named <b>eduroam</b> <a href="https://www.eduroam.org/index.php?p=where">if your home University is Eduroam member</a></p></li>
+                <li><p><b>MiP-Wifi</b> : You can eventually authenticate yourself with your login/password from your <b>home University</b> : UT1, UT2, INPT, INSA, ISAE, CROUS... partners of mobility regional service <b>"MiP-Wifi</b>" (<a href="http://mipwifi.univ-tlse3.fr/">partners list)</a>.</p></li>
+                    <li><b>Wi-fi guest account</b> : If not, please <a href="https://visiteurs-wifi.univ-tlse3.fr/">ask your UPS contact to create a wi-fi guest account for you</a>.<br></li>
+              </ul>
+
+
+
+<p>For technical support, please contact UPS IT Customer Support <b><a href="http://www.univ-tlse3.fr/36074484/0/fiche___pagelibre/&amp;RH=1237303363338&amp;RF=1237303363338">Guichet Unique du Numérique</a></b></p>
+
+<p>Please authorize your web <b>browser to accept popup windows</b> from <strong>wifi-gw-ups.univ-tlse3.fr server</strong> in order to get the <b>Logout window</b>.</p>
+<p>&nbsp;</p>
+
+            </ul>
+
+            <p>
+            </p><p>&nbsp;</p>
+            <p></p>
+
+        </i></div></span><i>
+
+    </i></div><i>
+    </i></div></center><i>
+
+</i></body></html>
