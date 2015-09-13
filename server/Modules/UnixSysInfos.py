@@ -1,8 +1,6 @@
-__author__ = 'emeric'
+# -*- coding: utf-8 -*-
 
-import os
 from subprocess import *
-import sys
 import platform
 
 
@@ -55,7 +53,7 @@ class RamInfos:
 class StorageInfos:
     def avg_load():
         usages = str(Popen("df -l --total | grep 'total '", shell=True, stdout=PIPE)
-                     .stdout.read()).split()[4].replace("%", "").replace("'","").replace("\\n","")
+                     .stdout.read()).split()[4].replace("%", "").replace("'", "").replace("\\n", "")
         return int(usages)
     avg_load = staticmethod(avg_load)
 

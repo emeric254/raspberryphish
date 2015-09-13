@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__title__ = "RaspberryPhishServer"
 
 import os
 import ssl
 import time
 import random
-
 import tornado.ioloop
 import tornado.web
-
 import json
 
 from Modules.UnixSysInfos import *
+
+
+__title__ = "RaspberryPhishServer"
+
 
 # var : directory name where the server will load in "pages" and "rsc"
 pagePath = "test/"
