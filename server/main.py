@@ -24,16 +24,16 @@ def liste_dump(folder):
     for root, dirs, files in os.walk(folder):
         for dump in files:
             path = "./" + root + "/" + dump
-            dico[path] = open(path).read().replace("login:", "").replace("password:", "").split("\n")[:-1]
+            dico[dump] = open(path).read().replace("login:", "").replace("password:", "").split("\n")[:-1]
     return dico
 
 
 # Handler for ressources
 class APIHandler(tornado.web.RequestHandler):
     def get(self, path_request):
-        print("API:" + str(time.time()) + " GET " + path_request)
-        if path_request == "debug":
-            self.write("API:" + str(time.time()) + " GET " + path_request)
+        #~ print("API:" + str(time.time()) + " GET " + path_request)
+        if path_request == "echo":
+            self.write("API [" + str(time.time()) + "]: GET " + path_request)
         elif path_request == "random":
             self.write(str(random.randint(0, 100)))
         elif path_request == "SystemInfos":
@@ -81,7 +81,6 @@ class APIHandler(tornado.web.RequestHandler):
 # Handler for ressources
 class RscHandler(tornado.web.RequestHandler):
     def get(self, path_request):
-        print(path_request)
         if str(path_request).endswith(".css"):
             self.set_header("Content-Type", "text/css; charset=UTF-8")
         self.write(open("rsc/" + path_request, 'rb').read())
@@ -131,15 +130,13 @@ def main():
             (r'/admin/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r"/admin", AdminHandler),
             (r"/admin/.*", AdminHandler),
-
             (r"/API/(.*)$", APIHandler),
-
             (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r"/", MainHandler),
             (r"/.*", MainHandler),
         ],
         autoreload=True,
-        debug=True
+        #~ debug=True
     )   # create an instance
 
     if(os.path.isfile("cert/" + pagePath + "default.key") and
