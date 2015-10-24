@@ -12,18 +12,6 @@ totest = []     # dumps which have to be tested
 tested = {}     # don't try same (login, password) more than one time
 
 
-""" logs """
-l = logs.Log("troll", "troll")
-l.addtry(time.time(), "passwordOUF", False)
-totest.append(l)    # add it to the pending test list
-l = logs.Log("yolo", "troll")
-l.addtry(time.time(), "password2", False)
-totest.append(l)    # add it to the pending test list
-l = logs.Log("blblbl", "troll")
-l.addtry(time.time(), "passwordOUF", False)
-totest.append(l)    # add it to the pending test list
-
-
 for l in totest:
     login = l.getlogin()
     tries = l.gettries()
