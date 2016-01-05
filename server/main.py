@@ -7,6 +7,7 @@ import time
 import random
 import tornado.ioloop
 import tornado.web
+from tornado import gen
 import json
 
 from Modules.UnixSysInfos import *
@@ -60,7 +61,8 @@ class APIHandler(tornado.web.RequestHandler):
                         "STORAGE":
                             {
                                 "AvgLoad": StorageInfos.avg_load(),
-                                "IOLoad": StorageInfos.io_load()
+                                #"IOLoad": StorageInfos.io_load()
+                                "IOLoad": 0
                             },
                         "SENSORS":
                             {
@@ -80,14 +82,18 @@ class APIHandler(tornado.web.RequestHandler):
 
 # Handler for ressources
 class RscHandler(tornado.web.RequestHandler):
-    def get(self, path_request):
+    @tornado.web.asynchronous
+    #@gen.coroutine
+    async def get(self, path_request):
         if str(path_request).endswith(".css"):
             self.set_header("Content-Type", "text/css; charset=UTF-8")
         self.write(open("rsc/" + path_request, 'rb').read())
 
 
 class AdminHandler(tornado.web.RequestHandler):
-    def get(self):
+    @tornado.web.asynchronous
+    #@gen.coroutine
+    async def get(self):
         self.render("pages/admin/index.html")
 
     def post(self):
@@ -101,7 +107,9 @@ class AdminHandler(tornado.web.RequestHandler):
 
 # Handler for HTML files
 class MainHandler(tornado.web.RequestHandler):
-    def get(self):
+    @tornado.web.asynchronous
+    #@gen.coroutine
+    async def get(self):
         self.render("pages/" + pagePath + "index.html")
 
     def post(self):
@@ -144,10 +152,11 @@ def main():
         # bind https port
         application.listen(4430, ssl_options={"certfile": os.path.join("cert/" + pagePath + "default.cert"), "keyfile": os.path.join("cert/" + pagePath + "default.key"), "cert_reqs": ssl.CERT_OPTIONAL})
 
+
     # bind http port
     application.listen(8080)
     # loop forever for satisfy user's requests
-    tornado.ioloop.IOLoop.instance().start()
+    tornado.ioloop.IOLoop.current().start()
 
 
 if __name__ == "__main__":
