@@ -16,15 +16,6 @@ __title__ = "RaspberryPhishServer"
 pagePath = "test/"
 
 
-def liste_dump(folder):
-    dico = {}
-    for root, dirs, files in os.walk(folder):
-        for dump in files:
-            path = "./" + root + "/" + dump
-            dico[dump] = open(path).read().replace("login:", "").replace("password:", "").split("\n")[:-1]
-    return dico
-
-
 # Handler for ressources
 class RscHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
