@@ -16,20 +16,6 @@
         {
             var self = this;
 
-	    self.linechartlabels = ["30 min", "25 min", "20 min", "15 min", "10 min", "5 min", "0 min"];
-	    self.linechartseries = ['CPU', 'RAM'];
-	    self.linechartdata = [
-	        [65, 59, 80, 81, 56, 55, 40],
-	        [28, 48, 60, 70, 30, 27, 25]
-	    ];
-
-	    self.radarchartlabels = ["CPU", "RAM", "Network", "Disk", "Temp"];
-	    self.radarchartseries = ['Instant', 'Maximum'];
-	    self.radarchartdata = [
-	        [65, 59, 50, 10, 35],
-	        [100, 70, 90, 80, 50]
-	    ];
-
             self.selected     = null;
             self.users        = [ ];
             self.selectUser   = selectUser;

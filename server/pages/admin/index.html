@@ -99,16 +99,16 @@
                 </div>
             </md-toolbar>
 
-            <md-content flex id="content">
+            <md-content flex id="content" ng-controller="APIController as api">
                 <h1 class="md-display-3">Stats</h1>
                 <div layout layout-fill layout-align="center top">
                     <div flex>
-                        <h2 class="md-headline" style=text-align:center;">Average Load</h2>
-                        <canvas id="line" class="chart chart-line" chart-data="ul.linechartdata" chart-labels="ul.linechartlabels" chart-legend="true" chart-series="ul.linechartseries"></canvas>
+                        <h2 class="md-headline" style=text-align:center;">Instant Load</h2>
+                        <canvas id="loadchart" class="chart chart-bar" chart-data="api.loadchartdata" chart-labels="api.loadchartlabels" chart-series="api.loadchartseries"></canvas>
                     </div>
                     <div flex>
-                        <h2 class="md-headline" style=text-align:center;">Instant Load</h2>
-                        <canvas id="radar" class="chart chart-radar" chart-data="ul.radarchartdata" chart-labels="ul.radarchartlabels" chart-legend="true" chart-series="ul.radarchartseries"></canvas>
+                        <h2 class="md-headline" style=text-align:center;">Peers</h2>
+                        <canvas id="peerchart" class="chart chart-bar" chart-data="api.peerchartdata" chart-labels="api.peerchartlabels" chart-series="api.peerchartseries"></canvas>
                     </div>
                 </div>
             </md-content>
@@ -119,6 +119,7 @@
         <script src="./rsc/admin/src/Users.js"></script>
         <script src="./rsc/admin/src/UserController.js"></script>
         <script src="./rsc/admin/src/UserService.js"></script>
+        <script src="./rsc/admin/src/APIController.js"></script>
 <!--
     Script AngularMaterial
 -->
