@@ -20,7 +20,6 @@ def liste_dump(folder):
 # Handler for ressources
 class APIHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    #@gen.coroutine
     async def get(self, path_request):
         if path_request == "timestamp":
             self.write(str(time.time()))

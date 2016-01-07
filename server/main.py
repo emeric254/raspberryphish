@@ -4,7 +4,7 @@
 import os
 import ssl
 import time
-import tornado.ioloop, tornado.web
+import tornado.ioloop, tornado.web, tornado.httpserver
 from tornado import gen
 from API.APIHandler import APIHandler
 
@@ -69,31 +69,40 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 def main():
+    # create an instance
     application = tornado.web.Application(
         [
-            (r'/admin/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
+            (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r"/admin", AdminHandler),
             (r"/admin/.*", AdminHandler),
             (r"/API/(.*)$", APIHandler),
-            (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r"/", MainHandler),
             (r"/.*", MainHandler),
-        ],
-        autoreload=True,
-        #~ debug=True
-    )   # create an instance
-
+        ]
+    )
+    # HTTP socket
+    HTTPsockets = tornado.netutil.bind_sockets(8080)
+    # HTTPS socket
+    HTTPSsockets = tornado.netutil.bind_sockets(4430)
+    # fork
+    tornado.process.fork_processes(0)
+    # try loading ssl to purpose https
     if(os.path.isfile("cert/" + pagePath + "default.key") and
        os.path.isfile("cert/" + pagePath + "default.cert")):
+        # load ssl requirements
+        ssl_options = {"certfile": os.path.join("cert/" + pagePath + "default.cert"),
+                        "keyfile": os.path.join("cert/" + pagePath + "default.key"),
+                        "cert_reqs": ssl.CERT_OPTIONAL}
         # bind https port
-        application.listen(4430, ssl_options={"certfile": os.path.join("cert/" + pagePath + "default.cert"), "keyfile": os.path.join("cert/" + pagePath + "default.key"), "cert_reqs": ssl.CERT_OPTIONAL})
-
-
+        serverHTTPS = tornado.httpserver.HTTPServer(application,ssl_options)
+        serverHTTPS.add_sockets(HTTPSsockets)
     # bind http port
-    application.listen(8080)
-    # loop forever for satisfy user's requests
+    serverHTTP = tornado.httpserver.HTTPServer(application)
+    serverHTTP.add_sockets(HTTPsockets)
+    # loop forever to satisfy user's requests
     tornado.ioloop.IOLoop.current().start()
 
 
 if __name__ == "__main__":
     main()
+
