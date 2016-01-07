@@ -1,235 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" >
     <head>
-        <meta charset="UTF-8">
+        <title>AdminRouteur</title>
+        <link rel="icon" href="favicon.ico">
+        <!-- META -->
+        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Admin panel</title>
-
-        <!-- Add to homescreen for Chrome on Android -->
-        <meta name="mobile-web-app-capable" content="yes">
-        <link rel="icon" sizes="192x192" href="rsc/admin/chrome-touch-icon-192x192.png">
-        <!-- Add to homescreen for Safari on iOS -->
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="Material Design Lite">
-        <link rel="apple-touch-icon-precomposed" href="rsc/admin/apple-touch-icon-precomposed.png">
-        <!-- Tile icon for Win8 (144x144 + tile color) -->
-        <meta name="msapplication-TileImage" content="rsc/admin/ms-touch-icon-144x144-precomposed.png">
-        <meta name="msapplication-TileColor" content="#3372DF">
-
-        <link rel="stylesheet" type="text/css" href="rsc/admin/material.min.css">
-        <link rel="stylesheet" type="text/css" href="rsc/admin/styles.css">
-        <script>
-            function majCompteur(nb1, nb2, nb3, nb4)
-            {
-                if(isNaN(nb1))
-                {
-                    nb1 = 0;
-                }
-                if(isNaN(nb2))
-                {
-                    nb2 = 0;
-                }
-                if(isNaN(nb3))
-                {
-                    nb3 = 0;
-                }
-                if(isNaN(nb4))
-                {
-                    nb4 = 0;
-                }
-
-                document.getElementById("pourcent1").innerHTML = nb1 + '<tspan font-size="40" dy="-17">%</tspan>';
-                document.getElementById('cercle1').setAttribute('style','stroke-dashoffset: '+(((100-nb1)/100)*Math.PI*(180)));
-                document.getElementById("pourcent2").innerHTML = nb2 + '<tspan font-size="40" dy="-17">%</tspan>';
-                document.getElementById('cercle2').setAttribute('style','stroke-dashoffset: '+(((100-nb2)/100)*Math.PI*(180)));
-                document.getElementById("pourcent3").innerHTML = nb3 + '<tspan font-size="40" dy="-17">%</tspan>';
-                document.getElementById('cercle3').setAttribute('style','stroke-dashoffset: '+(((100-nb3)/100)*Math.PI*(180)));
-                document.getElementById("pourcent4").innerHTML = nb4 + '<tspan font-size="40" dy="-17">%</tspan>';
-                document.getElementById('cercle4').setAttribute('style','stroke-dashoffset: '+(((100-nb4)/100)*Math.PI*(180)));
-
+        <meta name="description" content="">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <!-- CSS -->
+        <!-- fonts + icons -->
+        <link href="./rsc/admin/css/fonts.css" rel="stylesheet">
+        <link href="./rsc/admin/css/icon.css" rel="stylesheet">
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="./rsc/admin/css/angular-material.min.css">
+        <!-- AngularChart.js -->
+        <link rel="stylesheet" href="./rsc/admin/css/angular-chart.min.css">
+        <!-- Custom style sheet -->
+        <link rel="stylesheet" href="./rsc/admin/css/app.css"/>
+        <style type="text/css">
+            /**
+             * Hide when Angular is not yet loaded and initialized
+             */
+            [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+              display: none !important;
             }
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                    {
-                        document.getElementById("update").innerHTML=xmlhttp.responseText;
-                        var obj = JSON.parse(xmlhttp.responseText);
-                        majCompteur(obj.CPU.AvgLoad, obj.RAM.AvgLoad, 0, obj.STORAGE.AvgLoad);
-                        setTimeout(function(){
-                            xmlhttp.open("GET","API/SystemInfos",true);
-                            xmlhttp.send();
-                        }, 1000);
-                    }
-            }
-            xmlhttp.open("GET","API/SystemInfos",true);
-            xmlhttp.send();
-        </script>
+        </style>
+        <!-- JS -->
+        <!-- Angular Material requires Angular.js Libraries -->
+        <script src="./rsc/admin/js/angular.min.js"></script>
+        <script src="./rsc/admin/js/angular-animate.min.js"></script>
+        <script src="./rsc/admin/js/angular-aria.min.js"></script>
+        <script src="./rsc/admin/js/angular-messages.min.js"></script>
+        <!-- Angular Material Library -->
+        <script src="./rsc/admin/js/angular-material.min.js"></script>
+        <!-- Chart.js -->
+        <script src="./rsc/admin/js/Chart.min.js"></script>
+        <script src="./rsc/admin/js/angular-chart.min.js"></script>
     </head>
-    <body>
-        <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-          <header class="demo-header mdl-layout__header mdl-color--white mdl-color--grey-100 mdl-color-text--grey-600">
-            <div class="mdl-layout__header-row">
-              <span class="mdl-layout-title">Admin Panel</span>
-              <div class="mdl-layout-spacer"></div>
-              <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
-                <i class="material-icons">more_vert</i>
-              </button>
-              <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
-                <li class="mdl-menu__item">About</li>
-                <li class="mdl-menu__item">Help</li>
-                <li class="mdl-menu__item">Legal information</li>
-              </ul>
-            </div>
-          </header>
-          <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
-            <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Inbox</a>
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">delete</i>Trash</a>
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">report</i>Spam</a>
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">forum</i>Forums</a>
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>Updates</a>
-              <div class="mdl-layout-spacer"></div>
-              <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
-            </nav>
-          </div>
-          <main class="mdl-layout__content mdl-color--grey-100">
-            <div class="mdl-grid demo-content">
-              <div id="compteurs" class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-                <svg id="compteur1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop compteur" width="200px" height="200px" viewPort="0 0 100 100">
-                    <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <circle id="cercle1" class="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <text id="pourcent1" x="105" y="122" font-family="Roboto" font-size="60" fill="#888" text-anchor="middle" dy="0.1">0<tspan font-size="40" dy="-17">%</tspan></text>
-                    <text x="100" y="155" font-family="Roboto" font-size="30" fill="#888" text-anchor="middle" dy="0.1">CPU</text>
-                </svg>
-                <svg id="compteur2" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop compteur" width="200px" height="200px" viewPort="0 0 100 100">
-                    <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <circle id="cercle2" class="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <text id="pourcent2" x="105" y="122" font-family="Roboto" font-size="60" fill="#888" text-anchor="middle" dy="0.1">0<tspan font-size="40" dy="-17">%</tspan></text>
-                    <text x="100" y="155" font-family="Roboto" font-size="30" fill="#888" text-anchor="middle" dy="0.1">RAM</text>
-                </svg>
-                <svg id="compteur3" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop compteur" width="200px" height="200px" viewPort="0 0 100 100">
-                    <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <circle id="cercle3" class="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <text id="pourcent3" x="105" y="122" font-family="Roboto" font-size="60" fill="#888" text-anchor="middle" dy="0.1">0<tspan font-size="40" dy="-17">%</tspan></text>
-                    <text x="100" y="155" font-family="Roboto" font-size="30" fill="#888" text-anchor="middle" dy="0.1">IO</text>
-                </svg>
-                <svg id="compteur4" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop compteur" width="200px" height="200px" viewPort="0 0 100 100">
-                    <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <circle id="cercle4" class="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
-                    <text id="pourcent4" x="105" y="122" font-family="Roboto" font-size="60" fill="#888" text-anchor="middle" dy="0.1">0<tspan font-size="40" dy="-17">%</tspan></text>
-                    <text x="100" y="155" font-family="Roboto" font-size="30" fill="#888" text-anchor="middle" dy="0.1">Storage</text>
-                </svg>
-              </div>
-              <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
-                <svg fill="currentColor" viewBox="0 0 350 150" class="demo-graph">
-                  <g id="chart">
-                    <g id="Gridlines">
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="10" x2="300" y2="10"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="30" x2="300" y2="30"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="50" x2="300" y2="50"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="70" x2="300" y2="70"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="90" x2="300" y2="90"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="10" x1="0" y1="110" x2="300" y2="110"/>
-
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="0" y1="10" x2="0" y2="110"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="50" y1="10" x2="50" y2="110"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="100" y1="10" x2="100" y2="110"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="150" y1="10" x2="150" y2="110"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="200" y1="10" x2="200" y2="110"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="250" y1="10" x2="250" y2="110"/>
-                      <line fill="#888888" stroke="#888888" stroke-miterlimit="0" x1="300" y1="10" x2="300" y2="110"/>
-                    </g>
-                    <g id="Numbers">
-                      <text transform="matrix(1 0 0 1 302 13)" fill="#888888" font-family="'Roboto'" font-size="9">100</text>
-                      <text transform="matrix(1 0 0 1 302 33)" fill="#888888" font-family="'Roboto'" font-size="9">80</text>
-                      <text transform="matrix(1 0 0 1 302 53)" fill="#888888" font-family="'Roboto'" font-size="9">60</text>
-                      <text transform="matrix(1 0 0 1 302 73)" fill="#888888" font-family="'Roboto'" font-size="9">40</text>
-                      <text transform="matrix(1 0 0 1 302 93)" fill="#888888" font-family="'Roboto'" font-size="9">20</text>
-                      <text transform="matrix(1 0 0 1 302 113)" fill="#888888" font-family="'Roboto'" font-size="9">0</text>
-                      <text transform="matrix(1 0 0 1 0 120)" fill="#888888" font-family="'Roboto'" font-size="9">(min)</text>
-                      <text transform="matrix(1 0 0 1 17 120)" fill="#888888" font-family="'Roboto'" font-size="9">30</text>
-                      <text transform="matrix(1 0 0 1 57 120)" fill="#888888" font-family="'Roboto'" font-size="9">25</text>
-                      <text transform="matrix(1 0 0 1 107 120)" fill="#888888" font-family="'Roboto'" font-size="9">20</text>
-                      <text transform="matrix(1 0 0 1 157 120)" fill="#888888" font-family="'Roboto'" font-size="9">15</text>
-                      <text transform="matrix(1 0 0 1 207 120)" fill="#888888" font-family="'Roboto'" font-size="9">10</text>
-                      <text transform="matrix(1 0 0 1 257 120)" fill="#888888" font-family="'Roboto'" font-size="9">5</text>
-                      <text transform="matrix(1 0 0 1 307 120)" fill="#888888" font-family="'Roboto'" font-size="9">0</text>
-                    </g>
-                    <g id="Layer_5">
-                      <polygon opacity="0.7" stroke-miterlimit="10" points="0,100 0,0
-                      50,0 100,0 150,0 200,0 250,0 300,0  300,100 "/>
-                    </g>
-                  </g>
-                </svg>
-                  <p>
-                      test
-                  </p>
-              </div>
-              <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
-                <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
-
-                  <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                    <h2 class="mdl-card__title-text">Debug</h2>
-                  </div>
-                  <div id="update" class="mdl-card__supporting-text mdl-color-text--grey-600">
-                    Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-                    Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-                    Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-                    Non dolore elit adipisicing ea reprehenderit consectetur culpa.
-                  </div>
-                  <div class="mdl-card__actions mdl-card--border">
-                    <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Read More</a>
-                  </div>
-                </div>
+    <body ng-app="starterApp" layout="row" ng-controller="UserController as ul" ng-cloak >
+        <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+            <md-toolbar class="md-whiteframe-z1">
+                <h1>AdminRouteur</h1>
+            </md-toolbar>
 <!--
-                <div class="demo-separator mdl-cell--1-col"></div>
-                <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
-                  <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
-                    <h3>View options</h3>
-                    <ul>
-                      <li>
-                        <label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                          <input type="checkbox" id="chkbox1" class="mdl-checkbox__input" />
-                          <span class="mdl-checkbox__label">Click per object</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label for="chkbox2" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                          <input type="checkbox" id="chkbox2" class="mdl-checkbox__input" />
-                          <span class="mdl-checkbox__label">Views per object</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label for="chkbox3" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                          <input type="checkbox" id="chkbox3" class="mdl-checkbox__input" />
-                          <span class="mdl-checkbox__label">Objects selected</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label for="chkbox4" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                          <input type="checkbox" id="chkbox4" class="mdl-checkbox__input" />
-                          <span class="mdl-checkbox__label">Objects viewed</span>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="mdl-card__actions mdl-card--border">
-                    <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50">Change location</a>
-                    <div class="mdl-layout-spacer"></div>
-                    <i class="material-icons">location_on</i>
-                  </div>
-                </div>
+            <md-list>
+                <md-list-item>
 -->
-              </div>
-            </div>
-          </main>
+                    <md-button>
+                        <md-icon md-font-icon="home">home</md-icon>
+                        Home
+                    </md-button>
+<!--
+                </md-list-item>
+-->
+<!--
+                <md-list-item>
+                    <md-button>
+                        <md-icon md-font-icon="help">help</md-icon>
+                        Help
+                    </md-button>
+                </md-list-item>
+                <md-list-item>
+                    <md-button>
+                        <md-icon md-font-icon="mail">mail</md-icon>
+                        Repo
+                    </md-button>
+                </md-list-item>
+            </md-list>
+-->
+        </md-sidenav>
+
+
+        <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
+                        <md-icon md-font-icon="view_headline">view_headline</md-icon>
+                    </md-button>
+
+                    <span flex></span>
+
+<!--
+                    <md-button class="md-raised" aria-label="Learn More">
+                        Learn More
+                    </md-button>
+-->
+<!--
+                    <md-button class="md-fab md-mini" aria-label="Add">
+                        <md-tooltip>Add</md-tooltip>
+                        <md-icon md-font-icon="add">add</md-icon>
+                    </md-button>
+-->
+                    <md-button class="md-fab md-mini" ng-click="ul.showContactOptions($event)" aria-label="Share">
+                        <md-tooltip>Share</md-tooltip>
+                        <md-icon md-font-icon="share">share</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-content flex id="content">
+                <h1 class="md-display-3">Stats</h1>
+                <div layout layout-fill layout-align="center top">
+                    <div flex>
+                        <h2 class="md-headline" style=text-align:center;">Average Load</h2>
+                        <canvas id="line" class="chart chart-line" chart-data="ul.linechartdata" chart-labels="ul.linechartlabels" chart-legend="true" chart-series="ul.linechartseries"></canvas>
+                    </div>
+                    <div flex>
+                        <h2 class="md-headline" style=text-align:center;">Instant Load</h2>
+                        <canvas id="radar" class="chart chart-radar" chart-data="ul.radarchartdata" chart-labels="ul.radarchartlabels" chart-legend="true" chart-series="ul.radarchartseries"></canvas>
+                    </div>
+                </div>
+            </md-content>
         </div>
-        <script src="rsc/admin/material.min.js"></script>
+
+
+<!-- SCRIPTS JS -->
+        <script src="./rsc/admin/src/Users.js"></script>
+        <script src="./rsc/admin/src/UserController.js"></script>
+        <script src="./rsc/admin/src/UserService.js"></script>
+<!--
+    Script AngularMaterial
+-->
+        <script type="text/javascript">
+            angular
+                .module('starterApp', ['ngMaterial', 'users', 'chart.js'])
+                .config(function($mdThemingProvider, $mdIconProvider)
+                    {
+                        $mdIconProvider
+                            .defaultIconSet("./assets/svg/avatars.svg", 128);
+                        $mdThemingProvider.theme('default')
+                            .primaryPalette('teal')
+                            .accentPalette('amber');
+                    });
+        </script>
     </body>
 </html>
+
