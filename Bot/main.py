@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time
-from utils import logs
+#import time
+#from utils import logs
 from utils import connect
 
 __title__ = "Bot"
