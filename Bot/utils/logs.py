@@ -5,7 +5,7 @@ import os
 
 
 class Log:
-    def __init__(self, folder, login, tries=None, tested=False):
+    def __init__(self, folder, login, tries=None):
         self.folder = folder
         self.login = login
         if tries:
