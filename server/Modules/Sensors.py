@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import unicodedata, os, sys, getopt
+import unicodedata, os, sys
 from subprocess import *
 
 commandes = ['cat', 'hostname', 'last', 'hddtemp', 'df', 'ps', 'free', 'ping', 'grep', 'uniq', 'who', 'uname',
@@ -128,7 +128,8 @@ def temp():
     x = 1
     for ligne in raw:
         if not x % 3:
-            (name, alltemp[name]) = ligne.split(":")
+            name = ligne.split(":")[0]
+            alltemp[name] = ligne.split(":")[1]
         x += 1
     return alltemp
 
