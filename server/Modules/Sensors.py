@@ -33,7 +33,7 @@ def hdd_temp():
                                 shell=True, stdout=PIPE).stdout.read()).split("\n")
         try:
             hdd[disque] = int(temperature)
-        except:
+        except ValueError:
             pass
     return hdd
 
