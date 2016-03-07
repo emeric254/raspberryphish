@@ -79,10 +79,11 @@ class APIHandler(tornado.web.RequestHandler):
             self.write(json.dumps(liste_dump("logs/dump")))
         elif path_request.startswith("dump/"):
             try:
-                if os.path.isfile("logs/" + path_request):
+                path = "logs/" + path_request
+                if os.path.isfile(path):
                     self.write(open(path).read())
                 else:
-                    self.write("not found")
-            except:
-                self.write("error")
+                    self.write("not found : " + path)
+            except FileNotFoundError:
+                self.write("error [file not found] : " + path)
 
