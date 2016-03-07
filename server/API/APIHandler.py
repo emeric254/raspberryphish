@@ -26,11 +26,11 @@ class APIHandler(tornado.web.RequestHandler):
         elif path_request == "random":
             try:
                 maximum = int(self.get_argument('max'))
-            except:
+            except ValueError:
                 maximum = 100
             try:
                 minimum = int(self.get_argument('min'))
-            except:
+            except ValueError:
                 minimum = 0
             self.write(str(random.randint(minimum, maximum)))
         elif path_request == "system/info":
