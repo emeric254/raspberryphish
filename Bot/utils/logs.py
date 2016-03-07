@@ -37,7 +37,7 @@ class Log:
 
 def liste_dump(folder):
     dico = {}
-    for root, dirs, files in os.walk(folder):
+    for root, _, files in os.walk(folder):
         for dump in files:
             path = "./" + root + "/" + dump
             print(open(path).read().replace("login:", "").replace("password:", "").split("\n")[:-1])
