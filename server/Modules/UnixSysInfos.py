@@ -32,7 +32,7 @@ class CpuInfos:
         total = sum(usages2)-sum(usages1)
         idle = usages2[3]-usages1[3]
         return int((total-idle/total))
-    
+
     @staticmethod
     def cpu_name():
         return platform.processor()
