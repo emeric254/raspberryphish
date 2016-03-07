@@ -5,24 +5,25 @@ import platform
 
 
 class OSInfos:
+    @staticmethod
     def name():
         return platform.node()
-    name = staticmethod(name)
 
+    @staticmethod
     def os_name():
         return platform.system() + " " + platform.release()
-    os_name = staticmethod(os_name)
 
+    @staticmethod
     def interpreter_name():
         return platform.python_implementation()
-    interpreter_name = staticmethod(interpreter_name)
-
+    
+    @staticmethod
     def python_version():
         return platform.python_version()
-    python_version = staticmethod(python_version)
 
 
 class CpuInfos:
+    @staticmethod
     def avg_load():
         usages1 = [int(num) for num in str(Popen("cat /proc/stat | grep 'cpu '", shell=True, stdout=PIPE)
                                            .stdout.read()).replace("\\n'", "").split()[2:12]]
@@ -31,32 +32,32 @@ class CpuInfos:
         total = sum(usages2)-sum(usages1)
         idle = usages2[3]-usages1[3]
         return int((total-idle/total))
-    avg_load = staticmethod(avg_load)
     
+    @staticmethod
     def cpu_name():
         return platform.processor()
-    cpu_name = staticmethod(cpu_name)
 
+    @staticmethod
     def cpu_type():
         return platform.machine()
-    cpu_type = staticmethod(cpu_type)
 
 
 class RamInfos:
+    @staticmethod
     def avg_load():
         usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
                      .stdout.read()).split("\\n")[0].split()[1:]
         return int(100*(int(usages[0]) - int(usages[-1]))/int(usages[0]))
-    avg_load = staticmethod(avg_load)
 
 
 class StorageInfos:
+    @staticmethod
     def avg_load():
         usages = str(Popen("df -l --total | grep 'total '", shell=True, stdout=PIPE)
                      .stdout.read()).split()[4].replace("%", "").replace("'", "").replace("\\n", "")
         return int(usages)
-    avg_load = staticmethod(avg_load)
 
+    @staticmethod
     def io_load():
         lines1 = str(Popen("iotop -obqqqn 1", shell=True, stdout=PIPE)
                      .stdout.read()).replace("b'", "").replace("'", "").split("\\n")
@@ -65,20 +66,19 @@ class StorageInfos:
             if line:
                 io += float(line.split()[9])
         return int(io)
-    io_load = staticmethod(io_load)
 
 
 class SensorInfos:
+    @staticmethod
     def cpu_temp():
         return 0
-    cpu_temp = staticmethod(cpu_temp)
 
+    @staticmethod
     def mb_temp():
         return 0
-    mb_temp = staticmethod(mb_temp)
 
+    @staticmethod
     def raspberry_temp():
         lines1 = str(Popen("/opt/vc/bin/vcgencmd measure_temp", shell=True, stdout=PIPE)
                      .stdout.read()).replace("b'", "").replace("'", "").split("C")[0].split("=")[1]
         return int(float(lines1))
-    raspberry_temp = staticmethod(raspberry_temp)
