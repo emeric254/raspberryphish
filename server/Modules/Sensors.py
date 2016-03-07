@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import unicodedata, os, sys
+import os, sys
+#import unicodedata
 from subprocess import *
 
 commandes = ['cat', 'hostname', 'last', 'hddtemp', 'df', 'ps', 'free', 'ping', 'grep', 'uniq', 'who', 'uname',
