@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, sys
-#import unicodedata
-from subprocess import *
+# import unicodedata
+from subprocess import Popen, PIPE
 
 commandes = ['cat', 'hostname', 'last', 'hddtemp', 'df', 'ps', 'free', 'ping', 'grep', 'uniq', 'who', 'uname',
              'sensors']
@@ -46,7 +45,6 @@ def hdd_usage():
     for disque in result:
         hdd[disque.split()[0] + '  '+str(disque.split()[5:])] = str(disque.split()[4][:-1])
     return hdd
-
 
 
 def uptime():
@@ -98,9 +96,8 @@ def processus_liste():
 
 
 def ram_etat():
-    ram = {}
-    ram["install"] = str(Popen("cat /proc/meminfo | grep \"MemTotal\"",
-                               shell=True, stdout=PIPE).stdout.read()).split(":")[1]
+    ram = {"install": str(Popen("cat /proc/meminfo | grep \"MemTotal\"",
+                                shell=True, stdout=PIPE).stdout.read()).split(":")[1]}
     result = str(Popen("free", shell=True, stdout=PIPE).stdout.read()).split("\\n")
     print(result)
     memoire = result[1].split()[1:]
