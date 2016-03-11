@@ -1,11 +1,14 @@
+# -*- coding: utf-8 -*-
 
 import os
 import time
 import random
 import json
-import tornado.ioloop, tornado.web
-#from tornado import gen
-from Modules.UnixSysInfos import *
+import tornado.ioloop
+import tornado.web
+# from tornado import gen
+
+from server.Modules.UnixSysInfos import OSInfos, CpuInfos, StorageInfos, RamInfos, SensorInfos
 
 
 def liste_dump(folder):
@@ -20,6 +23,12 @@ def liste_dump(folder):
 # Handler for ressources
 class APIHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
+    # @gen.coroutine
+    async def data_received(self, chunk):
+        pass
+
+    @tornado.web.asynchronous
+    # @gen.coroutine
     async def get(self, path_request):
         if path_request == "timestamp":
             self.write(str(time.time()))
@@ -49,7 +58,7 @@ class APIHandler(tornado.web.RequestHandler):
                                 "Type": CpuInfos.cpu_type(),
                                 "Name": CpuInfos.cpu_name()
                             }
-                        #@TODO continue
+                        # TODO continue
                     }
                 )
             )
@@ -60,7 +69,7 @@ class APIHandler(tornado.web.RequestHandler):
                         "CPU": CpuInfos.avg_load(),
                         "RAM": RamInfos.avg_load(),
                         "Storage": StorageInfos.avg_load()
-                        #@TODO continue
+                        # TODO continue
                     }
                 )
             )
@@ -70,20 +79,19 @@ class APIHandler(tornado.web.RequestHandler):
                     {
                         "CPU": SensorInfos.cpu_temp(),
                         "MB": SensorInfos.mb_temp(),
-                        "Storage": SensorInfos.hdd_temp()
-                        #@TODO continue
+                        # "Storage": SensorInfos.hdd_temp()
+                        # TODO continue
                     }
                 )
             )
         elif path_request == "dump":
             self.write(json.dumps(liste_dump("logs/dump")))
         elif path_request.startswith("dump/"):
+            path = "logs/" + path_request
             try:
-                path = "logs/" + path_request
                 if os.path.isfile(path):
                     self.write(open(path).read())
                 else:
                     self.write("not found : " + path)
             except FileNotFoundError:
                 self.write("error [file not found] : " + path)
-
