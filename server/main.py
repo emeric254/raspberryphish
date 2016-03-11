@@ -4,8 +4,12 @@
 import os
 import ssl
 import time
-import tornado.ioloop, tornado.web, tornado.httpserver
-#from tornado import gen
+import tornado.ioloop
+import tornado.web
+import tornado.httpserver
+import tornado.netutil
+import tornado.process
+# from tornado import gen
 from API.APIHandler import APIHandler
 
 
@@ -19,7 +23,12 @@ pagePath = "test/"
 # Handler for ressources
 class RscHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    #@gen.coroutine
+    # @gen.coroutine
+    async def data_received(self, chunk):
+        pass
+
+    @tornado.web.asynchronous
+    # @gen.coroutine
     async def get(self, path_request):
         if str(path_request).endswith(".css"):
             self.set_header("Content-Type", "text/css; charset=UTF-8")
@@ -28,7 +37,12 @@ class RscHandler(tornado.web.RequestHandler):
 
 class AdminHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    #@gen.coroutine
+    # @gen.coroutine
+    async def data_received(self, chunk):
+        pass
+
+    @tornado.web.asynchronous
+    # @gen.coroutine
     async def get(self):
         self.render("pages/admin/index.html")
 
@@ -44,7 +58,12 @@ class AdminHandler(tornado.web.RequestHandler):
 # Handler for HTML files
 class MainHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    #@gen.coroutine
+    # @gen.coroutine
+    async def data_received(self, chunk):
+        pass
+
+    @tornado.web.asynchronous
+    # @gen.coroutine
     async def get(self):
         self.render("pages/" + pagePath + "index.html")
 
@@ -81,9 +100,9 @@ def main():
         ]
     )
     # HTTP socket
-    HTTPsockets = tornado.netutil.bind_sockets(8080)
+    http_socket = tornado.netutil.bind_sockets(8080)
     # HTTPS socket
-    HTTPSsockets = tornado.netutil.bind_sockets(4430)
+    https_socket = tornado.netutil.bind_sockets(4430)
     # fork
     tornado.process.fork_processes(0)
     # try loading ssl to purpose https
@@ -91,18 +110,17 @@ def main():
        os.path.isfile("cert/" + pagePath + "default.cert")):
         # load ssl requirements
         ssl_options = {"certfile": os.path.join("cert/" + pagePath + "default.cert"),
-                        "keyfile": os.path.join("cert/" + pagePath + "default.key"),
-                        "cert_reqs": ssl.CERT_OPTIONAL}
+                       "keyfile": os.path.join("cert/" + pagePath + "default.key"),
+                       "cert_reqs": ssl.CERT_OPTIONAL}
         # bind https port
-        serverHTTPS = tornado.httpserver.HTTPServer(application,ssl_options)
-        serverHTTPS.add_sockets(HTTPSsockets)
+        server_https = tornado.httpserver.HTTPServer(application, ssl_options)
+        server_https.add_sockets(https_socket)
     # bind http port
-    serverHTTP = tornado.httpserver.HTTPServer(application)
-    serverHTTP.add_sockets(HTTPsockets)
+    server_http = tornado.httpserver.HTTPServer(application)
+    server_http.add_sockets(http_socket)
     # loop forever to satisfy user's requests
     tornado.ioloop.IOLoop.current().start()
 
 
 if __name__ == "__main__":
     main()
-
