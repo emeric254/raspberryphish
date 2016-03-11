@@ -16,7 +16,7 @@ class OSInfos:
     @staticmethod
     def interpreter_name():
         return platform.python_implementation()
-    
+
     @staticmethod
     def python_version():
         return platform.python_version()
@@ -48,6 +48,24 @@ class RamInfos:
         usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
                      .stdout.read()).split("\\n")[0].split()[1:]
         return int(100*(int(usages[0]) - int(usages[-1]))/int(usages[0]))
+
+    @staticmethod
+    def amount_free():
+        usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
+                     .stdout.read()).split("\\n")[0].split()[1:]
+        return int(usages[2])
+
+    @staticmethod
+    def amount_used():
+        usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
+                     .stdout.read()).split("\\n")[0].split()[1:]
+        return int(usages[1])
+
+    @staticmethod
+    def amount_total():
+        usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
+                     .stdout.read()).split("\\n")[0].split()[1:]
+        return int(usages[0])
 
 
 class StorageInfos:
