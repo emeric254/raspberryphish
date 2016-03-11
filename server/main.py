@@ -11,51 +11,15 @@ import tornado.netutil
 import tornado.process
 # from tornado import gen
 from server.API.APIHandler import APIHandler
+from server.Handlers import AdminHandler
 
-
+# app's title
 __title__ = "RaspberryPhishServer"
-
 
 # var : directory name where the server will load in "pages" and "rsc"
 pagePath = "test/"
 
 
-# Handler for ressources
-class RscHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    # @gen.coroutine
-    async def data_received(self, chunk):
-        pass
-
-    @tornado.web.asynchronous
-    # @gen.coroutine
-    async def get(self, path_request):
-        if str(path_request).endswith(".css"):
-            self.set_header("Content-Type", "text/css; charset=UTF-8")
-        self.write(open("rsc/" + path_request, 'rb').read())
-
-
-class AdminHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    # @gen.coroutine
-    async def data_received(self, chunk):
-        pass
-
-    @tornado.web.asynchronous
-    # @gen.coroutine
-    async def get(self):
-        self.render("pages/admin/index.html")
-
-    def post(self):
-        try:
-            action = self.get_argument("action")
-            print("action :", action)
-        except tornado.web.HTTPError:   # no or wrong arguments
-            pass
-        self.render("pages/admin/index.html")
-
-
-# Handler for HTML files
 class MainHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     # @gen.coroutine
