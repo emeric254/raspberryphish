@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from subprocess import *
+from subprocess import Popen, PIPE
 import platform
 
 
