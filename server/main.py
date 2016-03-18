@@ -4,14 +4,16 @@
 import os
 import ssl
 import time
-import tornado.ioloop
-import tornado.web
+
 import tornado.httpserver
+import tornado.ioloop
 import tornado.netutil
 import tornado.process
+import tornado.web
+
 # from tornado import gen
-from server.API.APIHandler import APIHandler
-from server.Handlers import AdminHandler
+from server.Handlers.APIHandler import APIHandler
+from server.Handlers.AdminHandler import AdminHandler
 
 # app's title
 __title__ = 'RaspberryPhishServer'
@@ -59,8 +61,8 @@ def main():
         [
             (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r'/API/(.*)$', APIHandler),
-            (r'/admin', AdminHandler.AdminHandler),
-            (r'/admin/.*', AdminHandler.AdminHandler),
+            (r'/admin', AdminHandler),
+            (r'/admin/.*', AdminHandler),
             (r'/', MainHandler),
             (r'/.*', MainHandler),
         ]
