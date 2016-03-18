@@ -10,8 +10,8 @@ import tornado.ioloop
 import tornado.netutil
 import tornado.process
 import tornado.web
-
 # from tornado import gen
+
 from server.Handlers.APIHandler import APIHandler
 from server.Handlers.AdminHandler import AdminHandler
 
@@ -57,16 +57,14 @@ class MainHandler(tornado.web.RequestHandler):
 
 def main():
     # create an instance
-    application = tornado.web.Application(
-        [
+    application = tornado.web.Application([
             (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r'/API/(.*)$', APIHandler),
             (r'/admin', AdminHandler),
             (r'/admin/.*', AdminHandler),
             (r'/', MainHandler),
-            (r'/.*', MainHandler),
-        ]
-    )
+            (r'/.*', MainHandler)
+        ])
     # HTTP socket
     http_socket = tornado.netutil.bind_sockets(http_port)
     # HTTPS socket
@@ -87,7 +85,7 @@ def main():
         print('Start an HTTPS request handler on port : ' + str(https_port))
         tornado.httpserver.HTTPServer(application, ssl_options=ssl_ctx).add_sockets(https_socket)
     # bind http port
-        print('Start an HTTP request handler on port : ' + str(http_port))
+    print('Start an HTTP request handler on port : ' + str(http_port))
     tornado.httpserver.HTTPServer(application).add_sockets(http_socket)
     # loop forever to satisfy user's requests, except KeyboardInterrupt to properly exit
     try:

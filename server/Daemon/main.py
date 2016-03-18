@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
-import sys, time
-from AbstractDeamon import daemon
+import sys
+import time
+
+from server.Daemon.AbstractDaemon import Daemon
 
 
-class MyDaemon(daemon):
+class MyDaemon(Daemon):
     def run(self):
         while True:
             time.sleep(10)

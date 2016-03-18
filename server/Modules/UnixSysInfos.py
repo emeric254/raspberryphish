@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from subprocess import Popen, PIPE
 import platform
+from subprocess import Popen, PIPE
 
 
 class OSInfos:
