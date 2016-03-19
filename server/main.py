@@ -8,9 +8,7 @@ import configparser
 from tornado import httpserver, ioloop, netutil, process, web
 # from tornado import gen
 
-from server.Handlers.MainHandler import MainHandler
-from server.Handlers.APIHandler import APIHandler
-from server.Handlers.AdminHandler import AdminHandler
+from server.Handlers import MainHandler, APIHandler, AdminHandler
 
 # app's title
 __title__ = 'RaspberryPhishServer'
