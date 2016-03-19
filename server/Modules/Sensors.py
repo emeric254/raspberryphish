@@ -1,8 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import unicodedata, os, sys, getopt
-from subprocess import *
+# import unicodedata
+from subprocess import Popen, PIPE
 
 commandes = ['cat', 'hostname', 'last', 'hddtemp', 'df', 'ps', 'free', 'ping', 'grep', 'uniq', 'who', 'uname',
              'sensors']
@@ -32,7 +31,7 @@ def hdd_temp():
                                 shell=True, stdout=PIPE).stdout.read()).split("\n")
         try:
             hdd[disque] = int(temperature)
-        except:
+        except ValueError:
             pass
     return hdd
 
@@ -45,7 +44,6 @@ def hdd_usage():
     for disque in result:
         hdd[disque.split()[0] + '  '+str(disque.split()[5:])] = str(disque.split()[4][:-1])
     return hdd
-
 
 
 def uptime():
@@ -97,9 +95,8 @@ def processus_liste():
 
 
 def ram_etat():
-    ram = {}
-    ram["install"] = str(Popen("cat /proc/meminfo | grep \"MemTotal\"",
-                               shell=True, stdout=PIPE).stdout.read()).split(":")[1]
+    ram = {"install": str(Popen("cat /proc/meminfo | grep \"MemTotal\"",
+                                shell=True, stdout=PIPE).stdout.read()).split(":")[1]}
     result = str(Popen("free", shell=True, stdout=PIPE).stdout.read()).split("\\n")
     print(result)
     memoire = result[1].split()[1:]
@@ -128,7 +125,8 @@ def temp():
     x = 1
     for ligne in raw:
         if not x % 3:
-            (name, alltemp[name]) = ligne.split(":")
+            name = ligne.split(":")[0]
+            alltemp[name] = ligne.split(":")[1]
         x += 1
     return alltemp
 
