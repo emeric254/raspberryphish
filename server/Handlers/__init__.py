@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from server.Handlers.MainHandler import MainHandler
 from server.Handlers.APIHandler import APIHandler

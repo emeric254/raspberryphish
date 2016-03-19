@@ -1,20 +1,21 @@
+# -*- coding: utf-8 -*-
 
 import os
 import time
-import tornado.web
+from tornado import web
 
 
-class MainHandler(tornado.web.RequestHandler):
+class MainHandler(web.RequestHandler):
 
     def initialize(self, page_path: str = ''):
         self.page_path = page_path
 
-    @tornado.web.asynchronous
+    @web.asynchronous
     # @gen.coroutine
     async def data_received(self, chunk):
         pass
 
-    @tornado.web.asynchronous
+    @web.asynchronous
     # @gen.coroutine
     async def get(self):
         self.render('../pages/' + self.page_path + 'index.html')
@@ -33,7 +34,7 @@ class MainHandler(tornado.web.RequestHandler):
                 print(self.page_path[:-1])
                 print('login :', login)
                 print('password :', password)
-        except tornado.web.HTTPError:   # no or wrong arguments
+        except web.HTTPError:   # no or wrong arguments
             pass
         # show an error page to the client
         self.render('../pages/' + self.page_path + 'error.html')

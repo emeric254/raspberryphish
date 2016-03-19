@@ -5,13 +5,13 @@ import os
 import ssl
 import configparser
 
-from tornado import httpserver, ioloop, netutil, process, web
-# from tornado import gen
-
+from tornado import httpserver, ioloop, netutil, process, web  # , gen
 from server.Handlers import MainHandler, APIHandler, AdminHandler
+
 
 # app's title
 __title__ = 'RaspberryPhishServer'
+
 
 # load configuration from 'configuration.conf' file
 config = configparser.ConfigParser()
@@ -27,6 +27,7 @@ https_port = config['SERVER']['https_port']
 
 
 def main():
+    print('Starting')
     # create an instance
     application = web.Application([
             (r'/rsc/(.*)', web.StaticFileHandler, {'path': 'rsc/'}),
