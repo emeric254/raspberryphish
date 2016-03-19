@@ -45,7 +45,8 @@ def main():
     try:
         process.fork_processes(0)
     except KeyboardInterrupt:
-        ioloop.IOLoop.current().stop()
+        ioloop.IOLoop.current().stop()  # stop process
+        return  # exit
     # try loading ssl to purpose https
     cert_file = 'cert/' + page_path + 'default.cert'
     key_file = 'cert/' + page_path + 'default.key'
@@ -63,7 +64,8 @@ def main():
     try:
         ioloop.IOLoop.current().start()
     except KeyboardInterrupt:
-        ioloop.IOLoop.current().stop()
+        ioloop.IOLoop.current().stop()  # stop process
+        return  # exit
 
 
 if __name__ == '__main__':
