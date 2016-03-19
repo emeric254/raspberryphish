@@ -1,3 +1,1 @@
-__author__ = 'emeric'
-
-__all__ = ["UnixSysInfos"]
+# -*- coding: utf-8 -*-

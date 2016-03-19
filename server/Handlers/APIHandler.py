@@ -4,10 +4,8 @@ import os
 import time
 import random
 import json
-import tornado.ioloop
-import tornado.web
-# from tornado import gen
 
+from tornado import web  # , gen
 from server.Modules.UnixSysInfos import OSInfos, CpuInfos, StorageInfos, RamInfos, SensorInfos
 
 
@@ -21,13 +19,13 @@ def liste_dump(folder):
 
 
 # Handler for ressources
-class APIHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
+class APIHandler(web.RequestHandler):
+    @web.asynchronous
     # @gen.coroutine
     async def data_received(self, chunk):
         pass
 
-    @tornado.web.asynchronous
+    @web.asynchronous
     # @gen.coroutine
     async def get(self, path_request):
         if path_request == "timestamp":

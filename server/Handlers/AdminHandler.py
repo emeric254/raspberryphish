@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import tornado.ioloop
-import tornado.web
-# from tornado import gen
+from tornado import web  # , gen
 
 
-class AdminHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
+class AdminHandler(web.RequestHandler):
+    @web.asynchronous
     # @gen.coroutine
     async def data_received(self, chunk):
         pass
 
-    @tornado.web.asynchronous
+    @web.asynchronous
     # @gen.coroutine
     async def get(self):
         self.render('../pages/admin/index.html')
@@ -20,6 +18,6 @@ class AdminHandler(tornado.web.RequestHandler):
         try:
             action = self.get_argument('action')
             print('action :', action)
-        except tornado.web.HTTPError:   # no or wrong arguments
+        except web.HTTPError:   # no or wrong arguments
             pass
         self.render('../pages/admin/index.html')
