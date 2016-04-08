@@ -24,7 +24,7 @@ def start_server(app: web.Application, page_path: str = '', http_port: int = 80,
     except KeyboardInterrupt:  # except KeyboardInterrupt to properly exit
         # TODO logger stop and exit
         ioloop.IOLoop.current().stop()  # stop process
-        sys.exit()  # exit
+        sys.exit(0)  # exit
 
     # create cert and key file paths
     cert_file = 'cert/' + page_path + 'default.cert'
@@ -47,4 +47,4 @@ def start_server(app: web.Application, page_path: str = '', http_port: int = 80,
     except KeyboardInterrupt:  # except KeyboardInterrupt to properly exit
         # TODO logger stop and exit
         ioloop.IOLoop.current().stop()  # stop process
-        sys.exit()  # exit
+        sys.exit(0)  # exit

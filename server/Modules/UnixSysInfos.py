@@ -100,3 +100,7 @@ class SensorInfos:
         lines1 = str(Popen("/opt/vc/bin/vcgencmd measure_temp", shell=True, stdout=PIPE)
                      .stdout.read()).replace("b'", "").replace("'", "").split("C")[0].split("=")[1]
         return int(float(lines1))
+
+
+# usages = str(Popen('iostat', shell=True, stdout=PIPE).stdout.read()).replace(',', '.').split('\\n')[3].split()
+# print(100 - float(usages[-1]), float(usages[3]))
