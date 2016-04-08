@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from server.Handlers.MainHandler import MainHandler
-from server.Handlers.APIHandler import APIHandler
-from server.Handlers.AdminHandler import AdminHandler
+from Handlers.MainHandler import MainHandler
+from Handlers.APIHandler import APIHandler
+from Handlers.AdminHandler import AdminHandler
