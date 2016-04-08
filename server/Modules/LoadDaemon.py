@@ -2,7 +2,6 @@
 
 import sys
 import time
-import json
 from subprocess import Popen, PIPE
 
 from Daemon.AbstractDaemon import Daemon
@@ -19,9 +18,9 @@ def cpu_avg_load():
 
 
 def ram_avg_load():
-        usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
-                     .stdout.read()).split("\\n")[0].split()[1:]
-        return int(100*(int(usages[0]) - int(usages[-1]))/int(usages[0]))
+    usages = str(Popen("free | grep ': '", shell=True, stdout=PIPE)
+                 .stdout.read()).split("\\n")[0].split()[1:]
+    return int(100*(int(usages[0]) - int(usages[-1]))/int(usages[0]))
 
 
 class LoadDaemon(Daemon):
