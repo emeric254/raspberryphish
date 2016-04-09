@@ -69,7 +69,7 @@ class Daemon:
             pid = None
 
         if pid:
-            print('pidfile ' + str(self.pidfile) + ' already exist. Daemon already running ?\n', file=sys.stderr)
+            print('pidfile ' + str(self.pidfile) + ' already exist. Daemons already running ?\n', file=sys.stderr)
             sys.exit(1)
 
         # Start the daemon
@@ -87,7 +87,7 @@ class Daemon:
             pid = None
 
         if not pid:
-            print('pidfile ' + str(self.pidfile) + ' does not exist. Daemon not running ?\n', file=sys.stderr)
+            print('pidfile ' + str(self.pidfile) + ' does not exist. Daemons not running ?\n', file=sys.stderr)
             return  # not an error in a restart
 
         # Try killing the daemon process
@@ -111,7 +111,7 @@ class Daemon:
         self.start()
 
     def run(self):
-        """You should override this method when you subclass Daemon.
+        """You should override this method when you subclass Daemons.
 
         It will be called after the process has been daemonized by
         start() or restart()."""

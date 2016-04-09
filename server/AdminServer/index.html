@@ -1,0 +1,38 @@
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="rsc/css/angular-material.min.css">
+        <link rel="stylesheet" href="rsc/css/material-icons.css">
+    </head>
+    <body ng-app="MyApp" ng-cloak>
+
+        <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Raspberryphish</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Settings" ng-href="/logout">
+                    <i class="material-icons">exit_to_app</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <!-- -->
+        <md-content class="md-padding" layout="column">
+            <!-- -->
+            Yay ~~ !
+        </md-content>
+        <!-- Angular Material requires Angular.js Libraries -->
+        <script src="rsc/js/angular.min.js"></script>
+        <script src="rsc/js/angular-animate.min.js"></script>
+        <script src="rsc/js/angular-aria.min.js"></script>
+        <script src="rsc/js/angular-messages.min.js"></script>
+        <!-- Angular Material Library -->
+        <script src="rsc/js/angular-material.min.js"></script>
+        <!-- Your application bootstrap  -->
+        <script type="text/javascript">
+            var app = angular.module('MyApp', ['ngMaterial']);
+        </script>
+    </body>
+</html>

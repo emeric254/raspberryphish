@@ -4,7 +4,7 @@
 import sys
 import time
 
-from Daemon.AbstractDaemon import Daemon
+from Daemons.AbstractDaemon import Daemon
 
 
 class MyDaemon(Daemon):
