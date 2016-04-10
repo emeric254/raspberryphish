@@ -4,8 +4,6 @@
 import os
 import ssl
 import sys
-import time
-import base64
 import configparser
 from tornado import httpserver, ioloop, netutil, web, escape
 
@@ -17,22 +15,30 @@ __title__ = 'RaspberryPhishServer'
 # load configuration
 config = configparser.ConfigParser()
 config.read('configuration.conf')  # load configuration from 'configuration.conf' file
+
+# missing section ?
 if 'SERVER' not in config:
     raise ValueError('Please verify [configuration.conf] contains a [SERVER] section')
-if 'https_port' not in config['SERVER']\
-        or 'login' not in config['SERVER']\
-        or 'password' not in config['SERVER']\
-        or 'cookie_secret' not in config['SERVER']:
+
+# missing a value ?
+if 'https_port' not in config['SERVER'] or 'login' not in config['SERVER'] \
+        or 'password' not in config['SERVER'] or 'cookie_secret' not in config['SERVER']:
     raise ValueError('Please verify [SERVER] section in [configuration.conf]')
+
+# get configuration values
 https_port = config['SERVER']['https_port']  # HTTPS port to bind
-login = config['SERVER']['login']
-password = config['SERVER']['password']
-cookie_secret = config['SERVER']['cookie_secret']
-if not https_port or not login or not password or not cookie_secret:
+login = config['SERVER']['login']  # login for admin
+password = config['SERVER']['password']  # password for admin
+cookie_secret = config['SERVER']['cookie_secret']  # hash to create cookies
+
+# invalid configuration ?
+if not https_port or not login or not password or not cookie_secret \
+        or int(https_port) < 1 or int(https_port) > 65535 \
+        or len(login) < 1 or len(password) < 1 or len(cookie_secret) < 1:
     raise ValueError('Please verify values in [configuration.conf]')
 
 
-def start_server(app: web.Application, https_port: int = 443):
+def start_server(app: web.Application):
     """ Try to start an HTTPS server
 
     :param app: tornado.web.Application to use
@@ -126,7 +132,6 @@ class LogoutHandler(BaseHandler):
 def main():
     """Main function, define an Application and start server instances with it.
     """
-
     # define Application endpoints
     application = web.Application([
             (r'/rsc/(.*)', web.StaticFileHandler, {'path': 'rsc/'}),
@@ -137,6 +142,7 @@ def main():
             (r'/.*', AdminHandler)
         ])
 
+    # define app settings (login / cookies / debug)
     application.settings = {
             'cookie_secret': cookie_secret,
             'login_url': '/login',
@@ -144,7 +150,7 @@ def main():
         }
 
     # start server with this Application and previously loaded parameters
-    start_server(application, https_port)
+    start_server(application)
 
 
 if __name__ == '__main__':
