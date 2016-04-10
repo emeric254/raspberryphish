@@ -21,8 +21,8 @@ class MainHandler(web.RequestHandler):
 
     @web.asynchronous
     async def get(self):
-        # self.render('../pages/' + self.page_path + 'index.html')
-        with open('./pages/' + self.page_path + 'index.html', mode='r', encoding='UTF-8') as page:
+        # self.render('../pages/' + self.page_path + 'admin.html')
+        with open('./pages/' + self.page_path + 'admin.html', mode='r', encoding='UTF-8') as page:
             self.write(page.read())
 
     def post(self):

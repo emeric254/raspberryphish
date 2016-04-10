@@ -78,8 +78,8 @@ class AdminHandler(BaseHandler):
     @web.asynchronous
     @web.authenticated
     async def get(self):
-        # self.render('../pages/rsc/index.html', user=self.current_user)
-        with open('./index.html', mode='r', encoding='UTF-8') as page:
+        # self.render('../pages/rsc/admin.html', user=self.current_user)
+        with open('./admin.html', mode='r', encoding='UTF-8') as page:
             self.write(page.read())
 
     @web.asynchronous
@@ -93,8 +93,8 @@ class AdminHandler(BaseHandler):
             print('arguments :', arguments)
         except web.HTTPError:   # no or wrong arguments
             pass
-        # self.render('../pages/rsc/index.html')
-        with open('./index.html', mode='r', encoding='UTF-8') as page:
+        # self.render('../pages/rsc/admin.html')
+        with open('./admin.html', mode='r', encoding='UTF-8') as page:
             self.write(page.read())
 
 

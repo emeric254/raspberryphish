@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="rsc/css/angular-material.min.css">
         <link rel="stylesheet" href="rsc/css/material-icons.css">
     </head>
-    <body ng-app="MyApp" ng-controller="AppCtrl" ng-cloak>
+    <body ng-app="MyApp" ng-cloak>
 
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
@@ -41,10 +41,7 @@
         <script src="rsc/js/angular-material.min.js"></script>
         <!-- Your application bootstrap  -->
         <script type="text/javascript">
-            var app = angular.module('MyApp', ['ngMaterial', 'ngMessages']);
-
-            app.controller('AppCtrl', function($scope) {
-                });
+            var app = angular.module('MyApp', ['ngMaterial']);
         </script>
     </body>
 </html>

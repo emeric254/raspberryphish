@@ -1,0 +1,77 @@
+<html lang="en" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="rsc/css/angular-material.min.css">
+        <link rel="stylesheet" href="rsc/css/material-icons.css">
+    </head>
+    <body ng-app="MyApp" ng-controller="AppCtrl" ng-cloak>
+
+        <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Raspberryphish</span>
+                </h2>
+                <span flex></span>
+                <div layout="column" flex-sm="100" flex="33" layout-align="center center">
+                    <md-menu md-position-mode="target-right target" >
+                        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                            <i class="material-icons">more_vert</i>
+                        </md-button>
+                        <md-menu-content width="4" >
+                            <md-menu-item>
+                                <p> Menu </p>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="help($event)">
+                                    <div layout="row" flex>
+                                        <p flex> Help </p>
+                                        <i md-menu-align-target class="material-icons" style="margin: auto 3px auto 0;">help</i>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-href="/logout">
+                                    <div layout="row" flex>
+                                        <p flex> Logout </p>
+                                        <i md-menu-align-target class="material-icons" style="margin: auto 3px auto 0;">exit_to_app</i>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+            </div>
+        </md-toolbar>
+        <!-- -->
+        <md-content class="md-padding" layout="column">
+            <!-- -->
+            Yay ~~ !
+        </md-content>
+        <!-- Angular Material requires Angular.js Libraries -->
+        <script src="rsc/js/angular.min.js"></script>
+        <script src="rsc/js/angular-animate.min.js"></script>
+        <script src="rsc/js/angular-aria.min.js"></script>
+        <script src="rsc/js/angular-messages.min.js"></script>
+        <!-- Angular Material Library -->
+        <script src="rsc/js/angular-material.min.js"></script>
+        <!-- Your application bootstrap  -->
+        <script type="text/javascript">
+            var app = angular.module('MyApp', ['ngMaterial', 'ngMessages']);
+
+            app.controller('AppCtrl', function($scope, $mdDialog) {
+                    $scope.help = function() {
+                        $mdDialog.show(
+                            $mdDialog.alert()
+                                .clickOutsideToClose(true)
+                                .parent('body')
+                                .title('Help')
+                                .textContent('Yayy ~~~ !')
+                                .ok('Ok')
+                        );
+                      originatorEv = null;
+                    };
+                });
+        </script>
+    </body>
+</html>
