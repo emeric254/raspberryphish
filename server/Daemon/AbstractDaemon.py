@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Generic linux daemon base class for python 3.x."""
 
 import sys
@@ -20,10 +21,9 @@ class Daemon:
         try:
             pid = os.fork()
             if pid > 0:
-                # exit first parent
-                sys.exit(0)
+                sys.exit(0)  # exit first parent
         except OSError as err:
-            sys.stderr.write('fork #1 failed: {0}\n'.format(err))
+            print('fork #1 failed : ' + str(err) + '\n', file=sys.stderr)
             sys.exit(1)
         # decouple from parent environment
         os.chdir('/')
@@ -33,10 +33,9 @@ class Daemon:
         try:
             pid = os.fork()
             if pid > 0:
-                # exit from second parent
-                sys.exit(0)
+                sys.exit(0)  # exit from second parent
         except OSError as err:
-            sys.stderr.write('fork #2 failed: {0}\n'.format(err))
+            print('fork #2 failed : ' + str(err) + '\n', file=sys.stderr)
             sys.exit(1)
         # redirect standard file descriptors
         sys.stdout.flush()
@@ -62,7 +61,7 @@ class Daemon:
         except IOError:
             pid = None
         if pid:
-            sys.stderr.write('pidfile {0} already exist. Daemon already running?\n'.format(self.pidfile))
+            print('pidfile ' + str(self.pidfile) + ' already exist. Daemon already running ?\n', file=sys.stderr)
             sys.exit(1)
         # Start the daemon
         self.daemonize()
@@ -77,7 +76,7 @@ class Daemon:
         except IOError:
             pid = None
         if not pid:
-            sys.stderr.write('pidfile {0} does not exist. Daemon not running?\n'.format(self.pidfile))
+            print('pidfile ' + str(self.pidfile) + ' does not exist. Daemon not running ?\n', file=sys.stderr)
             return  # not an error in a restart
         # Try killing the daemon process
         try:
@@ -97,6 +96,19 @@ class Daemon:
         """Restart the daemon."""
         self.stop()
         self.start()
+
+    def status(self):
+        """Status of the daemon.
+        :return True if running
+        """
+        # Get the pid from the pidfile
+        try:
+            with open(self.pidfile, 'r') as pf:
+                if int(pf.read().strip()):
+                    return True
+        except IOError:
+            pass
+        return False
 
     def run(self):
         """You should override this method when you subclass Daemon.
