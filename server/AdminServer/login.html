@@ -2,8 +2,8 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Angular Material style sheet -->
-        <link rel="stylesheet" href="rsc/css/angular-material.min.css">
-        <link rel="stylesheet" href="rsc/css/material-icons.css">
+        <link rel="stylesheet" href="{{ static_url("css/angular-material.min.css") }}">
+        <link rel="stylesheet" href="{{ static_url("css/material-icons.css") }}">
     </head>
     <body ng-app="MyApp" ng-cloak>
 
@@ -18,6 +18,7 @@
         <md-content class="md-padding" layout="column" layout-padding>
             <!-- -->
             <form action="login" method="post">
+                {% module xsrf_form_html() %}
                 <md-input-container class="md-icon-float md-block">
                     <input ng-model="login" name="username" type="text" placeholder="Login">
                 </md-input-container>
@@ -33,12 +34,12 @@
             </form>
         </md-content>
         <!-- Angular Material requires Angular.js Libraries -->
-        <script src="rsc/js/angular.min.js"></script>
-        <script src="rsc/js/angular-animate.min.js"></script>
-        <script src="rsc/js/angular-aria.min.js"></script>
-        <script src="rsc/js/angular-messages.min.js"></script>
+        <script src="{{ static_url("js/angular.min.js") }}"></script>
+        <script src="{{ static_url("js/angular-animate.min.js") }}"></script>
+        <script src="{{ static_url("js/angular-aria.min.js") }}"></script>
+        <script src="{{ static_url("js/angular-messages.min.js") }}"></script>
         <!-- Angular Material Library -->
-        <script src="rsc/js/angular-material.min.js"></script>
+        <script src="{{ static_url("js/angular-material.min.js") }}"></script>
         <!-- Your application bootstrap  -->
         <script type="text/javascript">
             var app = angular.module('MyApp', ['ngMaterial']);

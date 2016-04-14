@@ -4,43 +4,8 @@ import os
 import time
 import random
 import json
-
 from tornado import web
-from Modules.UnixSysInfos import OSInfos, CpuInfos, StorageInfos, RamInfos, SensorInfos
-
-
-def system_infos():
-    return {
-        'OS': {
-            'Name': OSInfos.os_name(),
-            'Host': OSInfos.name(),
-            'Python': OSInfos.python_version(),
-            'Interpreter': OSInfos.interpreter_name()
-        },
-        'CPU': {
-            'Type': CpuInfos.cpu_type(),
-            'Name': CpuInfos.cpu_name()
-        }
-        # TODO continue
-    }
-
-
-def system_load():
-    return {
-        'CPU': CpuInfos.avg_load(),
-        'RAM': RamInfos.avg_load(),
-        'Storage': StorageInfos.avg_load()
-        # TODO continue
-    }
-
-
-def system_sensors():
-    return {
-        'CPU': SensorInfos.cpu_temp(),
-        'MB': SensorInfos.mb_temp()
-        # 'Storage': SensorInfos.hdd_temp()
-        # TODO continue
-    }
+import server
 
 
 def del_dump(folder: str = '../logs/dump'):
@@ -70,26 +35,25 @@ def liste_dump(folder: str = '../logs/dump'):
     return dico
 
 
-class APIHandler(web.RequestHandler):
+class APIHandler(server.BaseHandler):
     """APIHandler exposes various API endpoints
     """
 
     @web.asynchronous
-    async def data_received(self, chunk):
-        pass
-
-    @web.asynchronous
+    @web.authenticated
     async def get(self, path_request):
         if path_request == 'timestamp':
             self.write(str(time.time()))
         elif path_request == 'random':
-            self.api_random()
-        elif path_request == 'system/info':
-            self.write(json.dumps(system_infos()))
-        elif path_request == 'system/load':
-            self.write(json.dumps(system_load()))
-        elif path_request == 'system/sensor':
-            self.write(json.dumps(system_sensors()))
+            try:
+                maximum = int(self.get_argument('max', default=100))
+            except ValueError:
+                maximum = 100
+            try:
+                minimum = int(self.get_argument('min', default=0))
+            except ValueError:
+                minimum = 0
+            self.write(str(random.randint(minimum, maximum)))
         elif path_request == 'dump':
             self.write(json.dumps(liste_dump()))
         elif path_request.startswith('dump/'):
@@ -105,6 +69,7 @@ class APIHandler(web.RequestHandler):
             except FileNotFoundError:
                 self.write('error [file not found] : ' + path[8:])
 
+    @web.authenticated
     def delete(self, path_request):
         if path_request == 'dump':
             del_dump()
@@ -116,14 +81,3 @@ class APIHandler(web.RequestHandler):
                 self.write('ok')
             except FileNotFoundError:
                 self.send_error(status_code=404, reason='not found : ' + path[8:])
-
-    def api_random(self):
-        try:
-            maximum = int(self.get_argument('max', default=100))
-        except ValueError:
-            maximum = 100
-        try:
-            minimum = int(self.get_argument('min', default=0))
-        except ValueError:
-            minimum = 0
-        self.write(str(random.randint(minimum, maximum)))

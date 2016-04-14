@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import ssl
-import sys
 import configparser
-from tornado import httpserver, ioloop, netutil, web, escape
-
+from tornado import web, escape
+from APIHandler import APIHandler
+import server
 
 # app's title
 __title__ = 'RaspberryPhishServer'
@@ -38,49 +36,19 @@ if not https_port or not login or not password or not cookie_secret \
     raise ValueError('Please verify values in [configuration.conf]')
 
 
-def start_server(app: web.Application):
-    """ Try to start an HTTPS server
+class AdminHandler(server.BaseHandler):
+    """AdminHandler handle /static endpoint
 
-    :param app: tornado.web.Application to use
-    :param https_port: int the port number to use for HTTPS process
-    """
-    https_socket = netutil.bind_sockets(https_port)  # HTTPS socket
-    # create cert and key file paths
-    cert_file = 'cert/default.cert'
-    key_file = 'cert/default.key'
-    if os.path.isfile(cert_file) and os.path.isfile(key_file):  # verify files
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)  # define ssl context
-        ssl_ctx.load_cert_chain(cert_file, key_file)  # load ssl required files
-        print('Start an HTTPS request handler on port : ' + str(https_port))  # TODO logger start https
-        httpserver.HTTPServer(app, ssl_options=ssl_ctx).add_sockets(https_socket)  # bind https port
-    else:
-        raise FileNotFoundError  # TODO logger no ssl cert and key files, can't start server
-    try:
-        ioloop.IOLoop.current().start()  # loop forever to satisfy user's requests
-    except KeyboardInterrupt:  # except KeyboardInterrupt to properly exit
-        # TODO logger stop and exit
-        ioloop.IOLoop.current().stop()  # stop process
-        sys.exit(0)  # exit
-
-
-class BaseHandler(web.RequestHandler):
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
-
-
-class AdminHandler(BaseHandler):
-    """AdminHandler handle /rsc endpoint
-
-    GET give the rsc page
+    GET give the static page
     POST try to execute a received action
     """
 
     @web.asynchronous
     @web.authenticated
     async def get(self):
-        # self.render('../pages/rsc/admin.html', user=self.current_user)
-        with open('./admin.html', mode='r', encoding='UTF-8') as page:
-            self.write(page.read())
+        self.render('./admin.html')
+        # with open('./admin.html', mode='r', encoding='UTF-8') as page:
+        #     self.write(page.read())
 
     @web.asynchronous
     @web.authenticated
@@ -93,12 +61,10 @@ class AdminHandler(BaseHandler):
             print('arguments :', arguments)
         except web.HTTPError:   # no or wrong arguments
             pass
-        # self.render('../pages/rsc/admin.html')
-        with open('./admin.html', mode='r', encoding='UTF-8') as page:
-            self.write(page.read())
+        self.render('./admin.html')
 
 
-class LoginHandler(BaseHandler):
+class LoginHandler(server.BaseHandler):
     @web.asynchronous
     def get(self):
         incorrect = self.get_secure_cookie("incorrect")
@@ -114,7 +80,7 @@ class LoginHandler(BaseHandler):
         if login == getusername and password == getpassword:
             self.set_secure_cookie("user", self.get_argument("username"))
             self.set_secure_cookie("incorrect", "0")
-            self.redirect('/admin')
+            self.redirect('/')
         else:
             incorrect = self.get_secure_cookie("incorrect")
             if not incorrect:
@@ -123,7 +89,7 @@ class LoginHandler(BaseHandler):
             self.render('./login.html', user=self.current_user)
 
 
-class LogoutHandler(BaseHandler):
+class LogoutHandler(server.BaseHandler):
     def get(self):
         self.clear_cookie('user')
         self.redirect('/')
@@ -132,25 +98,27 @@ class LogoutHandler(BaseHandler):
 def main():
     """Main function, define an Application and start server instances with it.
     """
+    # define settings (static path / login / cookies / debug)
+    settings = {
+        'static_path': 'static',
+        'cookie_secret': cookie_secret,
+        'xsrf_cookies': True,
+        'login_url': '/login',
+        'debug': True,
+        'autoreload': True
+    }
+
     # define Application endpoints
     application = web.Application([
-            (r'/rsc/(.*)', web.StaticFileHandler, {'path': 'rsc/'}),
             (r'/login', LoginHandler),
             (r'/logout', LogoutHandler),
-            # (r'/API/(.*)$', APIHandler),
-            (r'/', AdminHandler),
-            (r'/.*', AdminHandler)
-        ])
+            (r'/api/(.*)$', APIHandler),
+            (r'/', AdminHandler)
+        ], **settings)
 
-    # define app settings (login / cookies / debug)
-    application.settings = {
-            'cookie_secret': cookie_secret,
-            'login_url': '/login',
-            'debug': True,
-        }
 
     # start server with this Application and previously loaded parameters
-    start_server(application)
+    server.start_server(application, https_port=https_port)
 
 
 if __name__ == '__main__':

@@ -20,7 +20,7 @@ def load_server_conf():
             or 'https_port' not in config['SERVER']:
         raise ValueError('Please verify [SERVER] section of your configuration file')
 
-    page_path = config['SERVER']['page_path']  # directory name where the server will load in 'pages' and 'rsc'
+    page_path = config['SERVER']['page_path']  # directory name where the server will load in 'pages' and 'static'
     http_port = config['SERVER']['http_port']  # HTTP port to bind
     https_port = config['SERVER']['https_port']  # HTTPS port to bind
 

@@ -20,7 +20,7 @@ def main():
 
     # define Application endpoints
     application = web.Application([
-            (r'/rsc/(.*)', web.StaticFileHandler, {'path': 'rsc/'}),
+            (r'/static/(.*)', web.StaticFileHandler, {'path': 'static/'}),
             (r'/API/(.*)$', APIHandler),
             (r'/admin', AdminHandler),
             (r'/admin/(.*)$', AdminHandler),
