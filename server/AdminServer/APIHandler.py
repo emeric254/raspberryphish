@@ -9,6 +9,7 @@ import server
 
 
 def del_dump(folder: str = '../logs/dump'):
+    # TODO doc
     print('deleting ' + folder)
     for root, folders, files in os.walk(folder):
         for temp in files:
@@ -23,6 +24,7 @@ def del_dump(folder: str = '../logs/dump'):
 
 
 def liste_dump(folder: str = '../logs/dump'):
+    # TODO doc
     dico = {}
     for root, _, files in os.walk(folder):
         for dump in files:
@@ -38,10 +40,10 @@ def liste_dump(folder: str = '../logs/dump'):
 class APIHandler(server.BaseHandler):
     """APIHandler exposes various API endpoints
     """
-
     @web.asynchronous
     @web.authenticated
     async def get(self, path_request):
+        # TODO doc
         if path_request == 'timestamp':
             self.write(str(time.time()))
         elif path_request == 'random':
@@ -71,6 +73,7 @@ class APIHandler(server.BaseHandler):
 
     @web.authenticated
     def delete(self, path_request):
+        # TODO doc
         if path_request == 'dump':
             del_dump()
             self.write('ok')
