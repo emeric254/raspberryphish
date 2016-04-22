@@ -15,7 +15,6 @@ def start_server(app: web.Application, https_port: int = 443):
     :param app: tornado.web.Application to use
     :param https_port: int the port number to use for HTTPS process
     """
-    logging.basicConfig(filename='serveur.log', level=logging.INFO)
     https_socket = netutil.bind_sockets(https_port)  # HTTPS socket
     # create cert and key file paths
     cert_file = 'cert/default.cert'
@@ -37,7 +36,11 @@ def start_server(app: web.Application, https_port: int = 443):
 
 
 class BaseHandler(web.RequestHandler):
-    # TODO doc
+    """Superclass for Handlers which require a connected user
+    """
     def get_current_user(self):
-        # TODO doc
+        """Get current connected user
+
+        :return: current connected user
+        """
         return self.get_secure_cookie("user")

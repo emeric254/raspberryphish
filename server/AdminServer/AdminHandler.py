@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from tornado import web
 import server
+from tornado import web
 
 
 class AdminHandler(server.BaseHandler):
@@ -13,15 +13,17 @@ class AdminHandler(server.BaseHandler):
     @web.asynchronous
     @web.authenticated
     async def get(self):
-        # TODO doc
+        """Render main page
+        """
         self.render('./admin.html')
 
     @web.asynchronous
     @web.authenticated
     def post(self):
-        # TODO doc
+        """Do something with arguments and render main page
+        """
         try:
-            # TODO do something with this ?!
+            # TODO do something here with argument(s) ?!
             arguments = {}
             for k in self.request.arguments:
                 arguments[k] = self.get_argument(k)
