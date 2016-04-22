@@ -4,7 +4,7 @@ import sys
 import time
 from subprocess import Popen, PIPE
 
-from Daemons.AbstractDaemon import Daemon
+from AbstractDaemon import Daemon
 
 
 def cpu_avg_load():
