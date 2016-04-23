@@ -28,7 +28,7 @@ class LoginHandler(server.BaseHandler):
         """Get login form
         """
         incorrect = self.get_secure_cookie("incorrect")
-        if incorrect and int(incorrect) > 25:
+        if incorrect and int(incorrect) > 5:
             logging.warning('an user have been blocked')
             self.write('<center>blocked</center>')
             return
