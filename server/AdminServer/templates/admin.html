@@ -14,36 +14,36 @@
     <body ng-app="MyApp" ng-controller="AppCtrl" ng-cloak>
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
-                <h2> Raspberryphish </h2>
-                <span flex></span>
-                <div layout="column" flex-sm="100" flex="33" layout-align="center center">
-                    <md-menu md-position-mode="target-right target" >
-                        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <md-icon md-font-library="material-icons" class="md-light md-48">more_vert</md-icon>
-                        </md-button>
-                        <md-menu-content width="3" >
-                            <md-menu-item>
-                                <p> Menu </p>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ng-click="help($event)">
-                                    <div layout="row" flex>
-                                        <p flex> Help </p>
-                                        <md-icon md-font-library="material-icons" class="md-48">help</md-icon>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ng-href="/logout">
-                                    <div layout="row" flex>
-                                        <p flex> Logout </p>
-                                        <md-icon md-font-library="material-icons" class="md-48">exit_to_app</md-icon>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                </div>
+                <h2>
+                    <md-icon md-font-library="material-icons" class="md-light md-48">settings_applications</md-icon>
+                    Raspberryphish
+                </h2>
+                <md-menu md-position-mode="target-right target" >
+                    <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-font-library="material-icons" class="md-light md-48">more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width="3" >
+                        <md-menu-item>
+                            <p> Menu </p>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="help($event)">
+                                <div layout="row" flex>
+                                    <p flex> Help </p>
+                                    <md-icon md-font-library="material-icons" class="md-48">help</md-icon>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-href="/logout">
+                                <div layout="row" flex>
+                                    <p flex> Logout </p>
+                                    <md-icon md-font-library="material-icons" class="md-48">exit_to_app</md-icon>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
         </md-toolbar>
         <!-- -->
@@ -55,22 +55,22 @@
                 <md-list layout-padding>
                     <md-list-item class="md-3-line">
                         <div class="md-list-item-text">
-                          <h3>test h3 1</h3>
-                          <h4>test h4 1</h4>
+                          <h3> test h3 1 </h3>
+                          <h4> test h4 1 </h4>
                           <p>
                             freagreagrae
                           </p>
                         </div>
                     </md-list-item>
                 </md-list>
-                <md-grid-list md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="2:2" md-gutter="12px" md-gutter-gt-sm="8px" >
+                <md-grid-list md-cols-xs="1" md-cols-sm="2" md-cols-md="4" md-cols-gt-md="4" md-row-height-gt-md="1:1" md-row-height="2:2" md-gutter="12px" md-gutter-gt-sm="8px" >
                     <md-grid-tile md-rowspan="1" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
-                        <canvas class="chart chart-line" chart-data="chartdata" chart-labels="chartlabels" chart-legend="false" chart-series="chartseries" chart-options="chartoptions" chart-colours="chartcolors"></canvas>
-                        <md-grid-tile-footer><h3>Random</h3></md-grid-tile-footer>
+                        <canvas class="chart chart-line" chart-data="chartdata" chart-labels="chartlabels" chart-legend="true" chart-series="chartseries" chart-options="chartoptions" chart-colours="chartcolors"></canvas>
+                        <md-grid-tile-footer> <h3> Random </h3> </md-grid-tile-footer>
                     </md-grid-tile>
                     <md-grid-tile md-rowspan="1" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
                         <md-progress-linear md-mode="indeterminate"></md-progress-linear>
-                        <md-grid-tile-footer><h3>Loading</h3></md-grid-tile-footer>
+                        <md-grid-tile-footer> <h3> Loading </h3> </md-grid-tile-footer>
                     </md-grid-tile>
                 </md-grid-list>
             </section>
@@ -81,8 +81,8 @@
                 <md-list layout="column" layout-padding>
                     <md-list-item class="md-3-line">
                         <div class="md-list-item-text">
-                            <h3>test h3 2</h3>
-                            <h4>test h4 2</h4>
+                            <h3> test h3 2 </h3>
+                            <h4> test h4 2 </h4>
                             <p>
                               rgvgrnxyttrxryd
                             </p>
@@ -136,13 +136,11 @@
                                 });
                         };
                     //
-                    setTimeout($scope.random_fct, 1000);
-                    //
                     $scope.chartlabels = ["-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "0"];
                     $scope.chartseries = ['Random'];
-                    $scope.chartdata = [
-                            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                        ];
+                    $scope.chartdata = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] ];
+                    // options
+                    $scope.chartcolors = [ '#46BFBD', '#FDB45C', '#00ADF9', '#949FB1'];
                     $scope.chartoptions = {
                             maintainAspectRatio: true,
                             responsive: true,
@@ -162,7 +160,8 @@
                                 return label.value;
                             }
                         };
-                    $scope.chartcolors = [ '#46BFBD', '#FDB45C', '#00ADF9', '#949FB1'];
+                    //
+                    setTimeout($scope.random_fct, 1000);
                 });
         </script>
     </body>
