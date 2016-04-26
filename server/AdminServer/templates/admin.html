@@ -19,9 +19,9 @@
                 <div layout="column" flex-sm="100" flex="33" layout-align="center center">
                     <md-menu md-position-mode="target-right target" >
                         <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <i class="material-icons">more_vert</i>
+                            <md-icon md-font-library="material-icons" class="md-light md-48">more_vert</md-icon>
                         </md-button>
-                        <md-menu-content width="4" >
+                        <md-menu-content width="3" >
                             <md-menu-item>
                                 <p> Menu </p>
                             </md-menu-item>
@@ -29,7 +29,7 @@
                                 <md-button ng-click="help($event)">
                                     <div layout="row" flex>
                                         <p flex> Help </p>
-                                        <i md-menu-align-target class="material-icons">help</i>
+                                        <md-icon md-font-library="material-icons" class="md-48">help</md-icon>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -37,7 +37,7 @@
                                 <md-button ng-href="/logout">
                                     <div layout="row" flex>
                                         <p flex> Logout </p>
-                                        <i md-menu-align-target class="material-icons">exit_to_app</i>
+                                        <md-icon md-font-library="material-icons" class="md-48">exit_to_app</md-icon>
                                     </div>
                                 </md-button>
                             </md-menu-item>
