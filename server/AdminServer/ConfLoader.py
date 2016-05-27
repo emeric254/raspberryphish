@@ -29,18 +29,42 @@ def load_conf(conf_file: str = 'configuration.conf'):
     login = config['SERVER']['login']  # login for admin
     password = config['SERVER']['password']  # password for admin
     cookie_secret = config['SERVER']['cookie_secret']  # hash to create cookies
-    if len(cookie_secret) < 1:
+    if len(cookie_secret) < 1:  # empty cookie_secret value result in an automatic generation at app boot
+        logging.info('No configuration : cookie_secret. Generating random secret.')
         cookie_secret = ''.join([random.choice(string.printable) for _ in range(24)])
-    debug = False
-    if 'debug' in config['SERVER'] and isinstance(config['SERVER']['debug'], bool):
-        debug = config['SERVER']['debug']
-    autoreload = False
-    if 'autoreload' in config['SERVER'] and isinstance(config['SERVER']['autoreload'], bool):
-        autoreload = config['SERVER']['autoreload']
+    # load debug value
+    debug = False  # default not in debug mode
+    if 'debug' in config['SERVER']:
+        if isinstance(config['SERVER']['debug'], bool):
+            debug = config['SERVER']['debug']
+        else:
+            logging.warning('Invalid configuration : debug. Continue without debug.')
+    # load autoreload value
+    autoreload = False  # default no app autoreload
+    if 'autoreload' in config['SERVER']:
+        if isinstance(config['SERVER']['autoreload'], bool):
+            autoreload = config['SERVER']['autoreload']
+        else:
+            logging.warning('Invalid configuration : autoreload. Continue without autoreload.')
+    # load max attemps value
+    max_attemps = 5  # default 5 attemps before blocking user
+    if 'max_attemps' in config['SERVER']:
+        try:
+            max_attemps = int(config['SERVER']['max_attemps'])
+        except ValueError:
+            logging.warning('Invalid configuration : max_attemps. Continue with a default value of 5 attemps.')
+    # load blocked duration value
+    blocked_duration = 24  # default 1 day
+    if 'blocked_duration' in config['SERVER']:
+        try:
+            blocked_duration = int(config['SERVER']['blocked_duration'])
+        except ValueError:
+            logging.warning('Invalid configuration : blocked_duration. Continue with a default duration of 24 hours.')
     # invalid configuration ?
     if not https_port or not login or not password or not cookie_secret \
             or int(https_port) < 1 or int(https_port) > 65535 \
-            or len(login) < 1 or len(password) < 1 or len(cookie_secret) < 1:
+            or len(login) < 1 or len(password) < 6 or len(cookie_secret) < 6 \
+            or blocked_duration < 1 or max_attemps < 1:
         logging.error('Invalid configuration : Please verify configuration values in [configuration.conf]')
         raise ValueError('Please verify values in [configuration.conf]')
-    return https_port, login, password, cookie_secret, debug, autoreload
+    return https_port, login, password, cookie_secret, debug, autoreload, max_attemps, blocked_duration

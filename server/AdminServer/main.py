@@ -15,8 +15,13 @@ logging.basicConfig(filename='serveur.log', level=logging.INFO)
 
 (
     https_port,
-    login, password, cookie_secret,
-    debug, autoreload
+    login,
+    password,
+    cookie_secret,
+    debug,
+    autoreload,
+    max_attemps,
+    blocked_duration
 ) = ConfLoader.load_conf(conf_file='configuration.conf')
 
 
@@ -28,11 +33,11 @@ class LoginHandler(server.BaseHandler):
         """Get login form
         """
         incorrect = self.get_secure_cookie("incorrect")
-        if incorrect and int(incorrect) > 5:
+        if incorrect and int(incorrect) > max_attemps:
             logging.warning('an user have been blocked')
-            self.write('<center>blocked</center>')
+            self.render('blocked.html', blocked_duration=blocked_duration)
             return
-        self.render('login.html', user=self.current_user)
+        self.render('login.html', user=self.current_user, failed=False)
 
     @web.asynchronous
     def post(self):
@@ -50,7 +55,7 @@ class LoginHandler(server.BaseHandler):
             if not incorrect:
                 incorrect = 0
             self.set_secure_cookie('incorrect', str(int(incorrect) + 1), expires_days=1)
-            self.render('login.html', user=self.current_user)
+            self.render('login.html', user=self.current_user, failed=True)
 
 
 class LogoutHandler(server.BaseHandler):
@@ -67,7 +72,7 @@ class LogoutHandler(server.BaseHandler):
 def main():
     """Main function, define an Application and start server instances with it.
     """
-    # define settings (static path / login / cookies / debug)
+    # define app settings
     settings = {
         'static_path': './static',
         'template_path': './templates',
@@ -84,7 +89,7 @@ def main():
             (r'/api/(.*)$', APIHandler),
             (r'/', AdminHandler)
         ], **settings)
-    # start server with this Application and previously loaded parameters
+    # start a server running this Application with these loaded parameters
     server.start_server(application, https_port=https_port)
 
 
