@@ -10,7 +10,6 @@ from Handlers import APIHandler, AdminHandler
 logging.basicConfig(filename='serveur.log', level=logging.INFO)
 
 (
-    https_port,
     login,
     password,
     cookie_secret,

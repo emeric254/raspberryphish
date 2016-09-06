@@ -16,9 +16,9 @@ def load_server_conf():
     config.read('configuration.conf')  # load configuration from 'configuration.conf' file
     if 'SERVER' not in config:
         raise ValueError('Please verify your configuration file contains a [SERVER] section')
-    if 'https_port' not in config['SERVER'] or 'cert_path' not in config['SERVER']:
+    if 'https_port' not in config['SERVER'] or 'cert_folder_path' not in config['SERVER']:
         raise ValueError('Please verify [SERVER] section of your configuration file')
-    cert_path = config['SERVER']['cert_path']  # directory name where the AdminServer will load in 'pages' and 'static'
+    cert_path = config['SERVER']['cert_folder_path']  # directory name where crt and key files are present
     https_port = config['SERVER']['https_port']  # HTTPS port to bind
     return cert_path, https_port
 
@@ -28,60 +28,57 @@ def load_conf(conf_file: str = 'configuration.conf'):
 
     :param conf_file: the file to load
     :return: https_port, login, password, cookie_secret, debug, autoreload
+
     """
-    # load configuration
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser()  # load configuration
     config.read(conf_file)  # load configuration from 'configuration.conf' file
     # missing section ?
-    if 'SERVER' not in config:
-        logging.error('Invalid configuration : Please verify [configuration.conf] contains a [SERVER] section')
-        raise ValueError('Please verify [configuration.conf] contains a [SERVER] section')
+    if 'MAIN' not in config:
+        logging.error('Invalid configuration : Please verify [configuration.conf] contains a [MAIN] section')
+        raise ValueError('Please verify [configuration.conf] contains a [MAIN] section')
     # missing a value ?
-    if 'https_port' not in config['SERVER'] or 'login' not in config['SERVER'] \
-            or 'password' not in config['SERVER'] or 'cookie_secret' not in config['SERVER']:
-        logging.error('Invalid configuration : Please verify [SERVER] section in [configuration.conf]')
-        raise ValueError('Please verify [SERVER] section in [configuration.conf]')
+    if 'login' not in config['MAIN'] or 'password' not in config['MAIN'] or 'cookie_secret' not in config['MAIN']:
+        logging.error('Invalid configuration : Please verify [MAIN] section in [configuration.conf]')
+        raise ValueError('Please verify [MAIN] section in [configuration.conf]')
     # get configuration values
-    https_port = config['SERVER']['https_port']  # HTTPS port to bind
-    login = config['SERVER']['login']  # login for admin
-    password = config['SERVER']['password']  # password for admin
-    cookie_secret = config['SERVER']['cookie_secret']  # hash to create cookies
+    login = config['MAIN']['login']  # login for admin
+    password = config['MAIN']['password']  # password for admin
+    cookie_secret = config['MAIN']['cookie_secret']  # hash to create cookies
     if len(cookie_secret) < 1:  # empty cookie_secret value result in an automatic generation at app boot
         logging.info('No configuration : cookie_secret. Generating random secret.')
         cookie_secret = ''.join([random.choice(string.printable) for _ in range(24)])
     # load debug value
     debug = False  # test not in debug mode
-    if 'debug' in config['SERVER']:
-        if isinstance(config['SERVER']['debug'], bool):
-            debug = config['SERVER']['debug']
+    if 'debug' in config['MAIN']:
+        if isinstance(config['MAIN']['debug'], bool):
+            debug = config['MAIN']['debug']
         else:
             logging.warning('Invalid configuration : debug. Continue without debug.')
     # load autoreload value
     autoreload = False  # test no app autoreload
-    if 'autoreload' in config['SERVER']:
-        if isinstance(config['SERVER']['autoreload'], bool):
-            autoreload = config['SERVER']['autoreload']
+    if 'autoreload' in config['MAIN']:
+        if isinstance(config['MAIN']['autoreload'], bool):
+            autoreload = config['MAIN']['autoreload']
         else:
             logging.warning('Invalid configuration : autoreload. Continue without autoreload.')
     # load max attemps value
     max_attemps = 5  # test 5 attemps before blocking user
-    if 'max_attemps' in config['SERVER']:
+    if 'max_attemps' in config['MAIN']:
         try:
-            max_attemps = int(config['SERVER']['max_attemps'])
+            max_attemps = int(config['MAIN']['max_attemps'])
         except ValueError:
             logging.warning('Invalid configuration : max_attemps. Continue with a test value of 5 attemps.')
     # load blocked duration value
     blocked_duration = 24  # test 1 day
-    if 'blocked_duration' in config['SERVER']:
+    if 'blocked_duration' in config['MAIN']:
         try:
-            blocked_duration = int(config['SERVER']['blocked_duration'])
+            blocked_duration = int(config['MAIN']['blocked_duration'])
         except ValueError:
             logging.warning('Invalid configuration : blocked_duration. Continue with a test duration of 24 hours.')
     # invalid configuration ?
-    if not https_port or not login or not password or not cookie_secret \
-            or int(https_port) < 1 or int(https_port) > 65535 \
+    if not login or not password or not cookie_secret \
             or len(login) < 1 or len(password) < 6 or len(cookie_secret) < 6 \
             or blocked_duration < 1 or max_attemps < 1:
         logging.error('Invalid configuration : Please verify configuration values in [configuration.conf]')
         raise ValueError('Please verify values in [configuration.conf]')
-    return https_port, login, password, cookie_secret, debug, autoreload, max_attemps, blocked_duration
+    return login, password, cookie_secret, debug, autoreload, max_attemps, blocked_duration
