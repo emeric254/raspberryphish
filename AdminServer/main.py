@@ -2,16 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
-
-import ConfLoader
-import server
-from APIHandler import APIHandler
 from tornado import web, escape
+from tools import ConfLoader, server
+from Handlers import APIHandler, AdminHandler
 
-from AdminServer.AdminHandler import AdminHandler
-
-# app's title
-__title__ = 'RaspberryPhishAdminServer'
 
 logging.basicConfig(filename='serveur.log', level=logging.INFO)
 
@@ -27,13 +21,11 @@ logging.basicConfig(filename='serveur.log', level=logging.INFO)
 ) = ConfLoader.load_conf(conf_file='configuration.conf')
 
 
-class LoginHandler(server.BaseHandler):
-    """Handle user login actions
-    """
-    @web.asynchronous
+class LoginHandler(server.BaseSecureHandler):
+    """Handle user login actions"""
+
     def get(self):
-        """Get login form
-        """
+        """Get login form"""
         incorrect = self.get_secure_cookie("incorrect")
         if incorrect and int(incorrect) > max_attemps:
             logging.warning('an user have been blocked')
@@ -41,10 +33,8 @@ class LoginHandler(server.BaseHandler):
             return
         self.render('login.html', user=self.current_user, failed=False)
 
-    @web.asynchronous
     def post(self):
-        """Post connection form and try to connect with these credentials
-        """
+        """Post connection form and try to connect with these credentials"""
         getusername = escape.xhtml_escape(self.get_argument("username"))
         getpassword = escape.xhtml_escape(self.get_argument("password"))
         if login == getusername and password == getpassword:
@@ -60,20 +50,8 @@ class LoginHandler(server.BaseHandler):
             self.render('login.html', user=self.current_user, failed=True)
 
 
-class LogoutHandler(server.BaseHandler):
-    """Handle user logout action
-    """
-    @web.asynchronous
-    def get(self):
-        """Disconnect an user, delete his cookie and redirect him
-        """
-        self.clear_cookie('user')
-        self.redirect('/')
-
-
 def main():
-    """Main function, define an Application and start AdminServer instances with it.
-    """
+    """Main function, define an Application and start AdminServer instances with it."""
     # define app settings
     settings = {
         'static_path': './static',
@@ -87,9 +65,9 @@ def main():
     # define Application endpoints
     application = web.Application([
             (r'/login', LoginHandler),
-            (r'/logout', LogoutHandler),
-            (r'/api/(.*)$', APIHandler),
-            (r'/', AdminHandler)
+            (r'/logout', server.LogoutHandler),
+            (r'/api/(.*)$', APIHandler.APIHandler),
+            (r'/', AdminHandler.AdminHandler)
         ], **settings)
     # start a AdminServer running this Application with these loaded parameters
     server.start_server(application)

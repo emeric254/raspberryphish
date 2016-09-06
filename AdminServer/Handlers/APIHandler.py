@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import json
-import logging
 import os
-import random
 import time
-
+import json
+import random
+import logging
 from tornado import web
-
-from AdminServer import server
+from tools import server
 
 
 def del_folder(folder: str = '../logs/dump'):
@@ -47,7 +45,7 @@ def liste_dump(folder: str = '../logs/dump'):
     return dico
 
 
-class APIHandler(server.BaseHandler):
+class APIHandler(server.BaseSecureHandler):
     """APIHandler exposes various API endpoints
     """
     @web.asynchronous
