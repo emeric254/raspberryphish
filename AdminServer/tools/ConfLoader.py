@@ -23,15 +23,14 @@ def load_server_conf():
     return cert_path, https_port
 
 
-def load_conf(conf_file: str = 'configuration.conf'):
+def load_conf():
     """Load configuration from a file
 
-    :param conf_file: the file to load
-    :return: https_port, login, password, cookie_secret, debug, autoreload
+    :return: login, password, cookie_secret, debug, autoreload, max_attemps, blocked_duration
 
     """
     config = configparser.ConfigParser()  # load configuration
-    config.read(conf_file)  # load configuration from 'configuration.conf' file
+    config.read('configuration.conf')  # load configuration from 'configuration.conf' file
     # missing section ?
     if 'MAIN' not in config:
         logging.error('Invalid configuration : Please verify [configuration.conf] contains a [MAIN] section')

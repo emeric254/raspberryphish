@@ -13,6 +13,7 @@ def del_folder(folder: str = '../logs/dump'):
     """Delete a folder
 
     :param folder: folder to delete
+
     """
     logging.info('deleting ' + folder)
     for root, folders, files in os.walk(folder):
@@ -32,6 +33,7 @@ def liste_dump(folder: str = '../logs/dump'):
 
     :param folder: folder to list dumps
     :return: dumps entries
+
     """
     dico = {}
     for root, _, files in os.walk(folder):
@@ -46,14 +48,14 @@ def liste_dump(folder: str = '../logs/dump'):
 
 
 class APIHandler(server.BaseSecureHandler):
-    """APIHandler exposes various API endpoints
-    """
-    @web.asynchronous
+    """APIHandler exposes various API endpoints"""
+
     @web.authenticated
-    async def get(self, path_request):
+    def get(self, path_request):
         """API get details of something
 
         :param path_request: URI representing something to get details
+
         """
         if path_request == 'timestamp':
             self.write(str(time.time()))
@@ -87,6 +89,7 @@ class APIHandler(server.BaseSecureHandler):
         """API delete something
 
         :param path_request: URI representing something to delete
+
         """
         if path_request == 'dump':  # delete all subfolders and '../logs/dump'
             del_folder()

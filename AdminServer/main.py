@@ -7,19 +7,6 @@ from tools import ConfLoader, server
 from Handlers import APIHandler, AdminHandler
 
 
-logging.basicConfig(filename='serveur.log', level=logging.INFO)
-
-(
-    login,
-    password,
-    cookie_secret,
-    debug,
-    autoreload,
-    max_attemps,
-    blocked_duration
-) = ConfLoader.load_conf(conf_file='configuration.conf')
-
-
 class LoginHandler(server.BaseSecureHandler):
     """Handle user login actions"""
 
@@ -51,7 +38,6 @@ class LoginHandler(server.BaseSecureHandler):
 
 def main():
     """Main function, define an Application and start AdminServer instances with it."""
-    # define app settings
     settings = {
         'static_path': './static',
         'template_path': './templates',
@@ -61,16 +47,24 @@ def main():
         'debug': debug,
         'autoreload': autoreload
     }
-    # define Application endpoints
     application = web.Application([
             (r'/login', LoginHandler),
             (r'/logout', server.LogoutHandler),
             (r'/api/(.*)$', APIHandler.APIHandler),
             (r'/', AdminHandler.AdminHandler)
         ], **settings)
-    # start a AdminServer running this Application with these loaded parameters
-    server.start_server(application)
+    server.start_server(application)  # start a AdminServer running this Application with these loaded parameters
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='serveur.log', level=logging.INFO)
+    (
+        login,
+        password,
+        cookie_secret,
+        debug,
+        autoreload,
+        max_attemps,
+        blocked_duration
+    ) = ConfLoader.load_conf()
     main()  # execute main function
