@@ -23,7 +23,7 @@ def tryconnection(login, password):
             identity = result.a.string
 
             # disconnect
-            #r = requests.get(resultat.a.next_sibling.next_sibling['href'])
+            # r = requests.get(resultat.a.next_sibling.next_sibling['href'])
 
             # return
             return True, identity

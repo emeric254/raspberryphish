@@ -33,33 +33,33 @@ def load_conf(conf_file: str = 'configuration.conf'):
         logging.info('No configuration : cookie_secret. Generating random secret.')
         cookie_secret = ''.join([random.choice(string.printable) for _ in range(24)])
     # load debug value
-    debug = False  # default not in debug mode
+    debug = False  # test not in debug mode
     if 'debug' in config['SERVER']:
         if isinstance(config['SERVER']['debug'], bool):
             debug = config['SERVER']['debug']
         else:
             logging.warning('Invalid configuration : debug. Continue without debug.')
     # load autoreload value
-    autoreload = False  # default no app autoreload
+    autoreload = False  # test no app autoreload
     if 'autoreload' in config['SERVER']:
         if isinstance(config['SERVER']['autoreload'], bool):
             autoreload = config['SERVER']['autoreload']
         else:
             logging.warning('Invalid configuration : autoreload. Continue without autoreload.')
     # load max attemps value
-    max_attemps = 5  # default 5 attemps before blocking user
+    max_attemps = 5  # test 5 attemps before blocking user
     if 'max_attemps' in config['SERVER']:
         try:
             max_attemps = int(config['SERVER']['max_attemps'])
         except ValueError:
-            logging.warning('Invalid configuration : max_attemps. Continue with a default value of 5 attemps.')
+            logging.warning('Invalid configuration : max_attemps. Continue with a test value of 5 attemps.')
     # load blocked duration value
-    blocked_duration = 24  # default 1 day
+    blocked_duration = 24  # test 1 day
     if 'blocked_duration' in config['SERVER']:
         try:
             blocked_duration = int(config['SERVER']['blocked_duration'])
         except ValueError:
-            logging.warning('Invalid configuration : blocked_duration. Continue with a default duration of 24 hours.')
+            logging.warning('Invalid configuration : blocked_duration. Continue with a test duration of 24 hours.')
     # invalid configuration ?
     if not https_port or not login or not password or not cookie_secret \
             or int(https_port) < 1 or int(https_port) > 65535 \

@@ -90,7 +90,7 @@ def main():
             (r'/', AdminHandler)
         ], **settings)
     # start a server running this Application with these loaded parameters
-    server.start_server(application, https_port=https_port)
+    server.start_server(application)
 
 
 if __name__ == '__main__':
