@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import datetime
 import logging
+import os
 from tornado import web
-from tools import server, ConfLoader, FileManager
+from tools import ConfLoader, server, FileManager
 
 
 class MainHandler(web.RequestHandler):
@@ -36,13 +36,13 @@ class MainHandler(web.RequestHandler):
 
 
 def main():
-    """Main function, define an Application and start server instances with it."""
+    """Main function, define an Application and start AdminServer instances with it."""
     application = web.Application([
         (r'/rsc/(.*)', web.StaticFileHandler, {'path': rsc_folder_path}),
         (r'/', MainHandler),
         (r'/.*', MainHandler)
     ])
-    server.start_server(application)  # start server with this Application and previously loaded parameters
+    server.start_server(application)  # start AdminServer with this Application and previously loaded parameters
 
 
 if __name__ == '__main__':

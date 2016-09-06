@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 import ssl
 import sys
-import logging
 from tornado import httpserver, ioloop, netutil, process, web
 from tools import ConfLoader
 

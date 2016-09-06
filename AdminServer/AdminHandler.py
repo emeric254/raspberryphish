@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import server
 from tornado import web
+
+from AdminServer import server
 
 
 class AdminHandler(server.BaseHandler):

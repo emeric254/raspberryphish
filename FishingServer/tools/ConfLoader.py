@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import configparser
+import os
 import logging
+import configparser
+from tools import FileManager
 
 
 def load_server_conf():
@@ -18,7 +20,7 @@ def load_server_conf():
     if 'http_port' not in config['SERVER'] or 'https_port' not in config['SERVER']\
             or 'cert_path' not in config['SERVER']:
         raise ValueError('Please verify [SERVER] section of your configuration file')
-    cert_path = config['SERVER']['cert_path']  # directory name where the server will load cert and key files
+    cert_path = config['SERVER']['cert_path']  # directory name where the AdminServer will load cert and key files
     http_port = config['SERVER']['http_port']  # HTTP port to bind
     https_port = config['SERVER']['https_port']  # HTTPS port to bind
     return cert_path, http_port, https_port
@@ -71,4 +73,5 @@ def load_log_conf():
         log_level = logging.CRITICAL
     else:
         log_level = logging.NOTSET
+    FileManager.ensure_existence(os.path.dirname(log_file))
     return log_level, log_file

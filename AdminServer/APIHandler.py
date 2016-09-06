@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import os
-import time
-import random
 import json
 import logging
-import server
+import os
+import random
+import time
+
 from tornado import web
+
+from AdminServer import server
 
 
 def del_folder(folder: str = '../logs/dump'):

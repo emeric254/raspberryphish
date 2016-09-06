@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
+
 import ConfLoader
 import server
-from tornado import web, escape
 from APIHandler import APIHandler
-from AdminHandler import AdminHandler
+from tornado import web, escape
+
+from AdminServer.AdminHandler import AdminHandler
 
 # app's title
 __title__ = 'RaspberryPhishAdminServer'
@@ -70,7 +72,7 @@ class LogoutHandler(server.BaseHandler):
 
 
 def main():
-    """Main function, define an Application and start server instances with it.
+    """Main function, define an Application and start AdminServer instances with it.
     """
     # define app settings
     settings = {
@@ -89,7 +91,7 @@ def main():
             (r'/api/(.*)$', APIHandler),
             (r'/', AdminHandler)
         ], **settings)
-    # start a server running this Application with these loaded parameters
+    # start a AdminServer running this Application with these loaded parameters
     server.start_server(application)
 
 

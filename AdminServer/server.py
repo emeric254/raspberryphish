@@ -9,11 +9,11 @@ import sys
 
 from tornado import httpserver, ioloop, netutil, web
 
-from tools import ConfLoader
+from AdminServer.tools import ConfLoader
 
 
 def start_server(app: web.Application):
-    """ Try to start an HTTPS server
+    """ Try to start an HTTPS AdminServer
 
     :param app: tornado.web.Application to use
 
