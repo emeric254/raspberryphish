@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 from tornado import web
 from tools import server
 
@@ -10,19 +11,19 @@ class AdminHandler(server.BaseSecureHandler):
     @web.authenticated
     def get(self):
         """Render main page"""
-        # TODO logging
-        self.render('./admin.html')
+        logging.info(str(self.get_current_user()) + ' made a GET on AdminHandler')
+        self.render('admin.html')
 
     @web.authenticated
     def post(self):
         """Do something with arguments and render main page"""
-        # TODO logging
+        logging.info(str(self.get_current_user()) + ' made a POST on AdminHandler')
         try:
-            # TODO do something here with argument(s) ?!
             arguments = {}
             for k in self.request.arguments:
                 arguments[k] = self.get_argument(k)
-            print('arguments :', arguments)
+            # TODO do something here with argument(s) ?!
+            logging.debug('arguments :', arguments)
         except web.HTTPError:   # no or wrong arguments
-            pass  # TODO logging
+            logging.warning('Argument error on AdminHandler POST request')
         self.render('admin.html')
