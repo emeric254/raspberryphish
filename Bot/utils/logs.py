@@ -28,7 +28,7 @@ class Log:
 
     def addtry(self, timestamp, password, test):
         # TODO doc
-        self.tries[timestamp] = (password, test)
+        self.edittry(timestamp, password, test)
 
     def edittry(self, timestamp, password, test):
         # TODO doc

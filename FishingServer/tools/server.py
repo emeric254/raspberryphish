@@ -8,6 +8,13 @@ from tornado import httpserver, ioloop, netutil, process, web
 from tools import ConfLoader
 
 
+def stop_server():
+    """Stop server IOLoop and forked processes"""
+    logging.info('Stopping and exiting all server processes ...')
+    ioloop.IOLoop.current().stop()
+    sys.exit(0)  # exit properly
+
+
 def start_server(app: web.Application):
     """ Try to start as HTTP and HTTPS process as number of threads.
 
@@ -18,11 +25,10 @@ def start_server(app: web.Application):
     http_socket = netutil.bind_sockets(http_port)  # bind HTTP socket
     https_socket = netutil.bind_sockets(https_port)  # bind HTTPS socket
     try:
+        logging.debug('Trying to fork into multiple processes')
         process.fork_processes(0)  # fork in N processes
     except KeyboardInterrupt:  # except KeyboardInterrupt to properly exit
-        logging.info('Keyboard interupt receive on an other fork, exiting all ...')
-        ioloop.IOLoop.current().stop()  # stop process
-        sys.exit(0)  # exit
+        stop_server()
     cert_file = os.path.join(cert_path, 'default.crt')  # ssl cert file
     key_file = os.path.join(cert_path, 'default.key')  # ssl key file
     if os.path.isfile(cert_file) and os.path.isfile(key_file):  # verify files
@@ -30,14 +36,12 @@ def start_server(app: web.Application):
         ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)  # define ssl context
         ssl_ctx.load_cert_chain(cert_file, key_file)  # load ssl required files
         logging.info('Starting an HTTPS request handler on port : ' + str(https_port))
-        httpserver.HTTPServer(app, ssl_options=ssl_ctx).add_sockets(https_socket)  # bind https port
+        httpserver.HTTPServer(app, ssl_options=ssl_ctx).add_sockets(https_socket)  # add socket to https port
     else:  # no ssl files found
         logging.warning('No cert and key files found, HTTPS service will not start.')
     logging.info('Starting an HTTP request handler on port : ' + str(http_port))
-    httpserver.HTTPServer(app).add_sockets(http_socket)  # bind http port
+    httpserver.HTTPServer(app).add_sockets(http_socket)  # add socket to http port
     try:
         ioloop.IOLoop.current().start()  # loop forever to satisfy user's requests
     except KeyboardInterrupt:  # except KeyboardInterrupt to properly exit
-        logging.info('Keyboard interupt receive on this service, exiting all ...')
-        ioloop.IOLoop.current().stop()  # stop process
-        sys.exit(0)  # exit
+        stop_server()

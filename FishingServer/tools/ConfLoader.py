@@ -16,6 +16,7 @@ def load_server_conf():
     config.read('configuration.conf')  # load configuration from 'configuration.conf' file
     logging.info('Loading Server related configuration')
     if 'SERVER' not in config:
+        logging.error('[SERVER] section of configuration is missing')
         raise ValueError('Please verify your configuration file contains a [SERVER] section')
     if 'http_port' not in config['SERVER'] or 'https_port' not in config['SERVER']\
             or 'cert_path' not in config['SERVER']:
@@ -37,6 +38,7 @@ def load_fish_conf():
     config.read('configuration.conf')  # load configuration from 'configuration.conf' file
     logging.info('Loading Fishing related configuration')
     if 'MAIN' not in config:
+        logging.error('[MAIN] section of configuration is missing')
         raise ValueError('Please verify your configuration file contains a [MAIN] section')
     if 'website_name' not in config['MAIN'] or 'page_folder_path' not in config['MAIN'] \
             or 'rsc_folder_path' not in config['MAIN'] or 'dumps_folder_path' not in config['MAIN']:
@@ -77,5 +79,9 @@ def load_log_conf():
         log_level = logging.CRITICAL
     else:
         log_level = logging.NOTSET
-    FileManager.ensure_existence(os.path.dirname(log_file))
+    if not log_file:
+        log_file = 'default.log'
+    log_dir = os.path.dirname(log_file)
+    if log_dir:
+        FileManager.ensure_existence(log_dir)
     return log_level, log_file
