@@ -7,18 +7,19 @@ from tools import FileManager
 
 
 def load_server_conf():
-    """Load configuration from 'configuration.conf' file
+    """Load configuration from 'configuration.conf' file.
 
     :return: cert_path, http_port, https_port
 
     """
-    # TODO add some logging
     config = configparser.ConfigParser()
     config.read('configuration.conf')  # load configuration from 'configuration.conf' file
+    logging.info('Loading Server related configuration')
     if 'SERVER' not in config:
         raise ValueError('Please verify your configuration file contains a [SERVER] section')
     if 'http_port' not in config['SERVER'] or 'https_port' not in config['SERVER']\
             or 'cert_path' not in config['SERVER']:
+        logging.error('At least a configuration field is missing')
         raise ValueError('Please verify [SERVER] section of your configuration file')
     cert_path = config['SERVER']['cert_path']  # directory name where the AdminServer will load cert and key files
     http_port = config['SERVER']['http_port']  # HTTP port to bind
@@ -27,18 +28,19 @@ def load_server_conf():
 
 
 def load_fish_conf():
-    """Load configuration from 'configuration.conf' file
+    """Load configuration from 'configuration.conf' file.
 
     :return: page_path, rsc_path
 
     """
-    # TODO add some logging
     config = configparser.ConfigParser()
     config.read('configuration.conf')  # load configuration from 'configuration.conf' file
+    logging.info('Loading Fishing related configuration')
     if 'MAIN' not in config:
         raise ValueError('Please verify your configuration file contains a [MAIN] section')
     if 'website_name' not in config['MAIN'] or 'page_folder_path' not in config['MAIN'] \
             or 'rsc_folder_path' not in config['MAIN'] or 'dumps_folder_path' not in config['MAIN']:
+        logging.error('At least a configuration field is missing')
         raise ValueError('Please verify [MAIN] section of your configuration file')
     website_name = config['MAIN']['website_name']   # website to load name
     page_folder_path = config['MAIN']['page_folder_path']  # parent directory where to find 'pages'
@@ -48,7 +50,9 @@ def load_fish_conf():
 
 
 def load_log_conf():
-    """Load configuration from 'configuration.conf' file
+    """Load configuration from 'configuration.conf' file.
+
+    Possible 'log_level' values are 'debug', 'info', 'warning', 'error', 'critical' or empty
 
     :return: log_level, log_file
 

