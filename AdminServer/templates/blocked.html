@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- Angular Material style sheet -->
-        <link rel="stylesheet" href="{{ static_url("css/angular-material.min.css") }}"/>
-        <link rel="stylesheet" href="{{ static_url("css/material-icons.css") }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/angular-material.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/material-icons.css') }}"/>
     </head>
     <body ng-app="MyApp" ng-cloak>
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
-                <h2> Raspberryphish </h2>
+                <h1>
+                    <md-icon md-font-library="material-icons">settings_applications</md-icon>
+                    Raspberryphish
+                </h1>
             </div>
         </md-toolbar>
         <md-content class="md-padding" layout="column" layout-align="center center" layout-padding layout-margin>
-            <h3> You've been blocked for too many failed login attempts.</h3>
-            <p> Please wait {{ blocked_duration }} hours to be able to retry.</p>
+            <h3>
+                You've been blocked for too many failed login attempts.
+            </h3>
+            <p>
+                Please wait {{ blocked_duration }} hours to be able to retry.
+            </p>
         </md-content>
         <!-- Angular Material requires Angular.js Libraries -->
-        <script src="{{ static_url("js/angular.min.js") }}"></script>
-        <script src="{{ static_url("js/angular-animate.min.js") }}"></script>
-        <script src="{{ static_url("js/angular-aria.min.js") }}"></script>
+        <script src="{{ static_url('js/dependencies/angular.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-animate.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-aria.min.js') }}"></script>
         <!-- Angular Material Library -->
-        <script src="{{ static_url("js/angular-material.min.js") }}"></script>
-        <!-- -->
+        <script src="{{ static_url('js/dependencies/angular-material.min.js') }}"></script>
+        <!-- App -->
         <script type="text/javascript">
-            var app = angular.module('MyApp', ['ngMaterial']);
+            angular.module('MyApp', ['ngMaterial']);
         </script>
     </body>
 </html>

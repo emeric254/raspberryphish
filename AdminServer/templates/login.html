@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- Angular Material style sheet -->
@@ -9,7 +9,10 @@
     <body ng-app="MyApp" ng-cloak>
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
-                <h2> Raspberryphish </h2>
+                <h1>
+                    <md-icon md-font-library="material-icons">settings_applications</md-icon>
+                    Raspberryphish
+                </h1>
             </div>
         </md-toolbar>
         <md-content class="md-padding" layout="column" layout-align="center center" layout-padding layout-margin>
@@ -21,14 +24,14 @@
             <form name="connection" action="login" method="post">
                 {% module xsrf_form_html() %}
                 <md-input-container class="md-icon-float md-block">
-                    <md-icon md-font-library="material-icons" class="md-light md-48">person</md-icon>
+                    <md-icon md-font-library="material-icons">person</md-icon>
                     <input required md-no-asterisk ng-model="login" name="username" type="text" placeholder="Username">
                     <div ng-messages="connection.username.$error">
                         <div ng-message="required"> This is required. </div>
                     </div>
                 </md-input-container>
                 <md-input-container class="md-icon-float md-block">
-                    <md-icon md-font-library="material-icons" class="md-light md-48">vpn_key</md-icon>
+                    <md-icon md-font-library="material-icons">vpn_key</md-icon>
                     <input required md-no-asterisk ng-model="password" name="password" type="password" placeholder="Password">
                     <div ng-messages="connection.password.$error">
                         <div ng-message="required"> This is required. </div>
@@ -36,20 +39,21 @@
                 </md-input-container>
                 <md-content class="md-padding" layout="column" layout-align="center center" layout-padding layout-margin>
                     <md-button class="md-raised md-primary" ng-if="login && password" type="submit">
-                        Sign in <md-icon md-font-library="material-icons" class="md-light md-32">lock</md-icon>
+                        <md-icon md-font-library="material-icons">lock</md-icon>
+                        Sign in
                     </md-button>
                 </md-content>
             </form>
         </md-content>
         <!-- Angular Material requires Angular.js Libraries -->
-        <script src="{{ static_url('js/angular.min.js') }}"></script>
-        <script src="{{ static_url('js/angular-animate.min.js') }}"></script>
-        <script src="{{ static_url('js/angular-aria.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-animate.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-aria.min.js') }}"></script>
         <!-- Angular Material Library -->
-        <script src="{{ static_url('js/angular-material.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-material.min.js') }}"></script>
         <!-- -->
         <script type="text/javascript">
-            var app = angular.module('MyApp', ['ngMaterial']);
+            angular.module('MyApp', ['ngMaterial']);
         </script>
     </body>
 </html>

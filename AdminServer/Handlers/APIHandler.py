@@ -6,20 +6,10 @@ import json
 import random
 import logging
 from tornado import web
-from tools import server
+from tools import server, FileManager
 
 
-def del_folder(folder: str = '../logs/dump'):
-    """Delete a folder
-
-    :param folder: folder to delete
-
-    """
-    logging.info('deleting ' + folder)
-    os.rmdir(folder)
-
-
-def liste_dump(folder: str = '../logs/dump'):
+def liste_dump(folder: str):
     """List dump entries from a folder
 
     :param folder: folder to list dumps
@@ -60,9 +50,9 @@ class APIHandler(server.BaseSecureHandler):
             except ValueError:
                 minimum = 0
             self.write(str(random.randint(minimum, maximum)))
-        elif path_request == 'dump':
-            self.write(json.dumps(liste_dump()))
-        elif path_request.startswith('dump/'):
+        elif path_request == 'dumps':
+            self.write(json.dumps(liste_dump('../logs/dump')))
+        elif path_request.startswith('dumps/'):
             path = '../logs/' + path_request
             try:
                 if os.path.isfile(path):
@@ -82,13 +72,13 @@ class APIHandler(server.BaseSecureHandler):
         :param path_request: URI representing something to delete
 
         """
-        if path_request == 'dump':  # delete all subfolders and '../logs/dump'
-            del_folder()
+        if path_request == 'dumps':  # delete all subfolders and '../logs/dump'
+            FileManager.del_folder('../logs/dump')
             self.write('ok')
-        elif path_request.startswith('dump/'):  # delete a subfolder of '../logs/dump'
+        elif path_request.startswith('dumps/'):  # delete a subfolder of '../logs/dump'
             path = '../logs/' + path_request
             try:
-                del_folder(path)
+                FileManager.del_folder(path)
                 self.write('ok')
             except FileNotFoundError:
                 self.send_error(status_code=404, reason='not found : ' + path[8:])

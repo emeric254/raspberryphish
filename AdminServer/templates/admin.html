@@ -1,45 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- Angular Material style sheet -->
-        <link rel="stylesheet" href="{{ static_url("css/angular-material.min.css") }}"/>
-        <link rel="stylesheet" href="{{ static_url("css/material-icons.css") }}"/>
-        <!-- dataTable -->
-        <link rel="stylesheet" href="{{ static_url("css/dataTable.css") }}"/>
-        <link rel="stylesheet" href="{{ static_url("css/icons.css") }}"/>
-        <!-- angular-chart -->
-        <link rel="stylesheet" href="{{ static_url("css/angular-chart.min.css") }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/angular-material.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/material-icons.css') }}"/>
     </head>
     <body ng-app="MyApp" ng-controller="AppCtrl" ng-cloak>
         <md-toolbar class="md-hue-2">
             <div class="md-toolbar-tools">
-                <h2>
-                    <md-icon md-font-library="material-icons" class="md-light md-48">settings_applications</md-icon>
+                <h1>
+                    <md-icon md-font-library="material-icons">settings_applications</md-icon>
                     Raspberryphish
-                </h2>
+                </h1>
                 <md-menu md-position-mode="target-right target" >
                     <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                        <md-icon md-font-library="material-icons" class="md-light md-48">more_vert</md-icon>
+                        <md-icon md-font-library="material-icons">more_vert</md-icon>
                     </md-button>
-                    <md-menu-content width="3" >
+                    <md-menu-content>
                         <md-menu-item>
-                            <p> Menu </p>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="help($event)">
-                                <div layout="row" flex>
-                                    <p flex> Help </p>
-                                    <md-icon md-font-library="material-icons" class="md-48">help</md-icon>
-                                </div>
+                            <md-button ng-href="/logout">
+                                <md-icon md-font-library="material-icons">help</md-icon>
+                                Help
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button ng-href="/logout">
-                                <div layout="row" flex>
-                                    <p flex> Logout </p>
-                                    <md-icon md-font-library="material-icons" class="md-48">exit_to_app</md-icon>
-                                </div>
+                                <md-icon md-font-library="material-icons">exit_to_app</md-icon>
+                                Logout
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
@@ -92,77 +80,13 @@
             </section>
         </md-content>
         <!-- Angular Material requires Angular.js Libraries -->
-        <script src="{{ static_url("js/angular.min.js") }}"></script>
-        <script src="{{ static_url("js/angular-animate.min.js") }}"></script>
-        <script src="{{ static_url("js/angular-aria.min.js") }}"></script>
-        <script src="{{ static_url("js/angular-messages.min.js") }}"></script>
+        <script src="{{ static_url('js/dependencies/angular.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-animate.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-aria.min.js') }}"></script>
+        <script src="{{ static_url('js/dependencies/angular-messages.min.js') }}"></script>
         <!-- Angular Material Library -->
-        <script src="{{ static_url("js/angular-material.min.js") }}"></script>
-        <!-- DataTable for Angular Material -->
-        <script src="{{ static_url("js/dataTable.helpers.min.js") }}"></script>
-        <!-- Graph for Angular Material -->
-        <script src="{{ static_url("js/Chart.min.js") }}"></script>
-        <script src="{{ static_url("js/angular-chart.min.js") }}"></script>
-        <!-- Your application bootstrap  -->
-        <script type="text/javascript">
-            var app = angular.module('MyApp', ['ngMaterial', 'ngMessages', 'data-table', 'chart.js']);
-
-            app.controller('AppCtrl', function($scope, $http, $mdDialog) {
-                    $scope.help = function() {
-                            $mdDialog.show(
-                                $mdDialog.alert()
-                                    .clickOutsideToClose(true)
-                                    .parent('body')
-                                    .title('Help')
-                                    .textContent('Yayy ~~~ !')
-                                    .ok('Ok')
-                            );
-                          originatorEv = null;
-                        };
-                    //
-                    $scope.random_results = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                    //
-                    $scope.random_fct = function() {
-                            //
-                            $http.get("/api/random").then(function successCallback(response) {
-                                    $scope.random = response.data;
-                                    $scope.random_results.push(response.data);
-                                    $scope.random_results = $scope.random_results.slice(-10);
-                                    $scope.chartdata[0] = $scope.random_results;
-                                    setTimeout($scope.random_fct, 1000);
-                                }, function errorCallback(response) {
-                                    console.log(response);
-                                    setTimeout($scope.random_fct, 500);
-                                });
-                        };
-                    //
-                    $scope.chartlabels = ["-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "0"];
-                    $scope.chartseries = ['Random'];
-                    $scope.chartdata = [ [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] ];
-                    // options
-                    $scope.chartcolors = [ '#46BFBD', '#FDB45C', '#00ADF9', '#949FB1'];
-                    $scope.chartoptions = {
-                            maintainAspectRatio: true,
-                            responsive: true,
-                            barDatasetSpacing: 1,
-                            barShowStroke: true,
-                            barStrokeWidth : 2,
-                            barValueSpacing : 5,
-                            animationSteps: 30,
-                            scaleOverride: true,
-                            scaleStartValue: 0,
-                            scaleSteps : 10,
-                            scaleStepWidth : 10,
-                            multiTooltipTemplate: function(label) {
-                                return label.value + ' ' + label.datasetLabel;
-                            },
-                            tooltipTemplate: function(label) {
-                                return label.value;
-                            }
-                        };
-                    //
-                    setTimeout($scope.random_fct, 1000);
-                });
-        </script>
+        <script src="{{ static_url('js/dependencies/angular-material.min.js') }}"></script>
+        <!-- App  -->
+        <script src="{{ static_url('js/app/app.js') }}"></script>
     </body>
 </html>
