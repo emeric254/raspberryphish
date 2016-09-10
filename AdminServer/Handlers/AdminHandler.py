@@ -23,7 +23,7 @@ class AdminHandler(server.BaseSecureHandler):
             for k in self.request.arguments:
                 arguments[k] = self.get_argument(k)
             # TODO do something here with argument(s) ?!
-            logging.debug('arguments :', arguments)
+            logging.debug('arguments :' + str(arguments))
         except web.HTTPError:   # no or wrong arguments
             logging.warning('Argument error on AdminHandler POST request')
         self.render('admin.html')

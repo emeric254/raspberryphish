@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from tornado import web, escape
+from tornado import web
 from tools import ConfLoader, server
 from Handlers import APIHandler, AdminHandler
+
+logger = logging.basicConfig(filename='../logs/admin-server.log',
+                             format='%(asctime)s %(levelname)s:%(message)s',
+                             level=logging.DEBUG)
 
 
 def main():
@@ -28,7 +32,6 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='serveur.log', level=logging.INFO)
     (debug, autoreload) = ConfLoader.load_conf()
     (cookie_expiration, cookie_secret) = ConfLoader.load_cookie_conf()
     main()  # execute main function
