@@ -16,15 +16,6 @@ def del_folder(folder: str = '../logs/dump'):
 
     """
     logging.info('deleting ' + folder)
-    for root, folders, files in os.walk(folder):
-        for temp in files:
-            path = os.path.join(root, temp)
-            logging.info('delete file ' + path)
-            os.remove(path)
-        for temp in folders:
-            path = os.path.join(root, temp)
-            logging.info('delete folder ' + path)
-            os.rmdir(path)
     os.rmdir(folder)
 
 
