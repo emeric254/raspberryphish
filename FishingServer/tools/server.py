@@ -24,13 +24,13 @@ def start_server(app: web.Application):
     (cert_path, http_port, https_port) = ConfLoader.load_server_conf()  # load configuration
     http_socket = netutil.bind_sockets(http_port)  # bind HTTP socket
     https_socket = netutil.bind_sockets(https_port)  # bind HTTPS socket
+    cert_file = os.path.join(cert_path, 'default.crt')  # ssl cert file
+    key_file = os.path.join(cert_path, 'default.key')  # ssl key file
     try:
         logging.debug('Trying to fork into multiple processes')
         process.fork_processes(0)  # fork in N processes
     except KeyboardInterrupt:  # except KeyboardInterrupt to properly exit
         stop_server()
-    cert_file = os.path.join(cert_path, 'default.crt')  # ssl cert file
-    key_file = os.path.join(cert_path, 'default.key')  # ssl key file
     if os.path.isfile(cert_file) and os.path.isfile(key_file):  # verify files
         logging.info('Required cert and key files found, loading them')
         ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)  # define ssl context

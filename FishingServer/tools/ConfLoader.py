@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 import configparser
-from tools import FileManager
 
 
 def load_server_conf():
@@ -49,39 +47,3 @@ def load_fish_conf():
     rsc_folder_path = config['MAIN']['rsc_folder_path']  # parent directory where to find 'rsc'
     dumps_folder_path = config['MAIN']['dumps_folder_path']  # parent directory where dumps will be written
     return website_name, page_folder_path, rsc_folder_path, dumps_folder_path
-
-
-def load_log_conf():
-    """Load configuration from 'configuration.conf' file.
-
-    Possible 'log_level' values are 'debug', 'info', 'warning', 'error', 'critical' or empty
-
-    :return: log_level, log_file
-
-    """
-    config = configparser.ConfigParser()
-    config.read('configuration.conf')  # load configuration from 'configuration.conf' file
-    if 'LOG' not in config:
-        raise ValueError('Please verify your configuration file contains a [LOG] section')
-    if 'log_level' not in config['LOG'] or 'log_file' not in config['LOG']:
-        raise ValueError('Please verify [LOG] section of your configuration file')
-    log_level = config['LOG']['log_level']   # log level
-    log_file = config['LOG']['log_file']  # log file
-    if log_level.lower() == 'debug':
-        log_level = logging.DEBUG
-    elif log_level.lower() == 'info':
-        log_level = logging.INFO
-    elif log_level.lower() == 'warning':
-        log_level = logging.WARNING
-    elif log_level.lower() == 'error':
-        log_level = logging.ERROR
-    elif log_level.lower() == 'critical':
-        log_level = logging.CRITICAL
-    else:
-        log_level = logging.NOTSET
-    if not log_file:
-        log_file = 'default.log'
-    log_dir = os.path.dirname(log_file)
-    if log_dir:
-        FileManager.ensure_existence(log_dir)
-    return log_level, log_file
